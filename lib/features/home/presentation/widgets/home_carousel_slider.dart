@@ -82,7 +82,7 @@ class _HomeCarouselSliderState extends State<HomeCarouselSlider> {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: theme.colorScheme.primary
-                        .withValues(alpha: _current == entry.key ? 0.9 : 0.05),
+                        .withValues(alpha: _current == entry.key ? 0.9 : 0.20),
                   ),
                 ),
               );

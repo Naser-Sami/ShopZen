@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '/config/_config.dart';
+import '/features/home/_home.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
   static const routeName = '/product-details';
@@ -13,7 +14,6 @@ class ProductDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final size = MediaQuery.of(context).size;
 
     return Scaffold(
       body: CustomScrollView(
@@ -39,25 +39,10 @@ class ProductDetailsScreen extends StatelessWidget {
               ),
             ),
             actions: [
-              Container(
-                width: TSize.s24,
-                height: TSize.s24,
-                margin: const EdgeInsetsDirectional.only(end: TPadding.p16),
-                decoration: BoxDecoration(
-                  color: LightThemeColors.surface.withValues(alpha: 0.85),
-                  borderRadius: BorderRadius.circular(TRadius.r04),
-                ),
-                child: IconButton(
-                  onPressed: () {},
-                  iconSize: 16,
-                  padding: EdgeInsets.zero,
-                  icon: Center(
-                    child: Icon(
-                      Icons.favorite_border_outlined,
-                    ),
-                  ),
-                ),
-              )
+              Padding(
+                padding: const EdgeInsetsDirectional.only(end: TSize.s16),
+                child: FavoriteIconWidget(),
+              ),
             ],
           ),
         ],

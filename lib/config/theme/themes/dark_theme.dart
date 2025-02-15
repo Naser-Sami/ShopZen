@@ -16,6 +16,7 @@ ThemeData _darkTheme = ThemeData.dark(useMaterial3: true).copyWith(
   popupMenuTheme: darkPopupMenuTheme,
   elevatedButtonTheme: elevatedButtonThemeDark,
   appBarTheme: appBarThemeDark,
+  iconButtonTheme: iconButtonThemeDark,
 );
 
 ThemeData get darkTheme => _darkTheme;
