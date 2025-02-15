@@ -41,7 +41,7 @@ class ProductsListViewWidget extends StatelessWidget {
           onPressed: () {
             GoRouter.of(context).push(
               '${ProductDetailsScreen.routeName}/$index',
-              extra: product.thumbnail,
+              extra: product,
             );
           },
           padding: EdgeInsets.zero,
@@ -54,7 +54,7 @@ class ProductsListViewWidget extends StatelessWidget {
                 Stack(
                   children: [
                     Hero(
-                      tag: "HotDeal$index",
+                      tag: "Product${product.id}",
                       child: Container(
                         height: size.height * 0.16,
                         decoration: BoxDecoration(
@@ -108,29 +108,7 @@ class ProductsListViewWidget extends StatelessWidget {
                         ),
                       ),
                       TSize.s08.toHeight,
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          IconWidget(name: 'star'),
-                          TSize.s08.toWidth,
-                          RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: product.rating.toString(),
-                                  style: theme.textTheme.bodyMedium?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: " (${product.stock})",
-                                  style: theme.textTheme.bodyMedium,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
+                      ProductReviewsRatioWidget(product: product),
                     ],
                   ),
                 ),

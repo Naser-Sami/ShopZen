@@ -82,14 +82,10 @@ final router = GoRouter(
       path: "${ProductDetailsScreen.routeName}/:index",
       name: "Products Details",
       pageBuilder: (context, state) {
-        final image = state.extra as String;
-        final index = int.tryParse(state.pathParameters['index'] ?? '-1') ?? -1;
-
-        log("Index details: $index");
-        log("Image details: $image");
+        final product = state.extra as ProductEntity;
 
         return CupertinoPage(
-          child: ProductDetailsScreen(image: image, index: index),
+          child: ProductDetailsScreen(product: product),
         );
       },
     ),
