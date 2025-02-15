@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "609299836964",
+    "project_id": "shopzen-42af3",
+    "storage_bucket": "shopzen-42af3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:609299836964:android:f2f6e893b4dad3c73068b1",
+        "android_client_info": {
+          "package_name": "com.example.shop_zen"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA70ecOLnc5CuOYcezSKQpKuEVeWfAb8w4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
