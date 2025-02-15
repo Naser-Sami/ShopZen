@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hive/hive.dart';
 import 'package:readmore/readmore.dart';
 
@@ -126,12 +127,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: TSize.s16),
+                        TSize.s16.toHeight,
                         TextWidget(
                           widget.product.title ?? "",
                           style: theme.textTheme.titleLarge,
                         ),
-                        SizedBox(height: TSize.s16),
+                        TSize.s16.toHeight,
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -145,7 +146,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             ProductReviewsRatioWidget(product: widget.product),
                           ],
                         ),
-                        SizedBox(height: TSize.s16),
+                        TSize.s16.toHeight,
                         TextWidget(
                           "Product Details",
                           style: theme.textTheme.titleMedium,
@@ -166,15 +167,15 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             color: theme.colorScheme.error,
                           ),
                         ),
-                        SizedBox(height: TSize.s16),
+                        TSize.s16.toHeight,
                         Divider(),
-                        SizedBox(height: TSize.s16),
+                        TSize.s16.toHeight,
 
                         // If product has sizes
                         if (widget.product.category!.contains('shirt') ||
                             widget.product.category!.contains('tops')) ...[
                           TextWidget('Select Size', style: theme.textTheme.titleMedium),
-                          SizedBox(height: TSize.s16),
+                          TSize.s16.toHeight,
                           Wrap(
                             spacing: TSize.s16,
                             children: List.generate(
@@ -204,12 +205,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               ),
                             ),
                           ),
-                          SizedBox(height: TSize.s24),
+                          TSize.s24.toHeight,
                         ],
 
                         // If product has colors
                         TextWidget('Select Color', style: theme.textTheme.titleMedium),
-                        SizedBox(height: TSize.s16),
+                        TSize.s16.toHeight,
                         Wrap(
                           spacing: TSize.s08,
                           children: [
@@ -235,12 +236,63 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               ),
                           ],
                         ),
-                        SizedBox(height: TSize.s48),
+                        TSize.s24.toHeight,
+                        ExpansionTile(
+                          title: TextWidget('Rating & Reviews'),
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: TSize.s20)
+                                  .copyWith(
+                                bottom: TSize.s20,
+                              ),
+                              child: Row(
+                                children: [
+                                  TextWidget(
+                                    widget.product.rating.toString(),
+                                    style: theme.textTheme.titleLarge,
+                                  ),
+                                  TextWidget(
+                                    '/5',
+                                    style: theme.textTheme.titleLarge?.copyWith(
+                                      color: theme.colorScheme.outline,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Divider(),
+                            TSize.s24.toHeight,
+                            Row(
+                              children: [
+                                RatingBar.builder(
+                                  itemSize: 24,
+                                  initialRating: widget.product.rating?.toDouble() ?? 0,
+                                  minRating: 0,
+                                  direction: Axis.horizontal,
+                                  allowHalfRating: true,
+                                  itemCount: 5,
+                                  itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                                  itemBuilder: (context, _) => Icon(
+                                    Icons.star,
+                                    color: Colors.amber,
+                                  ),
+                                  onRatingUpdate: (rating) {
+                                    print(rating);
+                                  },
+                                ),
+                              ],
+                            ),
+                            TSize.s24.toHeight,
+                          ],
+                        ),
+                        Divider(),
+                        TSize.s60.toHeight,
                         ElevatedButton(
                           onPressed: () {},
                           child: TextWidget('Add to Cart'),
                         ),
-                        SizedBox(height: TSize.s24),
+                        TSize.s24.toHeight,
                       ],
                     ),
                   ),

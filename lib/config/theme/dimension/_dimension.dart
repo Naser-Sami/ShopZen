@@ -52,6 +52,7 @@ class TSize {
   static const double s50 = 50.0;
   static const double s55 = 55.0;
   static const double s56 = 56.0;
+  static const double s60 = 60.0;
   static const double s64 = 64.0;
   static const double s76 = 76.0;
   static const double s80 = 80.0;

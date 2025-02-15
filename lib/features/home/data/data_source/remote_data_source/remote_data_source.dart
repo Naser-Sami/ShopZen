@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import '/core/_core.dart';
 import '/features/home/_home.dart';
 
