@@ -61,7 +61,7 @@ class ProductsListViewWidget extends StatelessWidget {
                           borderRadius: BorderRadius.circular(TRadius.r08),
                           image: DecorationImage(
                             image: NetworkImage(
-                              product.images[0],
+                              product.thumbnail ?? "",
                             ),
                             fit: BoxFit.fill,
                           ),
@@ -82,7 +82,7 @@ class ProductsListViewWidget extends StatelessWidget {
                     children: [
                       SizedBox(height: TSize.s16),
                       TextWidget(
-                        product.title,
+                        product.title ?? "",
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -90,15 +90,16 @@ class ProductsListViewWidget extends StatelessWidget {
                       RichText(
                         text: TextSpan(
                           children: [
-                            TextSpan(
-                              text:
-                                  "\$${(product.price * (1 - product.discountPercentage / 100)).toStringAsFixed(2)}",
-                              style: theme.textTheme.bodyLarge?.copyWith(
-                                fontWeight: FontWeight.bold,
+                            if (product.price != null)
+                              TextSpan(
+                                text:
+                                    "\$${(product.price! * (product.discountPercentage != null ? (1 - product.discountPercentage! / 100) : 1)).toStringAsFixed(2)}",
+                                style: theme.textTheme.bodyLarge?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
                             TextSpan(
-                              text: "\$${product.price.toStringAsFixed(2)}",
+                              text: "\$${product.price?.toStringAsFixed(2)}",
                               style: theme.textTheme.bodyMedium?.copyWith(
                                 decoration: TextDecoration.lineThrough,
                               ),

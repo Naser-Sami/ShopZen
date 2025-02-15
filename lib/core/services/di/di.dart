@@ -62,8 +62,17 @@ class DI {
     );
 
     // Data Sources
+    sl.registerLazySingleton<IProductsRemoteDataSource>(
+      () => ProductsRemoteDataSourceImpl(),
+    );
 
     // Repositories
+    sl.registerLazySingleton<IProductRepository>(
+      () => ProductRepositoryImpl(
+        remoteDataSource: sl<IProductsRemoteDataSource>(),
+      ),
+    );
+
     sl.registerLazySingleton<ICategoriesRepository>(
       () => CategoriesRepositoryImpl(),
     );

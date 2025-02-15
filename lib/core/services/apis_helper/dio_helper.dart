@@ -23,22 +23,6 @@ class DioHelper {
         requestBody: true,
       ),
     );
-    // dio.interceptors.add(
-    //   InterceptorsWrapper(
-    //     onRequest: (options, handler) {
-    //       log('Request: ${options.method} ${options.uri}');
-    //       return handler.next(options);
-    //     },
-    //     onResponse: (response, handler) {
-    //       log('Response: [${response.statusCode}] ${response.realUri}');
-    //       return handler.next(response);
-    //     },
-    //     onError: (error, handler) {
-    //       log('Error: [${error.response?.statusCode}] ${error.message}');
-    //       return handler.next(error);
-    //     },
-    //   ),
-    // );
   }
 
   // Optional cancel token for request cancellation
@@ -71,6 +55,8 @@ class DioHelper {
         data: data,
         cancelToken: token ?? cancelToken,
       );
+
+      log('message: ${response.data}');
 
       // Parse response using the provided parser
       if (parser != null) {
