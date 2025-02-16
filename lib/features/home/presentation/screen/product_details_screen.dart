@@ -65,9 +65,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         child: CustomScrollView(
           slivers: [
             SliverAppBar(
-              pinned: true,
-              floating: true,
-              snap: true,
+              pinned: false,
+              floating: false,
+              snap: false,
               stretch: true,
               expandedHeight: 420,
               backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.10),
@@ -156,7 +156,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           widget.product.description ?? "",
                           trimMode: TrimMode.Line,
                           trimLines: 3,
-                          trimCollapsedText: ' Read more...',
+                          trimCollapsedText: ' Read more',
                           trimExpandedText: ' Show less',
                           moreStyle: theme.textTheme.bodyMedium?.copyWith(
                             fontWeight: FontWeight.bold,
@@ -249,40 +249,130 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 children: [
                                   TextWidget(
                                     widget.product.rating.toString(),
-                                    style: theme.textTheme.titleLarge,
+                                    style: theme.textTheme.titleLarge?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                   TextWidget(
                                     '/5',
                                     style: theme.textTheme.titleLarge?.copyWith(
                                       color: theme.colorScheme.outline,
-                                      fontWeight: FontWeight.normal,
+                                      fontWeight: FontWeight.bold,
                                     ),
+                                  ),
+                                  TSize.s08.toWidth,
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      TextWidget(
+                                        'Overall Rating',
+                                        style: theme.textTheme.titleMedium,
+                                      ),
+                                      TextWidget(
+                                          '${widget.product.reviews.length} Ratings')
+                                    ],
                                   ),
                                 ],
                               ),
                             ),
                             Divider(),
                             TSize.s24.toHeight,
-                            Row(
-                              children: [
-                                RatingBar.builder(
-                                  itemSize: 24,
-                                  initialRating: widget.product.rating?.toDouble() ?? 0,
-                                  minRating: 0,
-                                  direction: Axis.horizontal,
-                                  allowHalfRating: true,
-                                  itemCount: 5,
-                                  itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                                  itemBuilder: (context, _) => Icon(
-                                    Icons.star,
-                                    color: Colors.amber,
+                            for (var review in widget.product.reviews) ...[
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      RatingBar.builder(
+                                        ignoreGestures: true,
+                                        itemSize: 24,
+                                        initialRating: review.rating?.toDouble() ?? 0,
+                                        minRating: 0,
+                                        direction: Axis.horizontal,
+                                        allowHalfRating: true,
+                                        itemCount: 5,
+                                        itemPadding:
+                                            EdgeInsets.symmetric(horizontal: 4.0),
+                                        itemBuilder: (context, _) => Icon(
+                                          Icons.star,
+                                          color: Colors.amber,
+                                        ),
+                                        onRatingUpdate: (rating) {},
+                                      ),
+                                      TSize.s16.toWidth,
+                                      TextWidget(
+                                        review.reviewerName?.split(' ')[0] ?? '',
+                                        style: theme.textTheme.titleSmall,
+                                      ),
+                                    ],
                                   ),
-                                  onRatingUpdate: (rating) {
-                                    print(rating);
-                                  },
-                                ),
-                              ],
-                            ),
+                                  TSize.s16.toHeight,
+                                  TextWidget('Sample review Title',
+                                      style: theme.textTheme.titleLarge),
+                                  TSize.s16.toHeight,
+                                  TextWidget(
+                                    review.comment ?? '',
+                                    style: theme.textTheme.bodyMedium,
+                                  ),
+                                  TSize.s16.toHeight,
+                                  RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text: review.reviewerName ?? '',
+                                          style: theme.textTheme.titleSmall?.copyWith(
+                                            color: theme.colorScheme.outline,
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text: ', ',
+                                          style: theme.textTheme.titleSmall?.copyWith(
+                                            color: theme.colorScheme.outline,
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text: review.date?.formattedDateWithMonthName ??
+                                              '',
+                                          style: theme.textTheme.titleSmall?.copyWith(
+                                            color: theme.colorScheme.outline,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  TSize.s16.toHeight,
+                                  SizedBox(
+                                    height: TSize.s48,
+                                    child: ListView.separated(
+                                      scrollDirection: Axis.horizontal,
+                                      itemBuilder: (context, index) => Container(
+                                        width: TSize.s48,
+                                        height: TSize.s48,
+                                        decoration: BoxDecoration(
+                                          color: theme.colorScheme.primary
+                                              .withValues(alpha: 0.10),
+                                          borderRadius:
+                                              BorderRadius.circular(TRadius.r08),
+                                        ),
+                                        child: IconButton(
+                                          onPressed: () {
+                                            onThumbnailSelected(
+                                                widget.product.images[index]);
+                                          },
+                                          icon: Image.network(
+                                            widget.product.images[index],
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                      separatorBuilder: (_, __) => TSize.s16.toWidth,
+                                      itemCount: widget.product.images.length,
+                                    ),
+                                  ),
+                                  TSize.s24.toHeight,
+                                ],
+                              ),
+                            ],
                             TSize.s24.toHeight,
                           ],
                         ),
