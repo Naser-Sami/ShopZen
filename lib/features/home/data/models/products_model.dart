@@ -13,20 +13,6 @@ class ProductsModel extends Equatable {
   final num? skip;
   final num? limit;
 
-  ProductsModel copyWith({
-    List<ProductModel>? products,
-    num? total,
-    num? skip,
-    num? limit,
-  }) {
-    return ProductsModel(
-      products: products ?? this.products,
-      total: total ?? this.total,
-      skip: skip ?? this.skip,
-      limit: limit ?? this.limit,
-    );
-  }
-
   factory ProductsModel.fromJson(Map<String, dynamic> json) {
     return ProductsModel(
       products: json["products"] == null
@@ -108,56 +94,6 @@ class ProductModel extends Equatable {
   final MetaModel? meta;
   final List<String> images;
   final String? thumbnail;
-
-  ProductModel copyWith({
-    num? id,
-    String? title,
-    String? description,
-    String? category,
-    num? price,
-    num? discountPercentage,
-    num? rating,
-    num? stock,
-    List<String>? tags,
-    String? brand,
-    String? sku,
-    num? weight,
-    DimensionsModel? dimensions,
-    String? warrantyInformation,
-    String? shippingInformation,
-    String? availabilityStatus,
-    List<ReviewModel>? reviews,
-    String? returnPolicy,
-    num? minimumOrderQuantity,
-    MetaModel? meta,
-    List<String>? images,
-    String? thumbnail,
-  }) {
-    return ProductModel(
-      id: id ?? this.id,
-      title: title ?? this.title,
-      description: description ?? this.description,
-      category: category ?? this.category,
-      price: price ?? this.price,
-      discountPercentage: discountPercentage ?? this.discountPercentage,
-      rating: rating ?? this.rating,
-      stock: stock ?? this.stock,
-      tags: tags ?? this.tags,
-      brand: brand ?? this.brand,
-      sku: sku ?? this.sku,
-      weight: weight ?? this.weight,
-      dimensions: dimensions ?? this.dimensions,
-      warrantyInformation: warrantyInformation ?? this.warrantyInformation,
-      shippingInformation: shippingInformation ?? this.shippingInformation,
-      availabilityStatus: availabilityStatus ?? this.availabilityStatus,
-      reviews: reviews ?? this.reviews,
-      returnPolicy: returnPolicy ?? this.returnPolicy,
-      minimumOrderQuantity: minimumOrderQuantity ?? this.minimumOrderQuantity,
-      meta: meta ?? this.meta,
-      images: images ?? this.images,
-      thumbnail: thumbnail ?? this.thumbnail,
-    );
-  }
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
     return ProductModel(
@@ -259,18 +195,6 @@ class DimensionsModel extends Equatable {
   final num? height;
   final num? depth;
 
-  DimensionsModel copyWith({
-    num? width,
-    num? height,
-    num? depth,
-  }) {
-    return DimensionsModel(
-      width: width ?? this.width,
-      height: height ?? this.height,
-      depth: depth ?? this.depth,
-    );
-  }
-
   factory DimensionsModel.fromJson(Map<String, dynamic> json) {
     return DimensionsModel(
       width: json["width"],
@@ -310,20 +234,6 @@ class MetaModel extends Equatable {
   final DateTime? updatedAt;
   final String? barcode;
   final String? qrCode;
-
-  MetaModel copyWith({
-    DateTime? createdAt,
-    DateTime? updatedAt,
-    String? barcode,
-    String? qrCode,
-  }) {
-    return MetaModel(
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
-      barcode: barcode ?? this.barcode,
-      qrCode: qrCode ?? this.qrCode,
-    );
-  }
 
   factory MetaModel.fromJson(Map<String, dynamic> json) {
     return MetaModel(
@@ -369,22 +279,6 @@ class ReviewModel extends Equatable {
   final DateTime? date;
   final String? reviewerName;
   final String? reviewerEmail;
-
-  ReviewModel copyWith({
-    num? rating,
-    String? comment,
-    DateTime? date,
-    String? reviewerName,
-    String? reviewerEmail,
-  }) {
-    return ReviewModel(
-      rating: rating ?? this.rating,
-      comment: comment ?? this.comment,
-      date: date ?? this.date,
-      reviewerName: reviewerName ?? this.reviewerName,
-      reviewerEmail: reviewerEmail ?? this.reviewerEmail,
-    );
-  }
 
   factory ReviewModel.fromJson(Map<String, dynamic> json) {
     return ReviewModel(

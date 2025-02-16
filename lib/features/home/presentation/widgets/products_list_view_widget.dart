@@ -71,7 +71,10 @@ class ProductsListViewWidget extends StatelessWidget {
                     PositionedDirectional(
                       top: TSize.s08,
                       end: TSize.s08,
-                      child: FavoriteIconWidget(),
+                      child: FavoriteIconWidget(
+                        onPressed: () {},
+                        isFavorite: product.isFavorite,
+                      ),
                     ),
                   ],
                 ),

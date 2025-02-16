@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import '/config/_config.dart';
 
 class FavoriteIconWidget extends StatelessWidget {
-  const FavoriteIconWidget({super.key});
+  final VoidCallback onPressed;
+  final bool isFavorite;
+  const FavoriteIconWidget(
+      {super.key, required this.onPressed, required this.isFavorite});
 
   @override
   Widget build(BuildContext context) {
@@ -14,13 +17,13 @@ class FavoriteIconWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(TRadius.r04),
       ),
       child: IconButton(
-        onPressed: () {},
+        onPressed: onPressed,
         iconSize: 16,
         padding: EdgeInsets.zero,
         icon: Center(
           child: Icon(
-            Icons.favorite_border_outlined,
-            color: Colors.black,
+            isFavorite ? Icons.favorite : Icons.favorite_border_outlined,
+            color: isFavorite ? Colors.red : Colors.black,
           ),
         ),
       ),

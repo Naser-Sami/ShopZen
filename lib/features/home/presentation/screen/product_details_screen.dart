@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:hive/hive.dart';
 import 'package:readmore/readmore.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import '/core/_core.dart';
 import '/config/_config.dart';
@@ -115,7 +114,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               actions: [
                 Padding(
                   padding: const EdgeInsetsDirectional.only(end: TSize.s16),
-                  child: FavoriteIconWidget(),
+                  child: FavoriteIconWidget(
+                    onPressed: () {},
+                    isFavorite: widget.product.isFavorite,
+                  ),
                 ),
               ],
             ),

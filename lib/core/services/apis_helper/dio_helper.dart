@@ -56,8 +56,6 @@ class DioHelper {
         cancelToken: token ?? cancelToken,
       );
 
-      log('message: ${response.data}');
-
       // Parse response using the provided parser
       if (parser != null) {
         return parser(response.data);

@@ -24,6 +24,7 @@ class ProductEntity extends Equatable {
   final MetaEntity? meta;
   final List<String> images;
   final String? thumbnail;
+  final bool isFavorite;
 
   const ProductEntity({
     required this.id,
@@ -48,6 +49,7 @@ class ProductEntity extends Equatable {
     required this.meta,
     required this.images,
     required this.thumbnail,
+    this.isFavorite = false,
   });
 
   // copyWith method
@@ -74,6 +76,7 @@ class ProductEntity extends Equatable {
     MetaEntity? meta,
     List<String>? images,
     String? thumbnail,
+    bool? isFavorite,
   }) {
     return ProductEntity(
       id: id ?? this.id,
@@ -98,6 +101,7 @@ class ProductEntity extends Equatable {
       meta: meta ?? this.meta,
       images: images ?? this.images,
       thumbnail: thumbnail ?? this.thumbnail,
+      isFavorite: isFavorite ?? this.isFavorite,
     );
   }
 
@@ -160,7 +164,7 @@ class ProductEntity extends Equatable {
   // to string method
   @override
   String toString() {
-    return 'ProductEntity(id: $id, title: $title, description: $description, category: $category, price: $price, discountPercentage: $discountPercentage, rating: $rating, stock: $stock, tags: $tags, brand: $brand, sku: $sku, weight: $weight, dimensions: $dimensions, warrantyInformation: $warrantyInformation, shippingInformation: $shippingInformation, availabilityStatus: $availabilityStatus, reviews: $reviews, returnPolicy: $returnPolicy, minimumOrderQuantity: $minimumOrderQuantity, meta: $meta, images: $images, thumbnail: $thumbnail)';
+    return 'ProductEntity(id: $id, title: $title, description: $description, category: $category, price: $price, discountPercentage: $discountPercentage, rating: $rating, stock: $stock, tags: $tags, brand: $brand, sku: $sku, weight: $weight, dimensions: $dimensions, warrantyInformation: $warrantyInformation, shippingInformation: $shippingInformation, availabilityStatus: $availabilityStatus, reviews: $reviews, returnPolicy: $returnPolicy, minimumOrderQuantity: $minimumOrderQuantity, meta: $meta, images: $images, thumbnail: $thumbnail, isFavorite: $isFavorite)';
   }
 
   @override
@@ -186,7 +190,8 @@ class ProductEntity extends Equatable {
         minimumOrderQuantity,
         meta,
         images,
-        thumbnail
+        thumbnail,
+        isFavorite,
       ];
 }
 
