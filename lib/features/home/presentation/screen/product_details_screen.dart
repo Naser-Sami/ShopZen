@@ -115,8 +115,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 Padding(
                   padding: const EdgeInsetsDirectional.only(end: TSize.s16),
                   child: FavoriteIconWidget(
-                    onPressed: () {},
-                    isFavorite: widget.product.isFavorite,
+                    product: widget.product,
                   ),
                 ),
               ],

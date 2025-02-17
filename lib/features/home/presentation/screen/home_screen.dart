@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '/core/_core.dart';
 import '/features/_features.dart';
@@ -13,42 +14,39 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final scrollController = ScrollController();
-  List<ProductEntity> products = [];
-  int limit = 10;
-  int skip = 0;
   int totalProducts = 0;
-  bool isLoadingMoreData = false;
+  int limit = 30;
+  int skip = 0;
 
   @override
   void initState() {
     super.initState();
     scrollController.addListener(_scrollListener);
-
-    _getProducts();
-  }
-
-  Future<List<ProductEntity>> _getProducts(
-      {int limit = 10, int skip = 0, String? select}) async {
-    products = await sl<IProductRepository>()
-        .getAllProducts(limit: limit, skip: skip, select: select);
-    setState(() {});
-    totalProducts = sl<IProductRepository>().totalProducts;
-
-    return products;
+    context.read<ProductsBloc>().add(FetchProductsEvent(limit: limit, skip: skip));
   }
 
   Future<void> _scrollListener() async {
-    if (isLoadingMoreData) return;
     if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
-      if (products.length == totalProducts) {
-        ToastNotification.showWarningNotification(context, message: 'No more products');
+      // Check if we're already fetching data to avoid multiple calls
+      final currentState = context.read<ProductsBloc>().state;
+      if (currentState is ProductsLoadingState) return;
 
-        return;
+      // Check if we have more products to load
+      if (context.read<ProductsBloc>().state is ProductsLoadedState) {
+        final state = context.read<ProductsBloc>().state as ProductsLoadedState;
+        totalProducts = context.read<ProductsBloc>().productRepository.totalProducts;
+
+        if (state.products.length >= totalProducts) {
+          ToastNotification.showWarningNotification(context, message: 'No more products');
+          return;
+        }
       }
-      setState(() => isLoadingMoreData = true);
-      products = await _getProducts(limit: limit += 10, skip: 0);
 
-      setState(() => isLoadingMoreData = false);
+      // Increment skip for pagination
+      limit += 30;
+
+      // Dispatch event to load more products
+      context.read<ProductsBloc>().add(FetchProductsEvent(limit: limit, skip: skip));
     }
   }
 
@@ -62,25 +60,40 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: CustomScrollView(
-          shrinkWrap: true,
-          controller: scrollController,
-          slivers: [
-            HomeSliverAppBar(),
-            HomeBody(products: products),
-            if (isLoadingMoreData)
-              SliverToBoxAdapter(
-                child: Center(
-                  child: SizedBox(
-                    height: 100,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: CircularProgressIndicator.adaptive(),
+        child: BlocBuilder<ProductsBloc, ProductsState>(
+          builder: (context, state) {
+            if (state is ProductsLoadingState) {
+              return Center(child: CircularProgressIndicator());
+            }
+            if (state is ProductsErrorState) {
+              return Center(child: Text("Error: ${state.error}"));
+            }
+            if (state is ProductsLoadedState) {
+              final products = state.products;
+
+              return CustomScrollView(
+                shrinkWrap: true,
+                controller: scrollController,
+                slivers: [
+                  HomeSliverAppBar(),
+                  HomeBody(products: products),
+                  if (state.products.length < totalProducts)
+                    SliverToBoxAdapter(
+                      child: Center(
+                        child: SizedBox(
+                          height: 100,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: CircularProgressIndicator.adaptive(),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ),
-          ],
+                ],
+              );
+            }
+            return Center(child: Text("No data"));
+          },
         ),
       ),
     );

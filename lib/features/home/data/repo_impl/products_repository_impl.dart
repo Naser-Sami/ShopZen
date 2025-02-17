@@ -9,7 +9,7 @@ class ProductRepositoryImpl implements IProductRepository {
 
   @override
   Future<List<ProductEntity>> getAllProducts(
-      {int limit = 10, int skip = 0, String? select}) async {
+      {required int limit, int skip = 0, String? select}) async {
     try {
       final response =
           await remoteDataSource.getAllProducts(limit: limit, skip: skip, select: select);

@@ -40,6 +40,9 @@ class DI {
     );
 
     // BLOC's
+    sl.registerLazySingleton<ProductsBloc>(
+      () => ProductsBloc(productRepository: sl<IProductRepository>()),
+    );
 
     // CUBIT's
     sl.registerLazySingleton<ThemeCubit>(

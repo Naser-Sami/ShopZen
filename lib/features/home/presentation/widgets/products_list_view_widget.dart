@@ -6,10 +6,15 @@ import '/config/_config.dart';
 import '/core/utils/_utils.dart';
 import '/features/home/_home.dart';
 
-class ProductsListViewWidget extends StatelessWidget {
+class ProductsListViewWidget extends StatefulWidget {
   final List<ProductEntity> products;
   const ProductsListViewWidget({super.key, required this.products});
 
+  @override
+  State<ProductsListViewWidget> createState() => _ProductsListViewWidgetState();
+}
+
+class _ProductsListViewWidgetState extends State<ProductsListViewWidget> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -33,9 +38,9 @@ class ProductsListViewWidget extends StatelessWidget {
         ],
         maxCrossAxisExtent: 200,
       ),
-      itemCount: products.length,
+      itemCount: widget.products.length,
       itemBuilder: (context, index) {
-        final product = products[index];
+        final product = widget.products[index];
 
         return MaterialButton(
           onPressed: () {
@@ -72,8 +77,7 @@ class ProductsListViewWidget extends StatelessWidget {
                       top: TSize.s08,
                       end: TSize.s08,
                       child: FavoriteIconWidget(
-                        onPressed: () {},
-                        isFavorite: product.isFavorite,
+                        product: product,
                       ),
                     ),
                   ],

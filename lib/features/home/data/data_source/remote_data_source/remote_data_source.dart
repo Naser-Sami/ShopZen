@@ -2,7 +2,7 @@ import '/core/_core.dart';
 import '/features/home/_home.dart';
 
 abstract class IProductsRemoteDataSource {
-  Future<ProductsModel?> getAllProducts({int limit, int skip, String? select});
+  Future<ProductsModel?> getAllProducts({required int limit, int skip, String? select});
   Future<ProductsModel> getProductById(int id);
 }
 
@@ -11,7 +11,7 @@ class ProductsRemoteDataSourceImpl implements IProductsRemoteDataSource {
 
   @override
   Future<ProductsModel?> getAllProducts(
-      {int limit = 10, int skip = 0, String? select}) async {
+      {required int limit, int skip = 0, String? select}) async {
     try {
       final data = await dioHelper.get<ProductsModel>(
         path: ApiEndpoints.products,
