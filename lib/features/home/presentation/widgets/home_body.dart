@@ -5,9 +5,7 @@ import '/config/_config.dart';
 import '/features/_features.dart';
 
 class HomeBody extends StatelessWidget {
-  final List<ProductEntity> products;
-
-  const HomeBody({super.key, required this.products});
+  const HomeBody({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -47,9 +45,7 @@ class HomeBody extends StatelessWidget {
               style: theme.textTheme.titleLarge,
             ),
           ),
-          HomeHotDeals(
-            products: products,
-          )
+          HomeHotDeals(),
         ],
       ),
     );

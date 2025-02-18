@@ -1,7 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '/features/home/_home.dart';
 import '/config/_config.dart';
 
@@ -46,7 +45,7 @@ class FavoriteIconWidget extends StatelessWidget {
                   ),
                 );
               } else {
-                return Container(); // or some default widget if no data
+                return Container();
               }
             },
           );

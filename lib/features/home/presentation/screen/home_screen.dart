@@ -22,7 +22,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     scrollController.addListener(_scrollListener);
-    context.read<ProductsBloc>().add(FetchProductsEvent(limit: limit, skip: skip));
   }
 
   Future<void> _scrollListener() async {
@@ -60,40 +59,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: BlocBuilder<ProductsBloc, ProductsState>(
-          builder: (context, state) {
-            if (state is ProductsLoadingState) {
-              return Center(child: CircularProgressIndicator());
-            }
-            if (state is ProductsErrorState) {
-              return Center(child: Text("Error: ${state.error}"));
-            }
-            if (state is ProductsLoadedState) {
-              final products = state.products;
-
-              return CustomScrollView(
-                shrinkWrap: true,
-                controller: scrollController,
-                slivers: [
-                  HomeSliverAppBar(),
-                  HomeBody(products: products),
-                  if (state.products.length < totalProducts)
-                    SliverToBoxAdapter(
-                      child: Center(
-                        child: SizedBox(
-                          height: 100,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: CircularProgressIndicator.adaptive(),
-                          ),
-                        ),
-                      ),
-                    ),
-                ],
-              );
-            }
-            return Center(child: Text("No data"));
-          },
+        child: CustomScrollView(
+          shrinkWrap: true,
+          controller: scrollController,
+          slivers: [
+            HomeSliverAppBar(),
+            HomeBody(),
+          ],
         ),
       ),
     );
