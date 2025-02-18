@@ -11,7 +11,7 @@ class SignUpWithSocialScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final loginController = sl<LoginController>();
+    final loginController = sl<AuthController>();
     final size = MediaQuery.of(context).size;
     final theme = Theme.of(context);
 
@@ -38,7 +38,7 @@ class SignUpWithSocialScreen extends StatelessWidget {
                     padding: const EdgeInsets.only(bottom: TPadding.p16),
                     child: SocialMediaAuthenticationWidget(
                       icon: item,
-                      text: 'Signup in with ${item.capitalize()}',
+                      text: 'Signup with ${item.capitalize()}',
                       onPressed: () {
                         switch (item) {
                           case 'google':

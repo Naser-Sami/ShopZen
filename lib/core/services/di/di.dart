@@ -60,8 +60,8 @@ class DI {
     );
 
     // Controllers
-    sl.registerLazySingleton<LoginController>(
-      () => LoginController(),
+    sl.registerLazySingleton<AuthController>(
+      () => AuthController(),
     );
 
     // Data Sources

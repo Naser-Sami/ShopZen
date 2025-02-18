@@ -13,37 +13,58 @@ final router = GoRouter(
     AppNavigatorObserver(),
   ],
   navigatorKey: NavigationService.navigatorKey, // Set the navigatorKey
-  errorBuilder: (context, state) => ErrorPage(
-    state.error.toString(),
-  ),
+  errorBuilder: (context, state) {
+    // log("STATE: ${state.toString()}");
+    // log("STATE URI PATH: ${state.uri.path}");
+    // log("STATE FULL DATA: ${state.uri.data}");
+    // log("STATE PATH: ${state.path}");
+
+    if (state.uri.path.contains('/link')) {
+      return BottomNavigationBarWidget();
+    }
+
+    return ErrorPage(
+      state.error.toString(),
+    );
+  },
   redirect: (context, state) {
+    // log("STATE: ${state.toString()}");
+    // log("STATE URI PATH: ${state.uri.path}");
+    // log("STATE FULL DATA: ${state.uri.data}");
+    // log("STATE PATH: ${state.path}");
+
+    if (state.uri.path.contains('/link')) {
+      return BottomNavigationBarWidget.routeName;
+    }
     return null;
   },
   routes: [
     GoRoute(
       path: SplashScreen.routeName,
-      name: SplashScreen.routeName,
+      name: 'Splash',
       pageBuilder: (context, state) => CupertinoPage(
         child: SplashScreen(),
       ),
     ),
     GoRoute(
       path: OnboardingScreen.routeName,
-      name: OnboardingScreen.routeName,
+      name: 'Onboarding',
       pageBuilder: (context, state) => CupertinoPage(
         child: OnboardingScreen(),
       ),
     ),
     GoRoute(
       path: LoginWithSocialScreen.routeName,
-      name: LoginWithSocialScreen.routeName,
-      pageBuilder: (context, state) => CupertinoPage(
-        child: LoginWithSocialScreen(),
+      name: 'Login With Social',
+      pageBuilder: (context, state) => slideFadeTransitionPage(
+        context,
+        state,
+        LoginWithSocialScreen(),
       ),
     ),
     GoRoute(
       path: LoginWithEmailScreen.routeName,
-      name: LoginWithEmailScreen.routeName,
+      name: 'Login With Email',
       pageBuilder: (context, state) => CupertinoPage(
         child: LoginWithEmailScreen(),
       ),
@@ -65,9 +86,12 @@ final router = GoRouter(
     GoRoute(
       path: BottomNavigationBarWidget.routeName,
       name: BottomNavigationBarWidget.routeName,
-      pageBuilder: (context, state) => CupertinoPage(
-        child: BottomNavigationBarWidget(),
-      ),
+      pageBuilder: (context, state) {
+        return CupertinoPage(
+          key: state.pageKey,
+          child: BottomNavigationBarWidget(),
+        );
+      },
     ),
     GoRoute(
       path: HomeScreen.routeName,

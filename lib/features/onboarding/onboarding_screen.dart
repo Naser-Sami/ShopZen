@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '/config/_config.dart';
 import '/features/_features.dart';
+import '/config/_config.dart';
 
 class OnboardingScreen extends StatelessWidget {
   static const routeName = '/onboarding';
@@ -14,7 +14,8 @@ class OnboardingScreen extends StatelessWidget {
     final theme = Theme.of(context);
 
     void navToLogin() {
-      context.pushNamed(LoginWithSocialScreen.routeName);
+      // GoRouter.of(context).push(LoginWithSocialScreen.routeName);
+      GoRouter.of(context).go(LoginWithSocialScreen.routeName);
     }
 
     return Scaffold(

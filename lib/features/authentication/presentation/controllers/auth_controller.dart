@@ -3,13 +3,14 @@ import 'package:go_router/go_router.dart';
 import 'package:shop_zen/features/_features.dart';
 import '/core/_core.dart';
 
-class LoginController {
+class AuthController {
   List<String> socialMediaLogin = ['google', 'apple', 'x', 'facebook', 'github'];
 
   Future<void> loginWithGoogle(BuildContext context) async {
     try {
       await sl<ISocialSignInService>().signInWithGoogle().then((v) {
         if (context.mounted) {
+          // for apis you can use the user credential to get the user details from the api
           _navToHomeScreen(context, "${v.user?.email}, Login successful");
         }
       });

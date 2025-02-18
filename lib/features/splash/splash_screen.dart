@@ -22,15 +22,17 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   navToNextPage() async {
-    await Future.delayed(Duration(seconds: 1)).then((value) {
-      if (mounted) {
-        if (sl<FirebaseAuth>().currentUser != null) {
-          GoRouter.of(context).go(BottomNavigationBarWidget.routeName);
-        } else {
-          GoRouter.of(context).goNamed(OnboardingScreen.routeName);
+    await Future.delayed(Duration(seconds: 1)).then(
+      (value) {
+        if (mounted) {
+          if (sl<FirebaseAuth>().currentUser != null) {
+            GoRouter.of(context).go(BottomNavigationBarWidget.routeName);
+          } else {
+            GoRouter.of(context).go(OnboardingScreen.routeName);
+          }
         }
-      }
-    });
+      },
+    );
   }
 
   @override

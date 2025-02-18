@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -63,6 +60,19 @@ class DefaultFirebaseOptions {
     messagingSenderId: '609299836964',
     projectId: 'shopzen-42af3',
     storageBucket: 'shopzen-42af3.firebasestorage.app',
+    androidClientId: '609299836964-7pdmjjsc26hje9388lf7eqoup33a5m9s.apps.googleusercontent.com',
+    iosClientId: '609299836964-oiu82rgsdb7te5s7v1p0sol0f4cof7p2.apps.googleusercontent.com',
     iosBundleId: 'com.example.shopZen',
   );
+
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyBjEXw_lZoMGtAvYSBlhPwDxfRD29Pb_ms',
+    appId: '1:609299836964:web:c0a282d7ab96e7a53068b1',
+    messagingSenderId: '609299836964',
+    projectId: 'shopzen-42af3',
+    authDomain: 'shopzen-42af3.firebaseapp.com',
+    storageBucket: 'shopzen-42af3.firebasestorage.app',
+    measurementId: 'G-5X0XJ8D69N',
+  );
+
 }

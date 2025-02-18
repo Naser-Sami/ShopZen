@@ -14,7 +14,7 @@ class LoginWithEmailScreen extends StatefulWidget {
 
 class _LoginWithEmailScreenState extends State<LoginWithEmailScreen> {
   final _formKey = GlobalKey<FormState>();
-  final loginController = sl<LoginController>();
+  final loginController = sl<AuthController>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -115,13 +115,13 @@ class _LoginWithEmailScreenState extends State<LoginWithEmailScreen> {
                     title: 'Password',
                     textFieldWithTitle: true,
                     controller: passwordController,
-                    obscureText: showPassword,
+                    obscureText: !showPassword,
                     suffixIcon: IconButton(
                       onPressed: onShowPassword,
                       icon: Icon(
                         showPassword
-                            ? Icons.visibility_off_outlined
-                            : Icons.visibility_outlined,
+                            ? Icons.visibility_outlined
+                            : Icons.visibility_off_outlined,
                       ),
                     ),
                     hintText: 'Enter your password',

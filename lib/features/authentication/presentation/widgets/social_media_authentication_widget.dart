@@ -33,20 +33,27 @@ class SocialMediaAuthenticationWidget extends StatelessWidget {
           ),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(width: size.width * 0.23),
-            IconWidget(
-              name: icon,
-              width: 22,
-              height: 22,
-              color: TFunctions.isDarkMode(context) ? Colors.grey : null,
-            ),
-            const SizedBox(width: TSize.s16),
-            TextWidget(
-              text,
-              style: theme.textTheme.titleMedium,
+            SizedBox(
+              width: 200,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  IconWidget(
+                    name: icon,
+                    width: 22,
+                    height: 22,
+                    color: TFunctions.isDarkMode(context) ? Colors.grey : null,
+                  ),
+                  const SizedBox(width: TSize.s16),
+                  TextWidget(
+                    text,
+                    style: theme.textTheme.titleMedium,
+                  ),
+                ],
+              ),
             ),
           ],
         ),

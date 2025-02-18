@@ -12,7 +12,20 @@
           "package_name": "com.example.shop_zen"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "609299836964-7pdmjjsc26hje9388lf7eqoup33a5m9s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.shop_zen",
+            "certificate_hash": "9c15c6eebceb6b54ea4edb5092998acf964b3c03"
+          }
+        },
+        {
+          "client_id": "609299836964-8lpu4sqrcac68pql2b3b4dtvnrge3uq9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyA70ecOLnc5CuOYcezSKQpKuEVeWfAb8w4"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "609299836964-8lpu4sqrcac68pql2b3b4dtvnrge3uq9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "609299836964-oiu82rgsdb7te5s7v1p0sol0f4cof7p2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.shopZen"
+              }
+            }
+          ]
         }
       }
     }

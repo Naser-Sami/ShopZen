@@ -15,7 +15,7 @@ class SignUpWithEmailScreen extends StatefulWidget {
 
 class _SignUpWithEmailScreenState extends State<SignUpWithEmailScreen> {
   final _formKey = GlobalKey<FormState>();
-  final loginController = sl<LoginController>();
+  final loginController = sl<AuthController>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
@@ -132,13 +132,13 @@ class _SignUpWithEmailScreenState extends State<SignUpWithEmailScreen> {
                     title: 'Password',
                     textFieldWithTitle: true,
                     controller: passwordController,
-                    obscureText: showPassword,
+                    obscureText: !showPassword,
                     suffixIcon: IconButton(
                       onPressed: onShowPassword,
                       icon: Icon(
                         showPassword
-                            ? Icons.visibility_off_outlined
-                            : Icons.visibility_outlined,
+                            ? Icons.visibility_outlined
+                            : Icons.visibility_off_outlined,
                       ),
                     ),
                     hintText: 'Enter your password',
@@ -150,13 +150,13 @@ class _SignUpWithEmailScreenState extends State<SignUpWithEmailScreen> {
                     title: 'Confirm password',
                     textFieldWithTitle: true,
                     controller: confirmPasswordController,
-                    obscureText: showConfirmPassword,
+                    obscureText: !showConfirmPassword,
                     suffixIcon: IconButton(
                       onPressed: onShowConfirmPassword,
                       icon: Icon(
                         showConfirmPassword
-                            ? Icons.visibility_off_outlined
-                            : Icons.visibility_outlined,
+                            ? Icons.visibility_outlined
+                            : Icons.visibility_off_outlined,
                       ),
                     ),
                     hintText: 'Enter your password',

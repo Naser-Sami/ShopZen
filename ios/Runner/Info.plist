@@ -47,5 +47,30 @@
 		<true/>
 		<key>UIStatusBarHidden</key>
 		<false/>
+
+		<!-- FOR GOOGLE AUTHENTICATION -->
+		<key>GIDClientID</key>
+		<!-- TODO Replace this value: -->
+		<!-- Copied from GoogleService-Info.plist key CLIENT_ID -->
+		<string>609299836964-oiu82rgsdb7te5s7v1p0sol0f4cof7p2.apps.googleusercontent.com</string>
+		<!-- Put me in the [my_project]/ios/Runner/Info.plist file -->
+		<!-- Google Sign-in Section -->
+		<key>CFBundleURLTypes</key>
+		<array>
+			<dict>
+				<key>CFBundleTypeRole</key>
+				<string>Editor</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<!-- TODO Replace this value: -->
+					<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
+					<string>com.googleusercontent.apps.609299836964-oiu82rgsdb7te5s7v1p0sol0f4cof7p2</string>
+
+					<string>app-1-609299836964-ios-55e3e78cb3e4d4e53068b1</string>
+				</array>
+			</dict>
+		</array>
+		<!-- End of the Google Sign-in Section -->
+
 	</dict>
 </plist>

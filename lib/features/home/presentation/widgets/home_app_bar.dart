@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
+import '/core/_core.dart';
 import '/config/_config.dart';
 import '/features/_features.dart';
 
@@ -34,11 +36,11 @@ class HomeSliverAppBar extends StatelessWidget {
         IconButton(
           onPressed: () {
             // only for test sing out
-            // sl<IFirebaseAuthService>().signOut().then((value) {
-            //   if (context.mounted) {
-            //     context.go(OnboardingScreen.routeName);
-            //   }
-            // });
+            sl<IFirebaseAuthService>().signOut().then((value) {
+              if (context.mounted) {
+                context.go(OnboardingScreen.routeName);
+              }
+            });
           },
           icon: IconWidget(
             name: 'notification',
