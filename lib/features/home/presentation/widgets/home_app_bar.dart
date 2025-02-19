@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -11,6 +12,7 @@ class HomeSliverAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final user = sl<FirebaseAuth>();
 
     return SliverAppBar(
       centerTitle: false,
@@ -23,7 +25,7 @@ class HomeSliverAppBar extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TextWidget(
-            'Location',
+            "Welcome, ${user.currentUser?.displayName ?? ''}",
             style: theme.textTheme.bodyLarge,
           ),
           TextWidget(

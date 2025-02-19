@@ -3,7 +3,7 @@ import '/features/_features.dart';
 import '/config/_config.dart';
 
 class BottomNavigationBarWidget extends StatefulWidget {
-  static const routeName = '/bottom-navigation-bar';
+  static const routeName = '/';
   const BottomNavigationBarWidget({super.key});
 
   @override

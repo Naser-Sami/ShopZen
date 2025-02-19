@@ -7,6 +7,7 @@ import '/features/_features.dart';
 
 class SignUpWithSocialScreen extends StatelessWidget {
   static const routeName = '/sign-up-with-social';
+
   const SignUpWithSocialScreen({super.key});
 
   @override
@@ -64,16 +65,14 @@ class SignUpWithSocialScreen extends StatelessWidget {
                 OrWidget(),
                 TSize.s48.toHeight,
                 ElevatedButton(
-                  onPressed: () =>
-                      GoRouter.of(context).pushNamed(SignUpWithEmailScreen.routeName),
+                  onPressed: () => context.push(SignUpWithEmailScreen.routeName),
                   child: TextWidget('Signup with Email'),
                 ),
                 Spacer(),
                 AuthenticationRichTextWidget(
                   text: "Already have an account? ",
                   hyperlinkText: "Login",
-                  navToSignUp: () =>
-                      GoRouter.of(context).pushNamed(LoginWithSocialScreen.routeName),
+                  navToSignUp: () => context.push(LoginWithSocialScreen.routeName),
                 ),
                 TSize.s20.toHeight,
               ],

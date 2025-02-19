@@ -20,7 +20,7 @@ class _HomeHotDealsState extends State<HomeHotDeals> {
 
   @override
   Widget build(BuildContext context) {
-    final prodRepo = context.read<ProductsBloc>().productRepository;
+    // final prodRepo = context.read<ProductsBloc>().productRepository;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: TPadding.p20),
       child: BlocBuilder<ProductsBloc, ProductsState>(

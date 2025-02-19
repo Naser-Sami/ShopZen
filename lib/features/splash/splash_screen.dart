@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -7,7 +9,7 @@ import '/config/_config.dart';
 import '/features/_features.dart';
 
 class SplashScreen extends StatefulWidget {
-  static const routeName = '/';
+  static const routeName = '/splash';
   const SplashScreen({super.key});
 
   @override
@@ -25,10 +27,11 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(Duration(seconds: 1)).then(
       (value) {
         if (mounted) {
+          log("Current User: ${sl<FirebaseAuth>().currentUser}");
           if (sl<FirebaseAuth>().currentUser != null) {
-            GoRouter.of(context).go(BottomNavigationBarWidget.routeName);
+            context.go(BottomNavigationBarWidget.routeName);
           } else {
-            GoRouter.of(context).go(OnboardingScreen.routeName);
+            context.go(OnboardingScreen.routeName);
           }
         }
       },

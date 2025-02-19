@@ -65,7 +65,7 @@ class LoginWithSocialScreen extends StatelessWidget {
                 TSize.s48.toHeight,
                 ElevatedButton(
                   onPressed: () =>
-                      GoRouter.of(context).push(LoginWithEmailScreen.routeName),
+                      context.push(LoginWithEmailScreen.routeName),
                   child: TextWidget('Login with Email'),
                 ),
                 Spacer(),
@@ -73,7 +73,7 @@ class LoginWithSocialScreen extends StatelessWidget {
                   text: "Don't have an account yet? ",
                   hyperlinkText: "Sign up",
                   navToSignUp: () =>
-                      GoRouter.of(context).push(SignUpWithSocialScreen.routeName),
+                      context.push(SignUpWithSocialScreen.routeName),
                 ),
                 TSize.s20.toHeight,
               ],

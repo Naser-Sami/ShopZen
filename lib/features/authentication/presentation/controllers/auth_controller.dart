@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shop_zen/features/_features.dart';
+
+import '/features/_features.dart';
 import '/core/_core.dart';
 
 class AuthController {
@@ -112,7 +113,7 @@ class AuthController {
   }
 
   void _navToHomeScreen(BuildContext context, String msg) {
-    GoRouter.of(context).go(BottomNavigationBarWidget.routeName);
+    context.go(BottomNavigationBarWidget.routeName);
     ToastNotification.showSuccessNotification(context, message: msg);
   }
 }

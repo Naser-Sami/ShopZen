@@ -28,14 +28,14 @@ class DI {
 
     sl.registerLazySingleton<IFirebaseAuthService>(
       () => FirebaseAuthServiceImpl(
-        auth: sl<FirebaseAuth>(),
+        auth: firebaseAuth,
       ),
     );
 
     // Firebase Social Sign In
     sl.registerLazySingleton<ISocialSignInService>(
       () => SocialSignInServiceImpl(
-        auth: sl<FirebaseAuth>(),
+        auth: firebaseAuth,
       ),
     );
 

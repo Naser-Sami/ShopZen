@@ -44,7 +44,7 @@ class _ProductsListViewWidgetState extends State<ProductsListViewWidget> {
 
         return MaterialButton(
           onPressed: () {
-            GoRouter.of(context).push(
+            context.push(
               '${ProductDetailsScreen.routeName}/$index',
               extra: product,
             );

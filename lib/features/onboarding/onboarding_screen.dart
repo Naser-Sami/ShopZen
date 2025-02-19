@@ -14,8 +14,7 @@ class OnboardingScreen extends StatelessWidget {
     final theme = Theme.of(context);
 
     void navToLogin() {
-      // GoRouter.of(context).push(LoginWithSocialScreen.routeName);
-      GoRouter.of(context).go(LoginWithSocialScreen.routeName);
+      context.push(LoginWithSocialScreen.routeName);
     }
 
     return Scaffold(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -22,6 +23,7 @@ Future<void> main() async {
   // Here we set the URL strategy for our web app.
   // It is safe to call this function when running on mobile or desktop as well.
   setPathUrlStrategy();
+  GoRouter.optionURLReflectsImperativeAPIs = true;
 
   // Ensure Service Locator is Started
   DI().init();

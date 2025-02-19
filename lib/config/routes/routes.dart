@@ -7,18 +7,12 @@ import '/features/_features.dart';
 
 // GoRouter configuration
 final router = GoRouter(
-  initialLocation: '/',
-  // Add your navigator observers
+  initialLocation: SplashScreen.routeName,
   observers: [
     AppNavigatorObserver(),
   ],
-  navigatorKey: NavigationService.navigatorKey, // Set the navigatorKey
+  navigatorKey: NavigationService.navigatorKey,
   errorBuilder: (context, state) {
-    // log("STATE: ${state.toString()}");
-    // log("STATE URI PATH: ${state.uri.path}");
-    // log("STATE FULL DATA: ${state.uri.data}");
-    // log("STATE PATH: ${state.path}");
-
     if (state.uri.path.contains('/link')) {
       return BottomNavigationBarWidget();
     }
@@ -28,11 +22,6 @@ final router = GoRouter(
     );
   },
   redirect: (context, state) {
-    // log("STATE: ${state.toString()}");
-    // log("STATE URI PATH: ${state.uri.path}");
-    // log("STATE FULL DATA: ${state.uri.data}");
-    // log("STATE PATH: ${state.path}");
-
     if (state.uri.path.contains('/link')) {
       return BottomNavigationBarWidget.routeName;
     }
@@ -71,45 +60,47 @@ final router = GoRouter(
     ),
     GoRoute(
       path: SignUpWithSocialScreen.routeName,
-      name: SignUpWithSocialScreen.routeName,
+      name: 'Sign Up With Social',
       pageBuilder: (context, state) => CupertinoPage(
         child: SignUpWithSocialScreen(),
       ),
     ),
     GoRoute(
       path: SignUpWithEmailScreen.routeName,
-      name: SignUpWithEmailScreen.routeName,
+      name: 'Sing Up With Email',
       pageBuilder: (context, state) => CupertinoPage(
         child: SignUpWithEmailScreen(),
       ),
     ),
     GoRoute(
       path: BottomNavigationBarWidget.routeName,
-      name: BottomNavigationBarWidget.routeName,
+      name: '/',
       pageBuilder: (context, state) {
         return CupertinoPage(
           key: state.pageKey,
           child: BottomNavigationBarWidget(),
         );
       },
-    ),
-    GoRoute(
-      path: HomeScreen.routeName,
-      name: HomeScreen.routeName,
-      pageBuilder: (context, state) => CupertinoPage(
-        child: HomeScreen(),
-      ),
-    ),
-    GoRoute(
-      path: "${ProductDetailsScreen.routeName}/:index",
-      name: "Products Details",
-      pageBuilder: (context, state) {
-        final product = state.extra as ProductEntity;
+      routes: [
+        GoRoute(
+          path: HomeScreen.routeName,
+          name: 'Home',
+          pageBuilder: (context, state) => CupertinoPage(
+            child: HomeScreen(),
+          ),
+        ),
+        GoRoute(
+          path: "${ProductDetailsScreen.routeName}/:index",
+          name: "Products Details",
+          pageBuilder: (context, state) {
+            final product = state.extra as ProductEntity;
 
-        return CupertinoPage(
-          child: ProductDetailsScreen(product: product),
-        );
-      },
+            return CupertinoPage(
+              child: ProductDetailsScreen(product: product),
+            );
+          },
+        ),
+      ],
     ),
   ],
 );

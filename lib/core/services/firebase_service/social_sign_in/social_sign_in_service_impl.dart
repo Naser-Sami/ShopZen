@@ -80,8 +80,7 @@ class SocialSignInServiceImpl implements ISocialSignInService {
       GithubAuthProvider githubProvider = GithubAuthProvider();
 
       // Sign in with Firebase
-      UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithProvider(githubProvider);
+      UserCredential userCredential = await auth.signInWithProvider(githubProvider);
 
       return userCredential;
     } on FirebaseAuthException catch (e) {

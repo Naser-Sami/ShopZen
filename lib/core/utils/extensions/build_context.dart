@@ -23,19 +23,19 @@ extension ThemeExtension on BuildContext {
 }
 
 extension NavigationExtensions on BuildContext {
-  void push(Widget page) => Navigator.push(
-        this,
-        MaterialPageRoute(builder: (context) => page),
-      );
+  // void push(Widget page) => Navigator.push(
+  //       this,
+  //       MaterialPageRoute(builder: (context) => page),
+  //     );
 
-  void pushReplacement(Widget page) => Navigator.pushReplacement(
-        this,
-        MaterialPageRoute(builder: (context) => page),
-      );
+  // void pushReplacement(Widget page) => Navigator.pushReplacement(
+  //       this,
+  //       MaterialPageRoute(builder: (context) => page),
+  //     );
 
-  void pop() => Navigator.of(this).pop();
+  // void pop() => Navigator.of(this).pop();
 
-  Future<T?> pushNamed<T>(String routeName, {Object? arguments}) => Navigator.of(this).pushNamed<T>(routeName, arguments: arguments);
+  // Future<T?> pushNamed<T>(String routeName, {Object? arguments}) => Navigator.of(this).pushNamed<T>(routeName, arguments: arguments);
 }
 
 extension BuildContextExtensions on BuildContext {
