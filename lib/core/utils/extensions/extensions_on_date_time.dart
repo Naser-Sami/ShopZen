@@ -12,6 +12,8 @@ extension DateFormatting on DateTime {
   // formattedDate: 2023-07-27
   // format date as 10 Jul 2023
   String get formattedDateWithMonthName => DateFormat('dd MMM yyyy').format(this);
+
+  // i need to create a date if the day is today 24 hours ago to show as time 10:41 pm for example
 }
 
 extension DateComparisons on DateTime {
@@ -98,6 +100,32 @@ extension DateTimeExtensions on DateTime {
   DateTime addDays(int days) => add(Duration(days: days));
 
   DateTime subtractDays(int days) => subtract(Duration(days: days));
+
+  String formattedTimeOrDate() {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final targetDate = DateTime(year, month, day);
+
+    if (targetDate == today) {
+      return DateFormat.jm()
+          .format(this); // Shows time in 12-hour format (e.g., "10:41 PM")
+    } else {
+      return DateFormat.yMMMd().format(this); // Shows date (e.g., "Feb 18, 2025")
+    }
+  }
+
+  String formattedDateHeader() {
+    final now = DateTime.now();
+    final difference = now.difference(this).inDays;
+
+    if (difference == 0) {
+      return "Today";
+    } else if (difference == 1) {
+      return "Yesterday";
+    } else {
+      return DateFormat.yMMMd().format(this);
+    }
+  }
 }
 
 extension HumanReadableDateTime on DateTime {
