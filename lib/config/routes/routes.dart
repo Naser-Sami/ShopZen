@@ -158,5 +158,15 @@ final router = GoRouter(
         ),
       ],
     ),
+
+    // Move Customer Service to a Top-Level Route (Outside of StatefulShellRoute)
+    GoRoute(
+      path: CustomerServiceScreen.routeName,
+      name: 'Customer Service',
+      parentNavigatorKey: NavigationService.rootNavigator, // Ensures no bottom nav
+      pageBuilder: (context, state) => CupertinoPage(
+        child: CustomerServiceScreen(),
+      ),
+    ),
   ],
 );

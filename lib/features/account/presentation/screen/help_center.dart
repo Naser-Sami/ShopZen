@@ -35,7 +35,6 @@ class _AccountScreenState extends State<HelpCenterScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         title: const Text('Help Center'),
         actions: [
           NotificationsIconWidget(),
@@ -50,21 +49,28 @@ class _AccountScreenState extends State<HelpCenterScreen> {
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               itemCount: data.length,
-              separatorBuilder: (context, index) => const SizedBox(),
+              separatorBuilder: (context, index) => const SizedBox(height: TSize.s16),
               itemBuilder: (context, index) {
                 return ListTile(
-                  onTap: () {},
-                  contentPadding: EdgeInsets.zero,
+                  onTap: () {
+                    switch (data[index].name) {
+                      case 'Customer Service':
+                        context.push(CustomerServiceScreen.routeName);
+                        break;
+                      default:
+                    }
+                  },
                   minTileHeight: TSize.s64,
+                  shape: BeveledRectangleBorder(
+                    borderRadius: BorderRadius.circular(TRadius.r08),
+                    side:
+                        BorderSide(color: colorScheme.onSurface.withValues(alpha: 0.10)),
+                  ),
                   leading: IconWidget(
                     name: data[index].icon,
                     color: colorScheme.onSurface,
                   ),
                   title: TextWidget(data[index].name),
-                  trailing: Icon(
-                    Icons.arrow_forward_ios_outlined,
-                    size: 20,
-                  ),
                 );
               },
             ),
