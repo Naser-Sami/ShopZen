@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 import '/core/_core.dart';
 import '/config/_config.dart';
@@ -35,20 +34,7 @@ class HomeSliverAppBar extends StatelessWidget {
         ],
       ),
       actions: [
-        IconButton(
-          onPressed: () {
-            // only for test sing out
-            sl<IFirebaseAuthService>().signOut().then((value) {
-              if (context.mounted) {
-                context.go(OnboardingScreen.routeName);
-              }
-            });
-          },
-          icon: IconWidget(
-            name: 'notification',
-            color: theme.colorScheme.onSurface,
-          ),
-        ),
+        NotificationsIconWidget(),
       ],
       bottom: homeAppBar(context),
     );

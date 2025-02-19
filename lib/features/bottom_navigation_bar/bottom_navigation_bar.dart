@@ -14,9 +14,9 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
   int _selectedIndex = 0;
   final List<Widget> _widgetOptions = <Widget>[
     const HomeScreen(),
-    const Text('Saved Page'),
-    const Text('Cart Page'),
-    const Text('Account Page'),
+    const SavedItemsScreen(),
+    const CartScreen(),
+    const AccountScreen(),
   ];
 
   @override
