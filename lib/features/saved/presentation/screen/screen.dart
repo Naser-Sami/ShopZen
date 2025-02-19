@@ -4,6 +4,7 @@ import '/core/_core.dart';
 import '/config/_config.dart';
 
 class SavedItemsScreen extends StatelessWidget {
+  static const routeName = '/saved';
   const SavedItemsScreen({super.key});
 
   @override

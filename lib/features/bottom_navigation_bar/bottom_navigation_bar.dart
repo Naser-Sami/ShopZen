@@ -1,37 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '/features/_features.dart';
 import '/config/_config.dart';
 
-class BottomNavigationBarWidget extends StatefulWidget {
-  static const routeName = '/';
-  const BottomNavigationBarWidget({super.key});
+class BottomNavigationBarWidget extends StatelessWidget {
+  static const routeName = '/home';
+  const BottomNavigationBarWidget({super.key, required this.navigationShell});
 
-  @override
-  State<BottomNavigationBarWidget> createState() => _BottomNavigationBarWidgetState();
-}
+  /// The navigation shell and container for the branch Navigators.
+  final StatefulNavigationShell navigationShell;
 
-class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
-  int _selectedIndex = 0;
-  final List<Widget> _widgetOptions = <Widget>[
-    const HomeScreen(),
-    const SavedItemsScreen(),
-    const CartScreen(),
-    const AccountScreen(),
-  ];
+  void _onTap(index) {
+    navigationShell.goBranch(
+      index,
+      // A common pattern when using bottom navigation bars is to support
+      // navigating to the initial location when tapping the item that is
+      // already active. This example demonstrates how to support this behavior,
+      // using the initialLocation parameter of goBranch.
+      initialLocation: index == navigationShell.currentIndex,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      body: _widgetOptions.elementAt(_selectedIndex),
+      body: navigationShell,
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
+        currentIndex: navigationShell.currentIndex,
         selectedItemColor: theme.colorScheme.primary,
-        onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
+        onTap: _onTap,
         elevation: 10,
         backgroundColor: theme.colorScheme.surface,
         type: BottomNavigationBarType.fixed,
@@ -39,28 +37,28 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
           BottomNavigationBarItem(
             icon: IconWidget(
               name: 'home',
-              color: _selectedIndex == 0 ? theme.colorScheme.primary : null,
+              color: navigationShell.currentIndex == 0 ? theme.colorScheme.primary : null,
             ),
             label: 'Home',
           ),
           BottomNavigationBarItem(
             icon: IconWidget(
               name: 'saved',
-              color: _selectedIndex == 1 ? theme.colorScheme.primary : null,
+              color: navigationShell.currentIndex == 1 ? theme.colorScheme.primary : null,
             ),
             label: 'Saved',
           ),
           BottomNavigationBarItem(
             icon: IconWidget(
               name: 'shopping-cart',
-              color: _selectedIndex == 2 ? theme.colorScheme.primary : null,
+              color: navigationShell.currentIndex == 2 ? theme.colorScheme.primary : null,
             ),
             label: 'Cart',
           ),
           BottomNavigationBarItem(
             icon: IconWidget(
               name: 'user',
-              color: _selectedIndex == 3 ? theme.colorScheme.primary : null,
+              color: navigationShell.currentIndex == 3 ? theme.colorScheme.primary : null,
             ),
             label: 'Account',
           ),

@@ -19,6 +19,8 @@ ColorScheme? _colorSchemeLight = const ColorScheme.light(
   errorContainer: LightThemeColors.errorContainer,
   onErrorContainer: LightThemeColors.onErrorContainer,
 
+  surfaceContainerHighest: LightThemeColors.surfaceVariant,
+
   // ----
   outline: LightThemeColors.outline,
   outlineVariant: LightThemeColors.outlineVariant,

@@ -17,6 +17,8 @@ ColorScheme? _colorSchemeDark = const ColorScheme.dark(
   errorContainer: DarkThemeColors.errorContainer,
   onErrorContainer: DarkThemeColors.onErrorContainer,
 
+  surfaceContainerHighest: DarkThemeColors.surfaceVariant,
+
   // ----
   outline: DarkThemeColors.outline,
   outlineVariant: DarkThemeColors.outlineVariant,

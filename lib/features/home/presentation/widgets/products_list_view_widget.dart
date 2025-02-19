@@ -45,7 +45,7 @@ class _ProductsListViewWidgetState extends State<ProductsListViewWidget> {
         return MaterialButton(
           onPressed: () {
             context.push(
-              '${ProductDetailsScreen.routeName}/$index',
+              '${HomeScreen.routeName}/${ProductDetailsScreen.routeName}/$index',
               extra: product,
             );
           },

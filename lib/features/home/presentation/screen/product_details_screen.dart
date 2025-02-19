@@ -7,7 +7,7 @@ import '/config/_config.dart';
 import '/features/home/_home.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
-  static const routeName = '/product-details';
+  static const routeName = 'product-details';
   const ProductDetailsScreen({super.key, required this.product});
 
   final ProductEntity product;

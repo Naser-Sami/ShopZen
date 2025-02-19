@@ -11,10 +11,10 @@ final router = GoRouter(
   observers: [
     AppNavigatorObserver(),
   ],
-  navigatorKey: NavigationService.navigatorKey,
+  navigatorKey: NavigationService.rootNavigator,
   errorBuilder: (context, state) {
     if (state.uri.path.contains('/link')) {
-      return BottomNavigationBarWidget();
+      return HomeScreen();
     }
 
     return ErrorPage(
@@ -67,38 +67,94 @@ final router = GoRouter(
     ),
     GoRoute(
       path: SignUpWithEmailScreen.routeName,
-      name: 'Sing Up With Email',
+      name: 'Sign Up With Email',
       pageBuilder: (context, state) => CupertinoPage(
         child: SignUpWithEmailScreen(),
       ),
     ),
-    GoRoute(
-      path: BottomNavigationBarWidget.routeName,
-      name: '/',
-      pageBuilder: (context, state) {
-        return CupertinoPage(
-          key: state.pageKey,
-          child: BottomNavigationBarWidget(),
+
+    // StatefulShellRoute for BottomNavigationBarWidget
+    StatefulShellRoute.indexedStack(
+      builder: (context, state, navigationShell) {
+        return BottomNavigationBarWidget(
+          navigationShell: navigationShell,
         );
       },
-      routes: [
-        GoRoute(
-          path: HomeScreen.routeName,
-          name: 'Home',
-          pageBuilder: (context, state) => CupertinoPage(
-            child: HomeScreen(),
-          ),
+      branches: [
+        // Home Section
+        StatefulShellBranch(
+          navigatorKey: NavigationService.sectionNavigator,
+          routes: [
+            GoRoute(
+              path: HomeScreen.routeName,
+              name: 'Home',
+              pageBuilder: (context, state) => CupertinoPage(
+                child: HomeScreen(),
+              ),
+              routes: [
+                GoRoute(
+                  path: "${ProductDetailsScreen.routeName}/:index",
+                  name: "Products Details",
+                  pageBuilder: (context, state) {
+                    final product = state.extra as ProductEntity;
+                    return CupertinoPage(
+                      child: ProductDetailsScreen(product: product),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ],
         ),
-        GoRoute(
-          path: "${ProductDetailsScreen.routeName}/:index",
-          name: "Products Details",
-          pageBuilder: (context, state) {
-            final product = state.extra as ProductEntity;
 
-            return CupertinoPage(
-              child: ProductDetailsScreen(product: product),
-            );
-          },
+        // Saved Section
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: SavedItemsScreen.routeName,
+              name: 'Saved Items',
+              pageBuilder: (context, state) => CupertinoPage(
+                child: SavedItemsScreen(),
+              ),
+              routes: [],
+            ),
+          ],
+        ),
+
+        // Cart Section
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: CartScreen.routeName,
+              name: 'Cart',
+              pageBuilder: (context, state) => CupertinoPage(
+                child: CartScreen(),
+              ),
+              routes: [],
+            ),
+          ],
+        ),
+
+        // Account Section
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: AccountScreen.routeName,
+              name: 'Account',
+              pageBuilder: (context, state) => CupertinoPage(
+                child: AccountScreen(),
+              ),
+              routes: [
+                GoRoute(
+                  path: HelpCenterScreen.routeName,
+                  name: 'Help Center',
+                  pageBuilder: (context, state) => CupertinoPage(
+                    child: HelpCenterScreen(),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ],
     ),

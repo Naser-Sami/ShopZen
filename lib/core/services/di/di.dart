@@ -80,6 +80,14 @@ class DI {
       () => CategoriesRepositoryImpl(),
     );
 
+    sl.registerLazySingleton<IAccountRepository>(
+      () => AccountRepositoryImpl(),
+    );
+
+    sl.registerLazySingleton<IHelpCenterRepository>(
+      () => HelpCenterRepositoryImpl(),
+    );
+
     // Use cases
   }
 }
