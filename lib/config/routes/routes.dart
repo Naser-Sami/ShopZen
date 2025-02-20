@@ -164,6 +164,13 @@ final router = GoRouter(
                     child: HelpCenterScreen(),
                   ),
                 ),
+                GoRoute(
+                  path: NotificationsSettingsScreen.routeName,
+                  name: 'Notifications Settings',
+                  pageBuilder: (context, state) => CupertinoPage(
+                    child: NotificationsSettingsScreen(),
+                  ),
+                ),
               ],
             ),
           ],
