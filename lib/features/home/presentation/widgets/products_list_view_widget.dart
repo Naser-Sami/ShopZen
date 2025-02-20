@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import '/config/_config.dart';
 import '/core/utils/_utils.dart';
@@ -23,21 +22,13 @@ class _ProductsListViewWidgetState extends State<ProductsListViewWidget> {
     return GridView.builder(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
-      gridDelegate: SliverWovenGridDelegate.extent(
-        pattern: [
-          WovenGridTile(
-            0.65,
-            crossAxisRatio: 1,
-            alignment: AlignmentDirectional.centerStart,
-          ),
-          WovenGridTile(
-            0.69,
-            crossAxisRatio: 1,
-            alignment: AlignmentDirectional.centerEnd,
-          ),
-        ],
-        maxCrossAxisExtent: 200,
+      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+        maxCrossAxisExtent: size.width / 2, // Approximate width per card
+        mainAxisSpacing: 8.0,
+        crossAxisSpacing: 8.0,
+        childAspectRatio: 0.64, // Adjust as needed based on content
       ),
+      padding: EdgeInsets.zero,
       itemCount: widget.products.length,
       itemBuilder: (context, index) {
         final product = widget.products[index];
@@ -55,68 +46,72 @@ class _ProductsListViewWidgetState extends State<ProductsListViewWidget> {
           ),
           child: Card(
             child: Column(
+              mainAxisSize: MainAxisSize.min, // Dynamic height
               children: [
-                Stack(
-                  children: [
-                    Hero(
-                      tag: "Product${product.id}",
-                      child: Container(
-                        height: size.height * 0.16,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(TRadius.r08),
-                          image: DecorationImage(
-                            image: NetworkImage(
-                              product.thumbnail ?? "",
+                Expanded(
+                  child: Stack(
+                    children: [
+                      Hero(
+                        tag: "Product${product.id}",
+                        child: Container(
+                          height: size.height * 0.16,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(TRadius.r08),
+                            image: DecorationImage(
+                              image: NetworkImage(product.thumbnail ?? ""),
+                              fit: BoxFit.fill,
                             ),
-                            fit: BoxFit.fill,
                           ),
                         ),
                       ),
-                    ),
-                    PositionedDirectional(
-                      top: TSize.s08,
-                      end: TSize.s08,
-                      child: FavoriteIconWidget(
-                        product: product,
+                      PositionedDirectional(
+                        top: TSize.s08,
+                        end: TSize.s08,
+                        child: FavoriteIconWidget(product: product),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: TPadding.p08),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: TSize.s16),
-                      TextWidget(
-                        product.title ?? "",
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      TSize.s08.toHeight,
-                      RichText(
-                        text: TextSpan(
-                          children: [
-                            if (product.price != null)
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: TPadding.p16)
+                        .copyWith(bottom: TPadding.p08),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min, // Dynamic height
+                      children: [
+                        SizedBox(height: TSize.s16),
+                        TextWidget(
+                          product.title ?? "",
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        TSize.s08.toHeight,
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              if (product.price != null)
+                                TextSpan(
+                                  text:
+                                      "\$${(product.price! * (product.discountPercentage != null ? (1 - product.discountPercentage! / 100) : 1)).toStringAsFixed(2)}",
+                                  style: theme.textTheme.bodyLarge?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               TextSpan(
-                                text:
-                                    "\$${(product.price! * (product.discountPercentage != null ? (1 - product.discountPercentage! / 100) : 1)).toStringAsFixed(2)}",
-                                style: theme.textTheme.bodyLarge?.copyWith(
-                                  fontWeight: FontWeight.bold,
+                                text: "\$${product.price?.toStringAsFixed(2)}",
+                                style: theme.textTheme.bodyMedium?.copyWith(
+                                  decoration: TextDecoration.lineThrough,
                                 ),
                               ),
-                            TextSpan(
-                              text: "\$${product.price?.toStringAsFixed(2)}",
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                decoration: TextDecoration.lineThrough,
-                              ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      TSize.s08.toHeight,
-                      ProductReviewsRatioWidget(product: product),
-                    ],
+                        TSize.s08.toHeight,
+                        ProductReviewsRatioWidget(product: product),
+                      ],
+                    ),
                   ),
                 ),
               ],
