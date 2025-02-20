@@ -173,26 +173,27 @@ final router = GoRouter(
 
     // Move Customer Service to a Top-Level Route (Outside of StatefulShellRoute)
     GoRoute(
-      path: "${CustomerServiceScreen.routeName}/:receiverUserId",
+      path: "${CustomerServiceScreen.routeName}/:userName",
       name: 'Customer Service',
       parentNavigatorKey: NavigationService.rootNavigator, // Ensures no bottom nav
       pageBuilder: (context, state) {
-        final receiverUserId = state.extra as String;
+        final user = state.extra as UserModel;
+
         return CupertinoPage(
-          child: CustomerServiceScreen(receiverUserId: receiverUserId),
+          child: CustomerServiceScreen(user: user),
         );
       },
     ),
 
     // Chat Section
     GoRoute(
-      path: "${ChatRoomScreen.routeName}/:receiverUserId",
+      path: "${ChatRoomScreen.routeName}/:userName",
       name: 'Chat',
       pageBuilder: (context, state) {
-        final receiverUserId = state.extra as String;
+        final user = state.extra as UserModel;
         return CupertinoPage(
           child: ChatRoomScreen(
-            receiverUserId: receiverUserId,
+            user: user,
           ),
         );
       },

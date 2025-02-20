@@ -57,11 +57,8 @@ class UsersListScreen extends StatelessWidget {
       title: Text(user.name == '' ? user.email.split('@')[0] : user.name),
       subtitle: Text(user.email),
       onTap: () {
-        // let's say that the receiver user id is that ( Support Person )
-        String receiverUserId = user.uid;
-
-        context.push("${ChatRoomScreen.routeName}/$receiverUserId",
-            extra: receiverUserId);
+        String userName = user.name == '' ? user.email.split('@')[0] : user.name;
+        context.push("${ChatRoomScreen.routeName}/$userName", extra: user);
       },
     );
   }

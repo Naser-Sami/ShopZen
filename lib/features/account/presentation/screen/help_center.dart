@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shop_zen/core/s.o.l.d/1_single_responsibility_principle_s.r.p.dart';
 
 import '/core/_core.dart';
 import '/config/_config.dart';

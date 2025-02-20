@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
+import '/core/_core.dart';
 import '/config/_config.dart';
 import '/features/_features.dart';
 
 class ChatRoomScreen extends StatelessWidget {
   static const routeName = '/chat-room';
-  const ChatRoomScreen({super.key, required this.receiverUserId});
+  const ChatRoomScreen({super.key, required this.user, this.appBarTitle});
 
-  final String receiverUserId;
+  final UserModel user;
+  final Widget? appBarTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +17,23 @@ class ChatRoomScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Chat'),
+        title: appBarTitle ??
+            Row(
+              children: [
+                CircleAvatar(
+                  radius: TSize.s24,
+                  backgroundImage: NetworkImage(
+                    user.profilePic,
+                  ),
+                ),
+                const SizedBox(width: TSize.s08),
+                Text(
+                  user.name,
+                  style: context.textTheme.titleMedium,
+                ),
+              ],
+            ),
+        centerTitle: false,
         actions: [
           NotificationsIconWidget(),
         ],
@@ -31,7 +49,7 @@ class ChatRoomScreen extends StatelessWidget {
               children: [
                 /// **Chat Room Body**
                 ChatRoomBody(
-                  receiverUserId: receiverUserId,
+                  receiverUserId: user.uid,
                 ),
                 const SizedBox(height: TSize.s16),
 
@@ -42,7 +60,7 @@ class ChatRoomScreen extends StatelessWidget {
                   child: Row(
                     children: [
                       SendMessageField(
-                        receiverUserId: receiverUserId,
+                        receiverUserId: user.uid,
                       ),
                       const SizedBox(width: TSize.s16),
                       MicButton(),
