@@ -1,4 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get_it/get_it.dart';
 
 import '/core/_core.dart';
@@ -24,12 +26,21 @@ class DI {
 
     // Firebase Service
     final firebaseAuth = FirebaseAuth.instance;
+    final fireStore = FirebaseFirestore.instance;
+    final firebaseMessaging = FirebaseMessaging.instance;
+
     sl.registerLazySingleton<FirebaseAuth>(() => firebaseAuth);
+    sl.registerLazySingleton<FirebaseFirestore>(() => fireStore);
+    sl.registerLazySingleton<FirebaseMessaging>(() => firebaseMessaging);
 
     sl.registerLazySingleton<IFirebaseAuthService>(
       () => FirebaseAuthServiceImpl(
         auth: firebaseAuth,
       ),
+    );
+
+    sl.registerLazySingleton<IFirebaseMessagingService>(
+      () => FirebaseMessagingServiceImpl(),
     );
 
     // Firebase Social Sign In
@@ -86,6 +97,10 @@ class DI {
 
     sl.registerLazySingleton<IHelpCenterRepository>(
       () => HelpCenterRepositoryImpl(),
+    );
+
+    sl.registerLazySingleton<IChatRepository>(
+      () => ChatRepositoryImpl(),
     );
 
     // Use cases

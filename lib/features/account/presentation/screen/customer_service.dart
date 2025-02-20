@@ -4,7 +4,9 @@ import '/features/_features.dart';
 
 class CustomerServiceScreen extends StatelessWidget {
   static const routeName = '/customer-service';
-  const CustomerServiceScreen({super.key});
+  const CustomerServiceScreen({super.key, required this.receiverUserId});
+
+  final String receiverUserId;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,9 @@ class CustomerServiceScreen extends StatelessWidget {
             child: Column(
               children: [
                 /// **Chat Body**
-                CustomerServiceChatBody(),
+                CustomerServiceChatBody(
+                  receiverUserId: receiverUserId,
+                ),
                 const SizedBox(height: TSize.s16),
 
                 /// **Send Message Field**
@@ -36,7 +40,9 @@ class CustomerServiceScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: Row(
                     children: [
-                      CustomerServiceSendMessageField(),
+                      CustomerServiceSendMessageField(
+                        receiverUserId: receiverUserId,
+                      ),
                       const SizedBox(width: TSize.s16),
                       CustomerServiceMicButton(),
                     ],

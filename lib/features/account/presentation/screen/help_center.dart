@@ -30,7 +30,6 @@ class _AccountScreenState extends State<HelpCenterScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final textTheme = theme.textTheme;
     final colorScheme = theme.colorScheme;
 
     return Scaffold(
@@ -55,7 +54,12 @@ class _AccountScreenState extends State<HelpCenterScreen> {
                   onTap: () {
                     switch (data[index].name) {
                       case 'Customer Service':
-                        context.push(CustomerServiceScreen.routeName);
+
+                        // let's say that the receiver user id is that ( Support Person )
+                        String receiverUserId = "dEHgKd4HtCO0jbopy4VoYP8cXfI3";
+
+                        context.push("${CustomerServiceScreen.routeName}/$receiverUserId",
+                            extra: receiverUserId);
                         break;
                       default:
                     }

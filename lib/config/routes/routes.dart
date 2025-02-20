@@ -161,12 +161,15 @@ final router = GoRouter(
 
     // Move Customer Service to a Top-Level Route (Outside of StatefulShellRoute)
     GoRoute(
-      path: CustomerServiceScreen.routeName,
+      path: "${CustomerServiceScreen.routeName}/:receiverUserId",
       name: 'Customer Service',
       parentNavigatorKey: NavigationService.rootNavigator, // Ensures no bottom nav
-      pageBuilder: (context, state) => CupertinoPage(
-        child: CustomerServiceScreen(),
-      ),
+      pageBuilder: (context, state) {
+        final receiverUserId = state.extra as String;
+        return CupertinoPage(
+          child: CustomerServiceScreen(receiverUserId: receiverUserId),
+        );
+      },
     ),
   ],
 );
