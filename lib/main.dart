@@ -28,7 +28,7 @@ Future<void> main() async {
   // Ensure Service Locator is Started
   DI().init();
 
-  sl<IFirebaseMessagingService>().init();
+  sl<IFirebaseMessagingService>().initNotifications();
 
   // Initialize the 'settings' box
   final settingsService = sl<HiveService>();

@@ -117,6 +117,7 @@ class SocialSignInServiceImpl implements ISocialSignInService {
             phone: credential.user?.phoneNumber ?? "",
             address: "",
             createdAt: DateTime.now(),
+            userType: UserType.user,
           ).toMap(),
         );
   }

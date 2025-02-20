@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import '/core/_core.dart';
 
 class UserModel extends Equatable {
   final String uid;
@@ -9,6 +10,7 @@ class UserModel extends Equatable {
   final String phone;
   final String address;
   final DateTime? createdAt;
+  final UserType userType;
 
   const UserModel({
     required this.uid,
@@ -19,6 +21,7 @@ class UserModel extends Equatable {
     required this.phone,
     required this.address,
     required this.createdAt,
+    required this.userType,
   });
 
   // copy with method
@@ -31,6 +34,7 @@ class UserModel extends Equatable {
     String? phone,
     String? address,
     DateTime? createdAt,
+    UserType? userType,
   }) =>
       UserModel(
         uid: uid ?? this.uid,
@@ -41,6 +45,7 @@ class UserModel extends Equatable {
         phone: phone ?? this.phone,
         address: address ?? this.address,
         createdAt: createdAt ?? this.createdAt,
+        userType: userType ?? this.userType,
       );
 
   // fromJson method
@@ -53,6 +58,7 @@ class UserModel extends Equatable {
         phone: json['phone'],
         address: json['address'],
         createdAt: DateTime.parse(json['createdAt']),
+        userType: UserType.values.byName(json['userType']),
       );
 
   // toMap method
@@ -65,6 +71,7 @@ class UserModel extends Equatable {
         'phone': phone,
         'address': address,
         'createdAt': createdAt?.toIso8601String(),
+        'userType': userType.name,
       };
 
   // empty constructor
@@ -77,12 +84,13 @@ class UserModel extends Equatable {
     this.phone = '',
     this.address = '',
     this.createdAt,
+    this.userType = UserType.user,
   });
 
   // string
   @override
   String toString() {
-    return 'UserModel(uid: $uid, name: $name, email: $email, profilePic: $profilePic, token: $token, phone: $phone, address: $address, createdAt: $createdAt)';
+    return 'UserModel(uid: $uid, name: $name, email: $email, profilePic: $profilePic, token: $token, phone: $phone, address: $address, createdAt: $createdAt, userType: $userType)';
   }
 
   @override
@@ -95,5 +103,6 @@ class UserModel extends Equatable {
         phone,
         address,
         createdAt,
+        userType,
       ];
 }

@@ -127,6 +127,7 @@ class FirebaseAuthServiceImpl implements IFirebaseAuthService {
             phone: credential.user?.phoneNumber ?? "",
             address: "",
             createdAt: DateTime.now(),
+            userType: UserType.user,
           ).toMap(),
         );
   }

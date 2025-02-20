@@ -12,7 +12,7 @@ class FirebaseMessagingServiceImpl implements IFirebaseMessagingService {
       FlutterLocalNotificationsPlugin();
 
   @override
-  Future<void> init() async {
+  Future<void> initNotifications() async {
     FirebaseMessaging messaging = FirebaseMessaging.instance;
 
     // Request permission for notifications

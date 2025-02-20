@@ -62,7 +62,7 @@ class ChatRoomScreen extends StatelessWidget {
                   child: Row(
                     children: [
                       SendMessageField(
-                        receiverUserId: user.uid,
+                        user: user,
                       ),
                       const SizedBox(width: TSize.s16),
                       MicButton(),

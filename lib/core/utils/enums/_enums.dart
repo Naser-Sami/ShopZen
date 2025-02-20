@@ -18,3 +18,8 @@ enum QueryOperator {
   whereNotIn,
   isNull,
 }
+
+enum UserType {
+  admin,
+  user,
+}

@@ -6,9 +6,9 @@ import '/config/_config.dart';
 import '/features/_features.dart';
 
 class SendMessageField extends StatefulWidget {
-  const SendMessageField({super.key, required this.receiverUserId});
+  const SendMessageField({super.key, required this.user});
 
-  final String receiverUserId;
+  final UserModel user;
 
   @override
   State<SendMessageField> createState() => _SendMessageFieldState();
@@ -28,7 +28,13 @@ class _SendMessageFieldState extends State<SendMessageField> {
 
   void _sendMessage() async {
     if (_controller.text.trim().isNotEmpty) {
-      _chatService.sendMessage(widget.receiverUserId, _controller.text.trim());
+      _chatService.sendMessage(widget.user.uid, _controller.text.trim());
+      // sl<IFirebaseMessagingService>().showNotification(
+      //   // id: widget.receiverUserId,
+      //   title:
+      //       widget.user.name == '' ? widget.user.email.split('@')[0] : widget.user.name,
+      //   body: _controller.text.trim(),
+      // );
       _controller.clear();
       focusNode?.requestFocus();
     }

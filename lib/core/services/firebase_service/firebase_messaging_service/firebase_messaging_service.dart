@@ -1,3 +1,3 @@
 abstract class IFirebaseMessagingService {
-  Future<void> init();
+  Future<void> initNotifications();
 }
