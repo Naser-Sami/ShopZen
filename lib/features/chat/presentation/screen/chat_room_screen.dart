@@ -22,13 +22,15 @@ class ChatRoomScreen extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: TSize.s24,
-                  backgroundImage: NetworkImage(
-                    user.profilePic,
-                  ),
+                  backgroundImage: user.profilePic != ''
+                      ? NetworkImage(
+                          user.profilePic,
+                        )
+                      : null,
                 ),
                 const SizedBox(width: TSize.s08),
                 Text(
-                  user.name,
+                  user.name == '' ? user.email.split('@')[0] : user.name,
                   style: context.textTheme.titleMedium,
                 ),
               ],

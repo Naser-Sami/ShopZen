@@ -17,8 +17,30 @@ class ChatRoomBody extends StatefulWidget {
 }
 
 class _ChatRoomBodyState extends State<ChatRoomBody> {
+  final ScrollController _scrollController = ScrollController();
   final _chatService = sl<IChatRepository>();
   final _firebaseAuth = sl<FirebaseAuth>();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  bool _isFirstBuild = true; // ✅ Track if the screen is opened for the first time
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollToBottom({bool instant = false}) {
+    if (_scrollController.hasClients) {
+      _scrollController.jumpTo(
+        _scrollController.position.maxScrollExtent,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +64,18 @@ class _ChatRoomBodyState extends State<ChatRoomBody> {
 
           List<ChatMessage> messages = snapshot.data ?? [];
 
+          // ✅ Ensure chat starts from the bottom when first opened
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (_isFirstBuild) {
+              _scrollToBottom(instant: true);
+              _isFirstBuild = false;
+            } else {
+              _scrollToBottom();
+            }
+          });
+
           return ListView.builder(
+            controller: _scrollController, // ✅ Attach the controller
             itemCount: messages.length,
             shrinkWrap: true,
             itemBuilder: (context, index) {
@@ -56,6 +89,7 @@ class _ChatRoomBodyState extends State<ChatRoomBody> {
               final bool isFirstFromDate = _isFirstFromDate(messages, index, dateTime);
 
               return Column(
+                key: ValueKey('chat-message-$index'),
                 crossAxisAlignment:
                     isSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
                 children: [

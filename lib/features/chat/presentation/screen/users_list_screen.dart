@@ -50,9 +50,15 @@ class UsersListScreen extends StatelessWidget {
     if (user.uid == sl<FirebaseAuth>().currentUser!.uid) {
       return const SizedBox.shrink();
     }
+
+    // if the use is the admin, don't show them in the list
+    if (user.uid == 'dEHgKd4HtCO0jbopy4VoYP8cXfI3') {
+      return const SizedBox.shrink();
+    }
+
     return ListTile(
       leading: CircleAvatar(
-        backgroundImage: NetworkImage(user.profilePic),
+        backgroundImage: user.profilePic != '' ? NetworkImage(user.profilePic) : null,
       ),
       title: Text(user.name == '' ? user.email.split('@')[0] : user.name),
       subtitle: Text(user.email),
