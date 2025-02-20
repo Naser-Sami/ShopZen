@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '/features/chat/_chat.dart';
 import '/core/_core.dart';
-import '/features/account/_account.dart';
 
 class ChatRepositoryImpl extends IChatRepository {
   final FirebaseFirestore _firestore = sl<FirebaseFirestore>();

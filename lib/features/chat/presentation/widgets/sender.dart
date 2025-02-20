@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import '/config/_config.dart';
 
-class CustomerServiceReceiver extends StatelessWidget {
+class Sender extends StatelessWidget {
   final String message;
-
-  const CustomerServiceReceiver({super.key, required this.message});
+  const Sender({super.key, required this.message});
 
   @override
   Widget build(BuildContext context) {
     final double maxWidth = MediaQuery.of(context).size.width * 0.75;
 
     return Align(
-      alignment: AlignmentDirectional.centerStart,
+      alignment: AlignmentDirectional.centerEnd,
       child: ConstrainedBox(
         constraints: BoxConstraints(
           maxWidth: maxWidth, // Ensures max width is 75% of screen
@@ -22,18 +21,20 @@ class CustomerServiceReceiver extends StatelessWidget {
             vertical: TPadding.p12,
           ),
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(
-                  alpha: 0.5,
-                ),
+            color: Colors.black.withValues(
+              alpha: 0.75,
+            ),
             borderRadius: BorderRadiusDirectional.only(
               topStart: Radius.circular(TSize.s12),
               topEnd: Radius.circular(TSize.s12),
-              bottomEnd: Radius.circular(TSize.s12),
+              bottomStart: Radius.circular(TSize.s12),
             ),
           ),
           child: Text(
             message,
-            style: Theme.of(context).textTheme.bodyLarge,
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: Colors.white,
+                ),
           ),
         ),
       ),

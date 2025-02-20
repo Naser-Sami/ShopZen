@@ -5,18 +5,16 @@ import '/core/_core.dart';
 import '/config/_config.dart';
 import '/features/_features.dart';
 
-class CustomerServiceSendMessageField extends StatefulWidget {
-  const CustomerServiceSendMessageField({super.key, required this.receiverUserId});
+class SendMessageField extends StatefulWidget {
+  const SendMessageField({super.key, required this.receiverUserId});
 
   final String receiverUserId;
 
   @override
-  State<CustomerServiceSendMessageField> createState() =>
-      _CustomerServiceSendMessageFieldState();
+  State<SendMessageField> createState() => _SendMessageFieldState();
 }
 
-class _CustomerServiceSendMessageFieldState
-    extends State<CustomerServiceSendMessageField> {
+class _SendMessageFieldState extends State<SendMessageField> {
   final TextEditingController _controller = TextEditingController();
   final FocusNode? focusNode = FocusNode();
   final _chatService = sl<IChatRepository>();

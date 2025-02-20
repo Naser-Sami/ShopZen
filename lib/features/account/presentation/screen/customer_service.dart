@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import '/config/_config.dart';
-import '/features/_features.dart';
+import '/features/chat/_chat.dart';
 
 class CustomerServiceScreen extends StatelessWidget {
   static const routeName = '/customer-service';
@@ -10,51 +9,8 @@ class CustomerServiceScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Customer Service'),
-        actions: [
-          NotificationsIconWidget(),
-        ],
-      ),
-      body: SafeArea(
-        top: false,
-        child: SizedBox(
-          width: size.width,
-          height: size.height,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: TPadding.p20),
-            child: Column(
-              children: [
-                /// **Chat Body**
-                CustomerServiceChatBody(
-                  receiverUserId: receiverUserId,
-                ),
-                const SizedBox(height: TSize.s16),
-
-                /// **Send Message Field**
-                Container(
-                  width: size.width,
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: Row(
-                    children: [
-                      CustomerServiceSendMessageField(
-                        receiverUserId: receiverUserId,
-                      ),
-                      const SizedBox(width: TSize.s16),
-                      CustomerServiceMicButton(),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: TSize.s16),
-              ],
-            ),
-          ),
-        ),
-      ),
+    return ChatRoomScreen(
+      receiverUserId: receiverUserId,
     );
   }
 }

@@ -7,3 +7,4 @@ export 'home/_home.dart';
 export 'saved/_saved.dart';
 export 'account/_account.dart';
 export 'cart/_cart.dart';
+export 'chat/_chat.dart';

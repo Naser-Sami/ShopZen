@@ -6,17 +6,17 @@ import '/core/_core.dart';
 import '/config/_config.dart';
 import '/features/_features.dart';
 
-class CustomerServiceChatBody extends StatefulWidget {
-  static const routeName = 'customer-service-chat-body';
-  const CustomerServiceChatBody({super.key, required this.receiverUserId});
+class ChatRoomBody extends StatefulWidget {
+  static const routeName = 'chat-room';
+  const ChatRoomBody({super.key, required this.receiverUserId});
 
   final String receiverUserId;
 
   @override
-  State<CustomerServiceChatBody> createState() => _CustomerServiceChatBodyState();
+  State<ChatRoomBody> createState() => _ChatRoomBodyState();
 }
 
-class _CustomerServiceChatBodyState extends State<CustomerServiceChatBody> {
+class _ChatRoomBodyState extends State<ChatRoomBody> {
   final _chatService = sl<IChatRepository>();
   final _firebaseAuth = sl<FirebaseAuth>();
 
@@ -61,8 +61,8 @@ class _CustomerServiceChatBodyState extends State<CustomerServiceChatBody> {
                 children: [
                   if (isFirstFromDate) _buildDateHeader(dateTime, colorScheme, textTheme),
                   isSender
-                      ? CustomerServiceSender(message: message.message)
-                      : CustomerServiceReceiver(message: message.message),
+                      ? Sender(message: message.message)
+                      : Receiver(message: message.message),
                   if (!isLastFromSender) const SizedBox(height: TSize.s16),
                   if (isLastFromSender) _buildTimestamp(dateTime),
                 ],

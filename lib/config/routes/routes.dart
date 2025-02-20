@@ -130,7 +130,19 @@ final router = GoRouter(
               pageBuilder: (context, state) => CupertinoPage(
                 child: CartScreen(),
               ),
-              routes: [],
+            ),
+          ],
+        ),
+
+        // Users Section for chatting
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: UsersListScreen.routeName,
+              name: 'Users List',
+              pageBuilder: (context, state) => CupertinoPage(
+                child: UsersListScreen(),
+              ),
             ),
           ],
         ),
@@ -168,6 +180,20 @@ final router = GoRouter(
         final receiverUserId = state.extra as String;
         return CupertinoPage(
           child: CustomerServiceScreen(receiverUserId: receiverUserId),
+        );
+      },
+    ),
+
+    // Chat Section
+    GoRoute(
+      path: "${ChatRoomScreen.routeName}/:receiverUserId",
+      name: 'Chat',
+      pageBuilder: (context, state) {
+        final receiverUserId = state.extra as String;
+        return CupertinoPage(
+          child: ChatRoomScreen(
+            receiverUserId: receiverUserId,
+          ),
         );
       },
     ),

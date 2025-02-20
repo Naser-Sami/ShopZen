@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '/config/_config.dart';
 
-class CustomerServiceMicButton extends StatelessWidget {
-  const CustomerServiceMicButton({super.key});
+class MicButton extends StatelessWidget {
+  const MicButton({super.key});
 
   @override
   Widget build(BuildContext context) {

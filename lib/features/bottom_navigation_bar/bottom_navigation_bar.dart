@@ -55,9 +55,13 @@ class BottomNavigationBarWidget extends StatelessWidget {
             label: 'Cart',
           ),
           BottomNavigationBarItem(
+            icon: Icon(Icons.chat_bubble_outline_outlined),
+            label: 'Chat',
+          ),
+          BottomNavigationBarItem(
             icon: IconWidget(
               name: 'user',
-              color: navigationShell.currentIndex == 3 ? theme.colorScheme.primary : null,
+              color: navigationShell.currentIndex == 4 ? theme.colorScheme.primary : null,
             ),
             label: 'Account',
           ),
