@@ -68,6 +68,7 @@ class _AccountScreenState extends State<HelpCenterScreen> {
                           phone: '',
                           address: '',
                           createdAt: DateTime(2025, 2, 20),
+                          userType: UserType.admin,
                         );
 
                         String userName = receiverUser.name == ''
