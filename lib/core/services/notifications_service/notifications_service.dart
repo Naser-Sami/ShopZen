@@ -5,7 +5,7 @@ abstract class INotificationsService {
   void isRefreshToken();
   Future<String> getAccessToken();
   Future<void> sendNotification(
-      {required String token,
+      {required String fcmToken,
       required String title,
       required String body,
       required Map<String, String> data});

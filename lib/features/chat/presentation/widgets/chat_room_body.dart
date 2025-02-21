@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -16,14 +18,25 @@ class ChatRoomBody extends StatefulWidget {
   State<ChatRoomBody> createState() => _ChatRoomBodyState();
 }
 
-class _ChatRoomBodyState extends State<ChatRoomBody> {
+class _ChatRoomBodyState extends State<ChatRoomBody> with AutomaticKeepAliveClientMixin {
   final ScrollController _scrollController = ScrollController();
   final _chatService = sl<IChatRepository>();
   final _firebaseAuth = sl<FirebaseAuth>();
 
+  final StreamController<List<ChatMessage>> _streamController =
+      StreamController<List<ChatMessage>>.broadcast();
+  StreamSubscription<List<ChatMessage>>? _subscription;
+
   @override
   void initState() {
     super.initState();
+
+    // ✅ Subscribe to Firestore stream and cache messages
+    _subscription = _chatService
+        .getMessages(widget.receiverUserId, _firebaseAuth.currentUser!.uid)
+        .listen((messages) {
+      _streamController.add(messages);
+    });
   }
 
   bool _isFirstBuild = true; // ✅ Track if the screen is opened for the first time
@@ -31,6 +44,8 @@ class _ChatRoomBodyState extends State<ChatRoomBody> {
   @override
   void dispose() {
     _scrollController.dispose();
+    _subscription?.cancel();
+    _streamController.close();
     super.dispose();
   }
 
@@ -43,14 +58,19 @@ class _ChatRoomBodyState extends State<ChatRoomBody> {
   }
 
   @override
+  bool get wantKeepAlive => true; // ✅ Keeps state when navigating
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context); // ✅ Required when using AutomaticKeepAliveClientMixin
+
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final textTheme = theme.textTheme;
 
     return Expanded(
       child: StreamBuilder<List<ChatMessage>>(
-        stream: _chatMessagesStream(),
+        stream: _streamController.stream, // ✅ Use cached stream
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -75,6 +95,8 @@ class _ChatRoomBodyState extends State<ChatRoomBody> {
           });
 
           return ListView.builder(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior
+                .onDrag, // ✅ Prevents unnecessary rebuilds
             controller: _scrollController, // ✅ Attach the controller
             itemCount: messages.length,
             shrinkWrap: true,
@@ -106,12 +128,6 @@ class _ChatRoomBodyState extends State<ChatRoomBody> {
         },
       ),
     );
-  }
-
-  /// **Firestore chat messages stream**
-  Stream<List<ChatMessage>> _chatMessagesStream() {
-    return _chatService.getMessages(
-        widget.receiverUserId, _firebaseAuth.currentUser!.uid);
   }
 
   /// **Check if the message is from the current user**

@@ -36,14 +36,13 @@ class _SendMessageFieldState extends State<SendMessageField> {
 
       try {
         sl<INotificationsService>().sendNotification(
-          token:
-              "dMFO7BpnTvSg91dSF3iXn8:APA91bEWMdzaP_J6OiUs3dtKO88OeajJmtVj86jGUpOhPPJedgxJKvSJNI1Zfj6HLn9ZwROX2kp5PmwYVCNH6oi6Bj3R12EjDxA9l6jQ1aMjTBsqBgR4o8o",
+          fcmToken: widget.user.fcmToken,
           title: widget.user.name,
           body: _controller.text.trim(),
           data: {},
         );
       } catch (e) {
-        log('Error sending notification: $e');
+        log('Error sending notification On Send Message: $e');
       }
     }
   }

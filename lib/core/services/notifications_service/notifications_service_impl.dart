@@ -55,7 +55,7 @@ class NotificationsServiceImpl implements INotificationsService {
   /// Sends a push notification via Firebase Cloud Messaging (FCM)
   @override
   Future<void> sendNotification({
-    required String token,
+    required String fcmToken,
     required String title,
     required String body,
     required Map<String, String> data,
@@ -73,7 +73,7 @@ class NotificationsServiceImpl implements INotificationsService {
         },
         data: {
           'message': {
-            'token': token,
+            'token': fcmToken,
             'notification': {
               'title': title,
               'body': body,
@@ -102,7 +102,7 @@ class NotificationsServiceImpl implements INotificationsService {
       );
 
       log('Notification response: $response');
-      log('Notification sent successfully to $token');
+      log('Notification sent successfully to $fcmToken');
     } catch (e) {
       log('Error sending notification: $e');
     }
