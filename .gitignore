@@ -43,5 +43,4 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
-/android/app/releaseassets/notifications_key/shopzen-42af3-8d7517fcc63f.json
 assets/notifications_key/shopzen-42af3-8d7517fcc63f.json
