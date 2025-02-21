@@ -1,9 +1,11 @@
 import 'dart:developer';
-import 'package:firebase_messaging/firebase_messaging.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:googleapis_auth/auth_io.dart' as auth;
+import 'package:firebase_messaging/firebase_messaging.dart';
+
 import '/core/_core.dart';
 
 class NotificationsServiceImpl implements INotificationsService {
@@ -28,7 +30,7 @@ class NotificationsServiceImpl implements INotificationsService {
   void isRefreshToken() async {
     messaging.onTokenRefresh.listen((event) {
       event.toString();
-      print('TOken Refereshed');
+      log('TOken Refreshed');
     });
   }
 
@@ -37,7 +39,7 @@ class NotificationsServiceImpl implements INotificationsService {
   Future<String> getAccessToken() async {
     try {
       final jsonString = await rootBundle.loadString(
-        'assets/notifications_key/shopzen-42af3-8d7517fcc63f.json',
+        'assets/notifications_key/shopzen-42af3-759b0da97e5c.json',
       );
       final accountCredentials = auth.ServiceAccountCredentials.fromJson(jsonString);
       final scopes = ['https://www.googleapis.com/auth/firebase.messaging'];

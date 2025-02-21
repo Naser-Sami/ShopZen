@@ -81,16 +81,18 @@ class MessagingConfig {
 
     FirebaseMessaging.onMessage.listen((RemoteMessage event) async {
       log("message received");
+      log("event: $event");
+
       try {
         RemoteNotification? notification = event.notification;
-        log(notification!.body.toString());
-        log(notification.title.toString());
+        log("notification body: ${notification?.body}");
+        log("notification title: ${notification?.title}");
 
-        var body = notification.body;
+        var body = notification?.body;
 
         await flutterLocalNotificationsPlugin.show(
           notification.hashCode,
-          notification.title,
+          notification?.title,
           body,
           NotificationDetails(
             android: AndroidNotificationDetails(
@@ -110,7 +112,12 @@ class MessagingConfig {
               sound: 'custom_sound.caf',
             ),
           ),
+          // payload: 'Open from Remote Notification',
+          payload: 'Open from Local Notification',
         );
+
+        log("notification sent");
+        log("initFirebaseMessaging message: ${event.data}");
 
         sl<INotificationsService>().handleNotification(
             NavigationService.rootNavigator.currentContext!, event.data);
@@ -121,12 +128,14 @@ class MessagingConfig {
 
     FirebaseMessaging.instance.getInitialMessage().then((RemoteMessage? message) {
       if (message != null) {
+        log("getInitialMessage message: $message");
         sl<INotificationsService>().handleNotification(
             NavigationService.rootNavigator.currentContext!, message.data);
       }
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      log("onMessageOpenedApp message: $message");
       sl<INotificationsService>().handleNotification(
           NavigationService.rootNavigator.currentContext!, message.data);
     });
