@@ -1,29 +1,27 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 
 class AppNavigatorObserver extends NavigatorObserver {
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
-    log("""
+//     log("""
 
-On Did Push Route
+// On Did Push Route
 
-route -> $route
-previousRoute -> $previousRoute
+// route -> $route
+// previousRoute -> $previousRoute
 
-        """);
+//         """);
   }
 
   @override
   void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
-    log("""
+//     log("""
 
-On Did Pop Route
+// On Did Pop Route
 
-route -> $route
-previousRoute -> $previousRoute
+// route -> $route
+// previousRoute -> $previousRoute
 
-        """);
+//         """);
   }
 }

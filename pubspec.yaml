@@ -36,7 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.8
 
   # State Management
-  flutter_bloc: ^9.0.0
+  flutter_bloc: ^8.0.1
 
   # Compare objects
   equatable: ^2.0.7
@@ -78,6 +78,10 @@ dependencies:
   cloud_firestore: ^5.6.3
   firebase_messaging: ^15.2.3
 
+  # Push Notification
+  googleapis_auth: ^1.6.0
+  flutter_local_notifications: ^18.0.1
+
   # Social Login
   google_sign_in: ^6.2.2
   sign_in_with_apple: ^6.1.4
@@ -89,7 +93,6 @@ dependencies:
   carousel_slider: ^5.0.0
   readmore: ^3.0.0
   flutter_rating_bar: ^4.0.1
-  flutter_local_notifications: ^18.0.1
 
 dev_dependencies:
   flutter_test:
@@ -118,6 +121,7 @@ flutter:
     - assets/fonts/
     - assets/icons/
     - assets/translations/
+    - assets/notifications_key/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

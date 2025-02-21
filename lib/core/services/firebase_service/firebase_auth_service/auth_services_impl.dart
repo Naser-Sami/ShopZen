@@ -115,8 +115,9 @@ class FirebaseAuthServiceImpl implements IFirebaseAuthService {
     }
   }
 
-  void _createUserCollection(UserCredential credential) {
+  Future<void> _createUserCollection(UserCredential credential) async {
     // Create a new user document if not exist in Firestore
+    final fcmToken = await sl<INotificationsService>().getFCMToken();
     sl<FirebaseFirestore>().collection('users').doc(credential.user?.uid).set(
           UserModel(
             uid: credential.user?.uid ?? "",
@@ -128,6 +129,7 @@ class FirebaseAuthServiceImpl implements IFirebaseAuthService {
             address: "",
             createdAt: DateTime.now(),
             userType: UserType.user,
+            fcmToken: fcmToken,
           ).toMap(),
         );
   }

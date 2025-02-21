@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -29,14 +31,20 @@ class _SendMessageFieldState extends State<SendMessageField> {
   void _sendMessage() async {
     if (_controller.text.trim().isNotEmpty) {
       _chatService.sendMessage(widget.user.uid, _controller.text.trim());
-      // sl<IFirebaseMessagingService>().showNotification(
-      //   // id: widget.receiverUserId,
-      //   title:
-      //       widget.user.name == '' ? widget.user.email.split('@')[0] : widget.user.name,
-      //   body: _controller.text.trim(),
-      // );
       _controller.clear();
       focusNode?.requestFocus();
+
+      try {
+        sl<INotificationsService>().sendNotification(
+          token:
+              "dMFO7BpnTvSg91dSF3iXn8:APA91bEWMdzaP_J6OiUs3dtKO88OeajJmtVj86jGUpOhPPJedgxJKvSJNI1Zfj6HLn9ZwROX2kp5PmwYVCNH6oi6Bj3R12EjDxA9l6jQ1aMjTBsqBgR4o8o",
+          title: widget.user.name,
+          body: _controller.text.trim(),
+          data: {},
+        );
+      } catch (e) {
+        log('Error sending notification: $e');
+      }
     }
   }
 
@@ -56,7 +64,7 @@ class _SendMessageFieldState extends State<SendMessageField> {
           controller: _controller,
           minLines: 1,
           maxLines: 6, // Adjust max height here
-          keyboardType: TextInputType.none,
+          keyboardType: TextInputType.text,
           style: theme.textTheme.bodyMedium,
           autofocus: true,
           focusNode: focusNode,

@@ -105,7 +105,9 @@ class SocialSignInServiceImpl implements ISocialSignInService {
     throw UnimplementedError();
   }
 
-  void _createUserCollection(UserCredential credential) {
+  Future<void> _createUserCollection(UserCredential credential) async {
+    final fcmToken = await sl<INotificationsService>().getFCMToken();
+
     // Create a new user document if not exist in Firestore
     sl<FirebaseFirestore>().collection('users').doc(credential.user?.uid).set(
           UserModel(
@@ -118,6 +120,7 @@ class SocialSignInServiceImpl implements ISocialSignInService {
             address: "",
             createdAt: DateTime.now(),
             userType: UserType.user,
+            fcmToken: fcmToken,
           ).toMap(),
         );
   }

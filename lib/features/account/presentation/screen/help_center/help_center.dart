@@ -52,9 +52,10 @@ class _AccountScreenState extends State<HelpCenterScreen> {
               separatorBuilder: (context, index) => const SizedBox(height: TSize.s16),
               itemBuilder: (context, index) {
                 return ListTile(
-                  onTap: () {
+                  onTap: () async {
                     switch (data[index].name) {
                       case 'Customer Service':
+                        final fcmToken = await sl<INotificationsService>().getFCMToken();
 
                         // send a user model to the chat room screen
                         UserModel receiverUser = UserModel(
@@ -69,6 +70,7 @@ class _AccountScreenState extends State<HelpCenterScreen> {
                           address: '',
                           createdAt: DateTime(2025, 2, 20),
                           userType: UserType.admin,
+                          fcmToken: fcmToken,
                         );
 
                         String userName = receiverUser.name == ''
@@ -80,10 +82,14 @@ class _AccountScreenState extends State<HelpCenterScreen> {
 
                         if (sl<FirebaseAuth>().currentUser!.uid ==
                             'dEHgKd4HtCO0jbopy4VoYP8cXfI3') {
-                          context.push(UsersListScreen.routeName);
+                          if (context.mounted) {
+                            context.push(UsersListScreen.routeName);
+                          }
                         } else {
-                          context.push("${CustomerServiceScreen.routeName}/$userName",
-                              extra: receiverUser);
+                          if (context.mounted) {
+                            context.push("${CustomerServiceScreen.routeName}/$userName",
+                                extra: receiverUser);
+                          }
                         }
 
                         break;

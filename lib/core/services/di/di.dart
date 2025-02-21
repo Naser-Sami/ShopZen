@@ -39,8 +39,8 @@ class DI {
       ),
     );
 
-    sl.registerLazySingleton<IFirebaseMessagingService>(
-      () => FirebaseMessagingServiceImpl(),
+    sl.registerLazySingleton<INotificationsService>(
+      () => NotificationsServiceImpl(),
     );
 
     // Firebase Social Sign In

@@ -11,6 +11,7 @@ class UserModel extends Equatable {
   final String address;
   final DateTime? createdAt;
   final UserType userType;
+  final String fcmToken;
 
   const UserModel({
     required this.uid,
@@ -22,6 +23,7 @@ class UserModel extends Equatable {
     required this.address,
     required this.createdAt,
     required this.userType,
+    required this.fcmToken,
   });
 
   // copy with method
@@ -35,6 +37,7 @@ class UserModel extends Equatable {
     String? address,
     DateTime? createdAt,
     UserType? userType,
+    String? fcmToken,
   }) =>
       UserModel(
         uid: uid ?? this.uid,
@@ -46,19 +49,21 @@ class UserModel extends Equatable {
         address: address ?? this.address,
         createdAt: createdAt ?? this.createdAt,
         userType: userType ?? this.userType,
+        fcmToken: fcmToken ?? this.fcmToken,
       );
 
   // fromJson method
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-        uid: json['uid'],
-        name: json['name'],
-        email: json['email'],
-        profilePic: json['profilePic'],
-        token: json['token'],
-        phone: json['phone'],
-        address: json['address'],
+        uid: json['uid'] ?? "",
+        name: json['name'] ?? "",
+        email: json['email'] ?? "",
+        profilePic: json['profilePic'] ?? "",
+        token: json['token'] ?? "",
+        phone: json['phone'] ?? "",
+        address: json['address'] ?? "",
         createdAt: DateTime.parse(json['createdAt']),
         userType: UserType.values.byName(json['userType']),
+        fcmToken: json['fcmToken'] ?? "",
       );
 
   // toMap method
@@ -72,6 +77,7 @@ class UserModel extends Equatable {
         'address': address,
         'createdAt': createdAt?.toIso8601String(),
         'userType': userType.name,
+        'fcmToken': fcmToken,
       };
 
   // empty constructor
@@ -85,12 +91,13 @@ class UserModel extends Equatable {
     this.address = '',
     this.createdAt,
     this.userType = UserType.user,
+    this.fcmToken = '',
   });
 
   // string
   @override
   String toString() {
-    return 'UserModel(uid: $uid, name: $name, email: $email, profilePic: $profilePic, token: $token, phone: $phone, address: $address, createdAt: $createdAt, userType: $userType)';
+    return 'UserModel(uid: $uid, name: $name, email: $email, profilePic: $profilePic, token: $token, phone: $phone, address: $address, createdAt: $createdAt, userType: $userType, fcmToken: $fcmToken)';
   }
 
   @override
@@ -104,5 +111,6 @@ class UserModel extends Equatable {
         address,
         createdAt,
         userType,
+        fcmToken,
       ];
 }

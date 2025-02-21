@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -28,7 +29,9 @@ Future<void> main() async {
   // Ensure Service Locator is Started
   DI().init();
 
-  sl<IFirebaseMessagingService>().initNotifications();
+  // Initialize Messaging Service
+  MessagingConfig.initFirebaseMessaging();
+  FirebaseMessaging.onBackgroundMessage(MessagingConfig.messageHandler);
 
   // Initialize the 'settings' box
   final settingsService = sl<HiveService>();
