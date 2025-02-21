@@ -16,7 +16,6 @@ class NotificationsServiceImpl implements INotificationsService {
     try {
       String? token = await FirebaseMessaging.instance.getToken();
       log("FCM Token: $token");
-      // dMFO7BpnTvSg91dSF3iXn8:APA91bEWMdzaP_J6OiUs3dtKO88OeajJmtVj86jGUpOhPPJedgxJKvSJNI1Zfj6HLn9ZwROX2kp5PmwYVCNH6oi6Bj3R12EjDxA9l6jQ1aMjTBsqBgR4o8o
 
       return token ?? '';
     } catch (e) {
