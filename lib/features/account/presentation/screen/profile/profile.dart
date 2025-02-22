@@ -1,12 +1,14 @@
 import 'dart:developer';
 
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:shop_zen/config/_config.dart';
 
 import '/core/_core.dart';
-import '/config/_config.dart';
+import '/features/_features.dart';
 
 class ProfileScreen extends StatefulWidget {
   static const routeName = '/profile';
@@ -17,299 +19,394 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final nameController = TextEditingController();
-  final emailController = TextEditingController();
-  final phoneNumberController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _phoneController = TextEditingController();
 
-  final user = sl<FirebaseAuth>().currentUser;
-
-  DateTime date = DateTime(2016, 10, 26);
-
-  String phoneNumber = '';
-  String initialCountry = 'US';
-  PhoneNumber number = PhoneNumber(isoCode: 'US');
+  late final UserCubit _userCubit;
+  Gender _gender = Gender.male;
+  DateTime? _selectedDate;
+  PhoneNumber _phoneNumber = PhoneNumber(isoCode: 'US');
 
   @override
   void initState() {
     super.initState();
-
-    nameController.text = user?.displayName ?? '';
-    emailController.text = user?.email ?? '';
-    _initializePhoneNumber();
+    _userCubit = context.read<UserCubit>();
+    _initializeUserData();
   }
 
   @override
   void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _phoneController.dispose();
     super.dispose();
-    nameController.dispose();
-    emailController.dispose();
-    phoneNumberController.dispose();
   }
 
-  void _showDialog(Widget child) {
-    showCupertinoModalPopup<void>(
-      context: context,
-      builder: (BuildContext context) => Container(
-        height: 216,
-        padding: const EdgeInsets.only(top: 6.0),
-        // The Bottom margin is provided to align the popup above the system
-        // navigation bar.
-        margin: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(20.0),
-            topRight: Radius.circular(20.0),
-          ),
-          color: Theme.of(context).cardColor,
-        ),
-        // Use a SafeArea widget to avoid system overlaps.
-        child: SafeArea(top: false, child: child),
-      ),
-    );
+  Future<void> _initializeUserData() async {
+    final currentUser = _userCubit.state;
+    if (currentUser != null) {
+      _updateControllers(currentUser);
+    }
+
+    _userCubit.stream.listen((user) {
+      if (user != null && mounted) {
+        _updateControllers(user);
+      }
+    });
+
+    await _initializePhoneNumber();
   }
 
-  void _initializePhoneNumber() async {
-    if (user?.phoneNumber != null && user!.phoneNumber!.isNotEmpty) {
+  void _updateControllers(UserModel user) {
+    _nameController.text = user.name;
+    _emailController.text = user.email;
+    _gender = user.gender == 'male' ? Gender.male : Gender.female;
+    _selectedDate = DateTime.tryParse(user.dateOfBirth ?? "");
+  }
+
+  Future<void> _initializePhoneNumber() async {
+    final phone = _userCubit.state?.phone;
+    if (phone?.isNotEmpty ?? false) {
       try {
-        PhoneNumber phoneNumber =
-            await PhoneNumber.getRegionInfoFromPhoneNumber(user!.phoneNumber!);
-        setState(() {
-          number = phoneNumber;
-          phoneNumberController.text = phoneNumber.phoneNumber ?? '';
-        });
+        final number = await PhoneNumber.getRegionInfoFromPhoneNumber(phone!);
+        if (mounted) setState(() => _phoneNumber = number);
       } catch (e) {
-        log('Error parsing phone number: $e');
+        log('Phone number parse error: $e');
       }
     }
   }
 
-  Future<void> _getPhoneNumber(String phoneNumber) async {
-    PhoneNumber number =
-        await PhoneNumber.getRegionInfoFromPhoneNumber(phoneNumber, 'US');
-    setState(() {
-      this.number = number;
-    });
+  Future<void> _handleFormSubmit() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    final userId = _userCubit.state!.uid;
+    final userData = _createUserUpdateData();
+
+    final result = await sl<IFirestoreService<UserModel>>().updateDocument(
+      'users/$userId',
+      userData,
+    );
+
+    result.handle(
+      onSuccess: (_) => _handleSuccess(userId),
+      onError: (error) => _handleError(error),
+    );
+  }
+
+  Map<String, dynamic> _createUserUpdateData() {
+    final date = _selectedDate?.toIso8601String();
+    return UserModel(
+            uid: _userCubit.state!.uid,
+            name: _nameController.text.trim(),
+            email: _emailController.text.trim(),
+            createdAt: _userCubit.state?.createdAt ?? DateTime.now(),
+            dateOfBirth: date ?? '',
+            gender: _gender.name,
+            phone: _phoneNumber.phoneNumber ?? '',
+            token: _userCubit.state?.token ?? '',
+            fcmToken: _userCubit.state?.fcmToken ?? '',
+            profilePic: _userCubit.state?.profilePic ?? '',
+            address: '',
+            userType: UserType.user)
+        .toMap();
+  }
+
+  void _handleSuccess(String userId) {
+    ToastNotification.showSuccessNotification(context, message: 'Profile updated');
+    _userCubit.getCurrentUserData(userId);
+    if (mounted) context.pop();
+  }
+
+  void _handleError(String error) {
+    ToastNotification.showErrorNotification(context, message: error);
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('My Profile'),
-        actions: [
-          NotificationsIconWidget(),
-        ],
+      appBar: const _ProfileAppBar(),
+      body: _ProfileForm(
+        formKey: _formKey,
+        nameController: _nameController,
+        emailController: _emailController,
+        phoneNumber: _phoneNumber,
+        gender: _gender,
+        selectedDate: _selectedDate,
+        onDateChanged: (date) => setState(() => _selectedDate = date),
+        onGenderChanged: (gender) => setState(() => _gender = gender),
+        onPhoneChanged: (number) => _phoneNumber = number,
+        onSubmit: _handleFormSubmit,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(TPadding.p20),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
-              // Full Name
-              TextFormFieldComponent(
-                title: 'Full Name',
-                textFieldWithTitle: true,
+    );
+  }
+}
+
+class _ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const _ProfileAppBar();
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      title: const Text('My Profile'),
+      actions: const [NotificationsIconWidget()],
+    );
+  }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+}
+
+class _ProfileForm extends StatelessWidget {
+  final GlobalKey<FormState> formKey;
+  final TextEditingController nameController;
+  final TextEditingController emailController;
+  final PhoneNumber phoneNumber;
+  final Gender gender;
+  final DateTime? selectedDate;
+  final ValueChanged<DateTime> onDateChanged;
+  final ValueChanged<Gender> onGenderChanged;
+  final ValueChanged<PhoneNumber> onPhoneChanged;
+  final VoidCallback onSubmit;
+
+  const _ProfileForm({
+    required this.formKey,
+    required this.nameController,
+    required this.emailController,
+    required this.phoneNumber,
+    required this.gender,
+    required this.selectedDate,
+    required this.onDateChanged,
+    required this.onGenderChanged,
+    required this.onPhoneChanged,
+    required this.onSubmit,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(TPadding.p20),
+      child: Form(
+        key: formKey,
+        child: ListView(
+          children: [
+            _FormFieldSection(
+              title: 'Full Name',
+              child: TextFormFieldComponent(
                 controller: nameController,
                 hintText: 'Enter your full name',
-                validator: (String? value) =>
-                    TValidator.validateEmptyText('Full name', value),
+                validator: (v) => TValidator.validateEmptyText('Full name', v),
               ),
-              const SizedBox(height: TSize.s16),
-
-              // Email Address
-              TextFormFieldComponent(
-                title: 'Email Address',
-                textFieldWithTitle: true,
+            ),
+            const SizedBox(height: TSize.s16),
+            _FormFieldSection(
+              title: 'Email Address',
+              child: TextFormFieldComponent(
                 controller: emailController,
                 hintText: 'Enter your email',
                 validator: TValidator.validateEmail,
               ),
-              const SizedBox(height: TSize.s16),
+            ),
+            const SizedBox(height: TSize.s16),
+            _DatePickerField(
+              selectedDate: selectedDate,
+              onDateChanged: onDateChanged,
+            ),
+            const SizedBox(height: TSize.s16),
+            _GenderSelector(
+              gender: gender,
+              onGenderChanged: onGenderChanged,
+            ),
+            const SizedBox(height: TSize.s16),
+            _PhoneNumberField(
+              initialNumber: phoneNumber,
+              onPhoneChanged: onPhoneChanged,
+            ),
+            const SizedBox(height: TSize.s48),
+            ElevatedButton(onPressed: onSubmit, child: const TextWidget('Save')),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
-              // Date of Birth
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TextWidget(
-                    'Date of Birth',
-                    style: theme.textTheme.titleMedium,
-                  ),
-                  TSize.s04.toHeight,
-                  Container(
-                    height: TSize.s52,
-                    padding: EdgeInsetsDirectional.symmetric(
-                            vertical: TPadding.p12, horizontal: TPadding.p20)
-                        .copyWith(end: 8),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.40),
-                      ),
-                      borderRadius: BorderRadius.circular(TSize.s10),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        TextWidget(
-                          date.formattedTimeOrDate(),
-                          style: theme.textTheme.bodyLarge,
-                        ),
-                        IconButton(
-                          padding: EdgeInsets.zero,
-                          onPressed: () => _showDialog(
-                            CupertinoDatePicker(
-                              initialDateTime: date,
-                              mode: CupertinoDatePickerMode.date,
-                              use24hFormat: true,
-                              // This shows day of week alongside day of month
-                              showDayOfWeek: false,
-                              // This is called when the user changes the date.
-                              onDateTimeChanged: (DateTime newDate) {
-                                setState(() => date = newDate);
-                              },
-                            ),
-                          ),
-                          icon: const IconWidget(name: 'Calendar'),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: TSize.s16),
+class _FormFieldSection extends StatelessWidget {
+  final String title;
+  final Widget child;
 
-              // Gender
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TextWidget(
-                    'Gender',
-                    style: theme.textTheme.titleMedium,
-                  ),
-                  TSize.s04.toHeight,
-                  Container(
-                    height: TSize.s52,
-                    padding: EdgeInsets.symmetric(
-                        vertical: TPadding.p12, horizontal: TPadding.p20),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.40),
-                      ),
-                      borderRadius: BorderRadius.circular(TSize.s10),
-                    ),
-                    child: DropdownButton<String>(
-                      isExpanded: true,
-                      underline: const SizedBox(),
-                      borderRadius: BorderRadius.circular(TSize.s10),
-                      style: theme.textTheme.bodyLarge,
-                      icon: RotatedBox(
-                        quarterTurns: 3,
-                        child: const Icon(Icons.arrow_back_ios_new_sharp),
-                      ),
-                      value: 'Male',
-                      items: [
-                        DropdownMenuItem<String>(
-                          value: 'Male',
-                          child: TextWidget('Male'),
-                        ),
-                        DropdownMenuItem<String>(
-                          value: 'Female',
-                          child: TextWidget('Female'),
-                        ),
-                      ],
-                      onChanged: (String? value) {},
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: TSize.s16),
+  const _FormFieldSection({
+    required this.title,
+    required this.child,
+  });
 
-              // Phone Number
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TextWidget(
-                    'Phone Number',
-                    style: theme.textTheme.titleMedium,
-                  ),
-                  TSize.s04.toHeight,
-                  Container(
-                    height: TSize.s55,
-                    padding: EdgeInsetsDirectional.symmetric(horizontal: TPadding.p20),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.40),
-                      ),
-                      borderRadius: BorderRadius.circular(TSize.s10),
-                    ),
-                    child: InternationalPhoneNumberInput(
-                      scrollPadding: EdgeInsets.all(20),
-                      inputDecoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Phone Number',
-                        hintStyle: theme.textTheme.bodyLarge,
-                        contentPadding: EdgeInsets.only(bottom: 12),
-                      ),
-                      autoFocusSearch: true,
-                      selectorButtonOnErrorPadding: 0,
-                      searchBoxDecoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(20),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(TSize.s10),
-                          borderSide: BorderSide(
-                            color: theme.colorScheme.onSurfaceVariant
-                                .withValues(alpha: 0.40),
-                          ),
-                        ),
-                      ),
-                      onInputChanged: (PhoneNumber number) {
-                        phoneNumber = number.phoneNumber.toString();
-                      },
-                      onFieldSubmitted: (value) {},
-                      onInputValidated: (bool value) {
-                        if (!value) {
-                          log("Invalid phone number: $phoneNumber");
-                          // ToastNotification.showErrorNotification(context,
-                          //     message: 'Invalid phone number');
-                        } else {
-                          log("Valid phone number: $phoneNumber");
-                          // ToastNotification.showSuccessNotification(context,
-                          //     message: 'Valid phone number');
-                        }
-                      },
-                      selectorConfig: SelectorConfig(
-                        selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
-                        useBottomSheetSafeArea: true,
-                      ),
-                      ignoreBlank: true,
-                      spaceBetweenSelectorAndTextField: 0,
-                      autoValidateMode: AutovalidateMode.disabled,
-                      initialValue: number,
-                      textFieldController: phoneNumberController,
-                      formatInput: true,
-                      keyboardType:
-                          TextInputType.numberWithOptions(signed: true, decimal: true),
-                      inputBorder: InputBorder.none,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: TSize.s48),
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextWidget(title, style: context.textTheme.titleMedium),
+        const SizedBox(height: TSize.s04),
+        child,
+      ],
+    );
+  }
+}
 
-              // Submit Button
-              ElevatedButton(
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    await _getPhoneNumber(phoneNumber);
-                    _formKey.currentState?.save();
-                  } else {}
-                },
-                child: const TextWidget('Save'),
+class _DatePickerField extends StatelessWidget {
+  final DateTime? selectedDate;
+  final ValueChanged<DateTime> onDateChanged;
+
+  const _DatePickerField({
+    required this.selectedDate,
+    required this.onDateChanged,
+  });
+
+  void _showDatePicker(BuildContext context) {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (context) => _DatePickerDialog(
+        initialDate: selectedDate,
+        onDateChanged: onDateChanged,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _FormFieldSection(
+      title: 'Date of Birth',
+      child: GestureDetector(
+        onTap: () => _showDatePicker(context),
+        child: Container(
+          height: TSize.s52,
+          padding: const EdgeInsets.symmetric(horizontal: TPadding.p20),
+          decoration: BoxDecoration(
+            border: Border.all(
+              color:
+                  Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.40),
+            ),
+            borderRadius: BorderRadius.circular(TSize.s10),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              TextWidget(
+                selectedDate?.formattedTimeOrDate() ?? "Select Date",
+                style: context.textTheme.bodyLarge,
               ),
+              const IconWidget(name: 'Calendar'),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _DatePickerDialog extends StatelessWidget {
+  final DateTime? initialDate;
+  final ValueChanged<DateTime> onDateChanged;
+
+  const _DatePickerDialog({
+    required this.initialDate,
+    required this.onDateChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 216,
+      padding: const EdgeInsets.only(top: 6),
+      margin: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+        color: Theme.of(context).cardColor,
+      ),
+      child: SafeArea(
+        top: false,
+        child: CupertinoDatePicker(
+          initialDateTime: initialDate,
+          mode: CupertinoDatePickerMode.date,
+          use24hFormat: true,
+          onDateTimeChanged: onDateChanged,
+        ),
+      ),
+    );
+  }
+}
+
+class _GenderSelector extends StatelessWidget {
+  final Gender gender;
+  final ValueChanged<Gender> onGenderChanged;
+
+  const _GenderSelector({
+    required this.gender,
+    required this.onGenderChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return _FormFieldSection(
+      title: 'Gender',
+      child: Container(
+        height: TSize.s52,
+        padding: const EdgeInsets.symmetric(horizontal: TPadding.p20),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: context.theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.40),
+          ),
+          borderRadius: BorderRadius.circular(TSize.s10),
+        ),
+        child: DropdownButton<Gender>(
+          isExpanded: true,
+          value: gender,
+          items: Gender.values
+              .map((gender) => DropdownMenuItem(
+                    value: gender,
+                    child: TextWidget(gender.name.capitalize()),
+                  ))
+              .toList(),
+          onChanged: (gender) => onGenderChanged(gender ?? Gender.male),
+        ),
+      ),
+    );
+  }
+}
+
+class _PhoneNumberField extends StatelessWidget {
+  final PhoneNumber initialNumber;
+  final ValueChanged<PhoneNumber> onPhoneChanged;
+
+  const _PhoneNumberField({
+    required this.initialNumber,
+    required this.onPhoneChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return _FormFieldSection(
+      title: 'Phone Number',
+      child: Container(
+        height: TSize.s55,
+        padding: const EdgeInsets.symmetric(horizontal: TPadding.p20),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: context.theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.40),
+          ),
+          borderRadius: BorderRadius.circular(TSize.s10),
+        ),
+        child: InternationalPhoneNumberInput(
+          initialValue: initialNumber,
+          onInputChanged: onPhoneChanged,
+          selectorConfig: const SelectorConfig(
+            selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
+          ),
+          inputDecoration: const InputDecoration(
+            border: InputBorder.none,
+            hintText: 'Phone Number',
+            contentPadding: EdgeInsets.only(bottom: 12),
           ),
         ),
       ),

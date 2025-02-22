@@ -23,3 +23,8 @@ enum UserType {
   admin,
   user,
 }
+
+enum Gender {
+  male,
+  female,
+}

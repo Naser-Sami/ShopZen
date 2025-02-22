@@ -45,7 +45,7 @@ class UsersListScreen extends StatelessWidget {
   }
 
   Widget _buildUserListItem(DocumentSnapshot doc, BuildContext context) {
-    final user = UserModel.fromJson(doc.data() as Map<String, dynamic>);
+    final user = UserModel.fromJson(doc.data() as Map<String, dynamic>, doc.id);
 
     if (user.uid == sl<FirebaseAuth>().currentUser!.uid) {
       return const SizedBox.shrink();

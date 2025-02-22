@@ -7,6 +7,9 @@ final providers = [
   BlocProvider<ThemeCubit>(
     create: (context) => ThemeCubit(),
   ),
+  BlocProvider<UserCubit>(
+    create: (context) => UserCubit(),
+  ),
   BlocProvider<ProductsBloc>(
     create: (context) => ProductsBloc(productRepository: sl<IProductRepository>()),
   ),

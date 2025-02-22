@@ -50,6 +50,10 @@ class DI {
       ),
     );
 
+    sl.registerSingleton<IFirestoreService<UserModel>>(
+      FirestoreServiceImpl<UserModel>(UserModel.fromJson),
+    );
+
     // BLOC's
     sl.registerLazySingleton<ProductsBloc>(
       () => ProductsBloc(productRepository: sl<IProductRepository>()),
@@ -58,6 +62,10 @@ class DI {
     // CUBIT's
     sl.registerLazySingleton<ThemeCubit>(
       () => ThemeCubit(),
+    );
+
+    sl.registerLazySingleton<UserCubit>(
+      () => UserCubit(),
     );
 
     // Local Storage Services

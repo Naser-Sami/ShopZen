@@ -69,8 +69,10 @@ class _AccountScreenState extends State<HelpCenterScreen> {
                           phone: '',
                           address: '',
                           createdAt: DateTime(2025, 2, 20),
+                          dateOfBirth: '',
                           userType: UserType.admin,
                           fcmToken: fcmToken,
+                          gender: Gender.male.name,
                         );
 
                         String userName = receiverUser.name == ''

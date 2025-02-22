@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '/core/_core.dart';
@@ -72,7 +71,7 @@ class FirebaseAuthServiceImpl implements IFirebaseAuthService {
         password: password,
       );
 
-      _createUserCollection(credential);
+      createOrUpdateUserCollection(credential);
 
       return credential.user;
     } on FirebaseAuthException catch (e) {
@@ -92,7 +91,7 @@ class FirebaseAuthServiceImpl implements IFirebaseAuthService {
         password: password,
       );
 
-      _createUserCollection(credential);
+      createOrUpdateUserCollection(credential);
 
       return credential.user;
     } on FirebaseAuthException catch (e) {
@@ -113,24 +112,5 @@ class FirebaseAuthServiceImpl implements IFirebaseAuthService {
       log(e.toString());
       rethrow;
     }
-  }
-
-  Future<void> _createUserCollection(UserCredential credential) async {
-    // Create a new user document if not exist in Firestore
-    final fcmToken = await sl<INotificationsService>().getFCMToken();
-    sl<FirebaseFirestore>().collection('users').doc(credential.user?.uid).set(
-          UserModel(
-            uid: credential.user?.uid ?? "",
-            name: credential.user?.displayName ?? "",
-            email: credential.user?.email ?? "",
-            profilePic: credential.user?.photoURL ?? "",
-            token: credential.user?.refreshToken ?? "",
-            phone: credential.user?.phoneNumber ?? "",
-            address: "",
-            createdAt: DateTime.now(),
-            userType: UserType.user,
-            fcmToken: fcmToken,
-          ).toMap(),
-        );
   }
 }

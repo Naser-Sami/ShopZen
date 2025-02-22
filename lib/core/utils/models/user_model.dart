@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:equatable/equatable.dart';
 import '/core/_core.dart';
 
@@ -10,8 +12,10 @@ class UserModel extends Equatable {
   final String phone;
   final String address;
   final DateTime? createdAt;
+  final String? dateOfBirth;
   final UserType userType;
   final String fcmToken;
+  final String gender;
 
   const UserModel({
     required this.uid,
@@ -21,9 +25,11 @@ class UserModel extends Equatable {
     required this.token,
     required this.phone,
     required this.address,
-    required this.createdAt,
+    this.createdAt,
+    this.dateOfBirth,
     required this.userType,
     required this.fcmToken,
+    required this.gender,
   });
 
   // copy with method
@@ -36,8 +42,10 @@ class UserModel extends Equatable {
     String? phone,
     String? address,
     DateTime? createdAt,
+    String? dateOfBirth,
     UserType? userType,
     String? fcmToken,
+    String? gender,
   }) =>
       UserModel(
         uid: uid ?? this.uid,
@@ -48,27 +56,33 @@ class UserModel extends Equatable {
         phone: phone ?? this.phone,
         address: address ?? this.address,
         createdAt: createdAt ?? this.createdAt,
+        dateOfBirth: dateOfBirth ?? this.dateOfBirth,
         userType: userType ?? this.userType,
         fcmToken: fcmToken ?? this.fcmToken,
+        gender: gender ?? this.gender,
       );
 
   // fromJson method
-  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-        uid: json['uid'] ?? "",
-        name: json['name'] ?? "",
-        email: json['email'] ?? "",
-        profilePic: json['profilePic'] ?? "",
-        token: json['token'] ?? "",
-        phone: json['phone'] ?? "",
-        address: json['address'] ?? "",
-        createdAt: DateTime.parse(json['createdAt']),
-        userType: UserType.values.byName(json['userType']),
-        fcmToken: json['fcmToken'] ?? "",
-      );
+  factory UserModel.fromJson(Map<String, dynamic> json, String id) {
+    log('Date of birth: ${json['dateOfBirth']}');
+    return UserModel(
+      uid: id,
+      name: json['name'] ?? "",
+      email: json['email'] ?? "",
+      profilePic: json['profilePic'] ?? "",
+      token: json['token'] ?? "",
+      phone: json['phone'] ?? "",
+      address: json['address'] ?? "",
+      createdAt: DateTime.tryParse(json['createdAt']),
+      dateOfBirth: json['dateOfBirth'],
+      userType: UserType.values.byName(json['userType']),
+      fcmToken: json['fcmToken'] ?? "",
+      gender: json['gender'] ?? "",
+    );
+  }
 
   // toMap method
   Map<String, dynamic> toMap() => {
-        'uid': uid,
         'name': name,
         'email': email,
         'profilePic': profilePic,
@@ -76,8 +90,10 @@ class UserModel extends Equatable {
         'phone': phone,
         'address': address,
         'createdAt': createdAt?.toIso8601String(),
+        'dateOfBirth': dateOfBirth,
         'userType': userType.name,
         'fcmToken': fcmToken,
+        'gender': gender,
       };
 
   // empty constructor
@@ -90,14 +106,16 @@ class UserModel extends Equatable {
     this.phone = '',
     this.address = '',
     this.createdAt,
+    this.dateOfBirth = '',
     this.userType = UserType.user,
     this.fcmToken = '',
+    this.gender = '',
   });
 
   // string
   @override
   String toString() {
-    return 'UserModel(uid: $uid, name: $name, email: $email, profilePic: $profilePic, token: $token, phone: $phone, address: $address, createdAt: $createdAt, userType: $userType, fcmToken: $fcmToken)';
+    return 'UserModel(uid: $uid, name: $name, email: $email, profilePic: $profilePic, token: $token, phone: $phone, address: $address, createdAt: $createdAt, dateOfBirth: $dateOfBirth userType: $userType, fcmToken: $fcmToken, gender: $gender)';
   }
 
   @override
@@ -110,7 +128,9 @@ class UserModel extends Equatable {
         phone,
         address,
         createdAt,
+        dateOfBirth,
         userType,
         fcmToken,
+        gender,
       ];
 }

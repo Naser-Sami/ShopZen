@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -29,7 +28,7 @@ class SocialSignInServiceImpl implements ISocialSignInService {
 
       // Once signed in, return the UserCredential
       final userCredential = await auth.signInWithCredential(credential);
-      _createUserCollection(userCredential);
+      createOrUpdateUserCollection(userCredential);
 
       return userCredential;
     } on FirebaseAuthException catch (e) {
@@ -51,7 +50,7 @@ class SocialSignInServiceImpl implements ISocialSignInService {
 
       // Once signed in, return the UserCredential
       final userCredential = await auth.signInWithCredential(facebookAuthCredential);
-      _createUserCollection(userCredential);
+      createOrUpdateUserCollection(userCredential);
       return userCredential;
     } on FirebaseAuthException catch (e) {
       throw AuthErrorHandler.handle(e);
@@ -70,7 +69,7 @@ class SocialSignInServiceImpl implements ISocialSignInService {
       String? authCode = userCredential.additionalUserInfo?.authorizationCode;
       // Revoke Apple auth token
       await auth.revokeTokenWithAuthorizationCode(authCode!);
-      _createUserCollection(userCredential);
+      createOrUpdateUserCollection(userCredential);
 
       return userCredential;
     } on FirebaseAuthException catch (e) {
@@ -89,7 +88,7 @@ class SocialSignInServiceImpl implements ISocialSignInService {
       // Sign in with Firebase
       UserCredential userCredential = await auth.signInWithProvider(githubProvider);
 
-      _createUserCollection(userCredential);
+      createOrUpdateUserCollection(userCredential);
 
       return userCredential;
     } on FirebaseAuthException catch (e) {
@@ -103,25 +102,5 @@ class SocialSignInServiceImpl implements ISocialSignInService {
   Future<UserCredential> signInWithX() {
     // TODO: implement signInWithX
     throw UnimplementedError();
-  }
-
-  Future<void> _createUserCollection(UserCredential credential) async {
-    final fcmToken = await sl<INotificationsService>().getFCMToken();
-
-    // Create a new user document if not exist in Firestore
-    sl<FirebaseFirestore>().collection('users').doc(credential.user?.uid).set(
-          UserModel(
-            uid: credential.user?.uid ?? "",
-            name: credential.user?.displayName ?? "",
-            email: credential.user?.email ?? "",
-            profilePic: credential.user?.photoURL ?? "",
-            token: credential.user?.refreshToken ?? "",
-            phone: credential.user?.phoneNumber ?? "",
-            address: "",
-            createdAt: DateTime.now(),
-            userType: UserType.user,
-            fcmToken: fcmToken,
-          ).toMap(),
-        );
   }
 }
