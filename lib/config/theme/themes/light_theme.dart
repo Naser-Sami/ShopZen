@@ -17,6 +17,7 @@ ThemeData _lightTheme = ThemeData.light(useMaterial3: true).copyWith(
   elevatedButtonTheme: elevatedButtonThemeLight,
   appBarTheme: appBarThemeLight,
   iconButtonTheme: iconButtonThemeLight,
+  bottomSheetTheme: bottomSheetThemeLight,
 );
 
 ThemeData get lightTheme => _lightTheme;

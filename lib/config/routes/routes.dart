@@ -164,13 +164,6 @@ final router = GoRouter(
                     child: HelpCenterScreen(),
                   ),
                 ),
-                GoRoute(
-                  path: NotificationsSettingsScreen.routeName,
-                  name: 'Notifications Settings',
-                  pageBuilder: (context, state) => CupertinoPage(
-                    child: NotificationsSettingsScreen(),
-                  ),
-                ),
               ],
             ),
           ],
@@ -204,6 +197,24 @@ final router = GoRouter(
           ),
         );
       },
+    ),
+
+    // Notifications Settings Section
+    GoRoute(
+      path: NotificationsSettingsScreen.routeName,
+      name: 'Notifications Settings',
+      pageBuilder: (context, state) => CupertinoPage(
+        child: NotificationsSettingsScreen(),
+      ),
+    ),
+
+    // Profile Section
+    GoRoute(
+      path: ProfileScreen.routeName,
+      name: 'Profile',
+      pageBuilder: (context, state) => CupertinoPage(
+        child: ProfileScreen(),
+      ),
     ),
   ],
 );

@@ -84,7 +84,8 @@ class TextFormFieldComponent extends StatelessWidget {
             OutlineInputBorder(
               borderRadius: BorderRadius.circular(TSize.s10),
               borderSide: BorderSide(
-                color: successColor ?? theme.primaryColor,
+                color: successColor ??
+                    theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.40),
               ),
             ),
         focusedBorder: enabledBorder ??

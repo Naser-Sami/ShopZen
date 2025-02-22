@@ -20,7 +20,7 @@ class NotificationsModel {
 }
 
 class NotificationsSettingsScreen extends StatefulWidget {
-  static const routeName = 'notifications-settings';
+  static const routeName = '/notifications-settings';
   const NotificationsSettingsScreen({super.key});
 
   @override

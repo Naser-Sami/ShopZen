@@ -55,14 +55,16 @@ class _AccountScreenState extends State<AccountScreen> {
                 return ListTile(
                   onTap: () {
                     switch (data[index].name) {
+                      case 'Your Profile':
+                        context.push(ProfileScreen.routeName);
+                        break;
                       case 'Help Center':
                         context.push(
                             "${AccountScreen.routeName}/${HelpCenterScreen.routeName}");
                         break;
 
                       case 'Notifications':
-                        context.push(
-                            "${AccountScreen.routeName}/${NotificationsSettingsScreen.routeName}");
+                        context.push(NotificationsSettingsScreen.routeName);
                         break;
                       default:
                     }
