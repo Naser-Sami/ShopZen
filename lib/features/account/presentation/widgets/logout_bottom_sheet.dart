@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '/core/_core.dart';
 import '/config/_config.dart';
@@ -69,11 +69,9 @@ Future<void> logoutBottomSheet(BuildContext context) async {
                       child: ElevatedButton(
                         onPressed: () {
                           // only for test sing out
-                          sl<IFirebaseAuthService>().signOut().then((value) {
-                            if (context.mounted) {
-                              context.go(OnboardingScreen.routeName);
-                            }
-                          });
+                          if (context.mounted) {
+                            context.read<UserCubit>().logout(context);
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: theme.colorScheme.error,

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:equatable/equatable.dart';
 import '/core/_core.dart';
 
@@ -64,7 +62,6 @@ class UserModel extends Equatable {
 
   // fromJson method
   factory UserModel.fromJson(Map<String, dynamic> json, String id) {
-    log('Date of birth: ${json['dateOfBirth']}');
     return UserModel(
       uid: id,
       name: json['name'] ?? "",

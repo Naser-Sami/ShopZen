@@ -83,94 +83,75 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> _handleFormSubmit() async {
     if (!_formKey.currentState!.validate()) return;
 
-    final userId = _userCubit.state!.uid;
-    final userData = _createUserUpdateData();
+    final user = _auth.currentUser;
+    final newEmail = _emailController.text.trim();
+    final currentEmail = user?.email ?? '';
 
-    final result = await sl<IFirestoreService<UserModel>>().updateDocument(
-      'users/$userId',
-      userData,
-    );
+    try {
+      if (newEmail != currentEmail && user != null) {
+        // Reauthenticate before updating the email
+        await _reauthenticateUser(user);
 
-    result.handle(
-      onSuccess: (_) => _handleSuccess(userId),
-      onError: (error) => _handleError(error),
-    );
+        // ✅ Update email in Firebase Authentication (Immediate Update)
+        await user.updateEmail(newEmail);
+
+        // (Optional) Send verification email
+        await user.sendEmailVerification();
+      }
+
+      // ✅ Update Firestore Collection
+      final userId = _userCubit.state!.uid;
+      final userData = _createUserUpdateData();
+      final result = await sl<IFirestoreService<UserModel>>().updateDocument(
+        'users/$userId',
+        userData,
+      );
+
+      result.handle(
+        onSuccess: (_) => _handleSuccess(userId),
+        onError: (error) => _handleError(error),
+      );
+    } on FirebaseAuthException catch (e) {
+      _handleAuthError(e);
+    } catch (e) {
+      _handleError(e.toString());
+    }
   }
 
-  // Future<void> _handleFormSubmit() async {
-  //   if (!_formKey.currentState!.validate()) return;
+  Future<void> _reauthenticateUser(User user) async {
+    // Show dialog to get password
+    final password = await showDialog<String>(
+      context: context,
+      builder: (context) => _ReAuthenticationDialog(),
+    );
 
-  //   final user = _auth.currentUser;
-  //   final newEmail = _emailController.text.trim();
-  //   final currentEmail = user?.email ?? '';
+    if (password == null || password.isEmpty) {
+      throw 'ReAuthentication canceled';
+    }
 
-  //   try {
-  //     // 1. Check if email changed
-  //     if (newEmail != currentEmail && user != null) {
-  //       // 2. Reauthenticate user if needed
-  //       await _reauthenticateUser(user);
+    final credential = EmailAuthProvider.credential(
+      email: user.email!,
+      password: password,
+    );
 
-  //       // 3. Update auth email
-  //       await user.updateEmail(newEmail);
+    await user.reauthenticateWithCredential(credential);
+  }
 
-  //       // 4. Send verification email (optional)
-  //       await user.sendEmailVerification();
-  //     }
-
-  //     // 5. Update Firestore
-  //     final userId = _userCubit.state!.uid;
-  //     final userData = _createUserUpdateData();
-
-  //     final result = await sl<IFirestoreService<UserModel>>().updateDocument(
-  //       'users/$userId',
-  //       userData,
-  //     );
-
-  //     result.handle(
-  //       onSuccess: (_) => _handleSuccess(userId),
-  //       onError: (error) => _handleError(error),
-  //     );
-  //   } on FirebaseAuthException catch (e) {
-  //     _handleAuthError(e);
-  //   } catch (e) {
-  //     _handleError(e.toString());
-  //   }
-  // }
-
-  // Future<void> _reauthenticateUser(User user) async {
-  //   // Show dialog to get password
-  //   final password = await showDialog<String>(
-  //     context: context,
-  //     builder: (context) => _ReAuthenticationDialog(),
-  //   );
-
-  //   if (password == null || password.isEmpty) {
-  //     throw 'ReAuthentication canceled';
-  //   }
-
-  //   final credential = EmailAuthProvider.credential(
-  //     email: user.email!,
-  //     password: password,
-  //   );
-
-  //   await user.reauthenticateWithCredential(credential);
-  // }
-
-  // void _handleAuthError(FirebaseAuthException e) {
-  //   String message = 'Email update failed';
-  //   switch (e.code) {
-  //     case 'requires-recent-login':
-  //       message = 'Please reauthenticate to update your email';
-  //       break;
-  //     case 'email-already-in-use':
-  //       message = 'Email already in use';
-  //       break;
-  //     case 'invalid-email':
-  //       message = 'Invalid email address';
-  //       break;
-  //   }
-  //   _handleError(message);
-  // }
+  void _handleAuthError(FirebaseAuthException e) {
+    String message = 'Email update failed';
+    switch (e.code) {
+      case 'requires-recent-login':
+        message = 'Please reauthenticate to update your email';
+        break;
+      case 'email-already-in-use':
+        message = 'Email already in use';
+        break;
+      case 'invalid-email':
+        message = 'Invalid email address';
+        break;
+    }
+    _handleError(message);
+  }
 
   Map<String, dynamic> _createUserUpdateData() {
     final date = _selectedDate?.toIso8601String();
@@ -491,29 +472,28 @@ class _PhoneNumberField extends StatelessWidget {
   }
 }
 
-// Add this dialog widget
-// class _ReAuthenticationDialog extends StatelessWidget {
-//   final _passwordController = TextEditingController();
+class _ReAuthenticationDialog extends StatelessWidget {
+  final _passwordController = TextEditingController();
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return AlertDialog(
-//       title: Text('Security Check'),
-//       content: TextFormField(
-//         controller: _passwordController,
-//         obscureText: true,
-//         decoration: InputDecoration(labelText: 'Enter your password'),
-//       ),
-//       actions: [
-//         TextButton(
-//           onPressed: () => Navigator.pop(context),
-//           child: Text('Cancel', style: TextStyle(color: Colors.red)),
-//         ),
-//         TextButton(
-//           onPressed: () => Navigator.pop(context, _passwordController.text),
-//           child: Text('Confirm', style: TextStyle(color: Colors.blue)),
-//         ),
-//       ],
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text('Security Check'),
+      content: TextFormField(
+        controller: _passwordController,
+        obscureText: true,
+        decoration: InputDecoration(labelText: 'Enter your password'),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text('Cancel', style: TextStyle(color: Colors.red)),
+        ),
+        TextButton(
+          onPressed: () => Navigator.pop(context, _passwordController.text),
+          child: Text('Confirm', style: TextStyle(color: Colors.blue)),
+        ),
+      ],
+    );
+  }
+}

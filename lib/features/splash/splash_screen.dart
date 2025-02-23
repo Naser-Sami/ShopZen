@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '/core/_core.dart';
@@ -19,11 +18,12 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    _getCurrentUserData();
     navToNextPage();
   }
 
-  void _getUserData(String uid) {
-    context.read<UserCubit>().getCurrentUserData(uid);
+  Future<void> _getCurrentUserData() async {
+    await sl<UserCubit>().getCurrentUserData(sl<FirebaseAuth>().currentUser!.uid);
   }
 
   navToNextPage() async {
@@ -31,7 +31,6 @@ class _SplashScreenState extends State<SplashScreen> {
       (value) {
         if (mounted) {
           if (sl<FirebaseAuth>().currentUser?.refreshToken != null) {
-            _getUserData(sl<FirebaseAuth>().currentUser!.uid);
             context.go(BottomNavigationBarWidget.routeName);
           } else {
             context.go(OnboardingScreen.routeName);

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -10,6 +11,7 @@ class AuthController {
   Future<void> loginWithGoogle(BuildContext context) async {
     try {
       await sl<ISocialSignInService>().signInWithGoogle().then((v) {
+        _getCurrentUserData();
         if (context.mounted) {
           // for apis you can use the user credential to get the user details from the api
           _navToHomeScreen(context, "${v.user?.email}, Login successful");
@@ -25,6 +27,7 @@ class AuthController {
   Future<void> loginWithApple(BuildContext context) async {
     try {
       await sl<ISocialSignInService>().signInWithApple().then((v) {
+        _getCurrentUserData();
         if (context.mounted) {
           _navToHomeScreen(context, "${v.user?.email}, Login successful");
         }
@@ -39,6 +42,7 @@ class AuthController {
   Future<void> loginWithX(BuildContext context) async {
     try {
       await sl<ISocialSignInService>().signInWithX().then((v) {
+        _getCurrentUserData();
         if (context.mounted) {
           _navToHomeScreen(context, "${v.user?.email}, Login successful");
         }
@@ -53,6 +57,7 @@ class AuthController {
   Future<void> loginWithFacebook(BuildContext context) async {
     try {
       await sl<ISocialSignInService>().signInWithFacebook().then((v) {
+        _getCurrentUserData();
         if (context.mounted) {
           _navToHomeScreen(context, "${v.user?.email}, Login successful");
         }
@@ -67,6 +72,7 @@ class AuthController {
   Future<void> loginWithGithub(BuildContext context) async {
     try {
       await sl<ISocialSignInService>().signInWithGitHub().then((v) {
+        _getCurrentUserData();
         if (context.mounted) {
           _navToHomeScreen(context, "${v.user?.email}, Login successful");
         }
@@ -84,6 +90,7 @@ class AuthController {
       await sl<IFirebaseAuthService>()
           .signInWithEmailAndPassword(email: email, password: password)
           .then((v) {
+        _getCurrentUserData();
         if (context.mounted) {
           _navToHomeScreen(context, "${v?.email}, Login successful");
         }
@@ -101,6 +108,7 @@ class AuthController {
       await sl<IFirebaseAuthService>()
           .signUpWithEmailAndPassword(email: email, password: password)
           .then((v) {
+        _getCurrentUserData();
         if (context.mounted) {
           _navToHomeScreen(context, "${v?.email}, Sign Up successfully");
         }
@@ -110,6 +118,10 @@ class AuthController {
         ToastNotification.showErrorNotification(context, message: e.toString());
       }
     }
+  }
+
+  Future<void> _getCurrentUserData() async {
+    await sl<UserCubit>().getCurrentUserData(sl<FirebaseAuth>().currentUser!.uid);
   }
 
   void _navToHomeScreen(BuildContext context, String msg) {

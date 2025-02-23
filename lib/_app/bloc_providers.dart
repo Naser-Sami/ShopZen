@@ -5,12 +5,12 @@ import '/core/_core.dart';
 
 final providers = [
   BlocProvider<ThemeCubit>(
-    create: (context) => ThemeCubit(),
+    create: (context) => sl<ThemeCubit>(),
   ),
   BlocProvider<UserCubit>(
-    create: (context) => UserCubit(),
+    create: (context) => sl<UserCubit>(),
   ),
   BlocProvider<ProductsBloc>(
-    create: (context) => ProductsBloc(productRepository: sl<IProductRepository>()),
+    create: (context) => sl<ProductsBloc>(),
   ),
 ];
