@@ -27,7 +27,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   late final UserCubit _userCubit;
-  Gender _gender = Gender.male;
+  Gender _gender = Gender.undefine;
   DateTime? _selectedDate;
   PhoneNumber _phoneNumber = PhoneNumber(isoCode: 'US');
 
@@ -64,7 +64,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void _updateControllers(UserModel user) {
     _nameController.text = user.name;
     _emailController.text = user.email;
-    _gender = user.gender == 'male' ? Gender.male : Gender.female;
+    _gender = user.gender == 'male'
+        ? Gender.male
+        : user.gender == 'female'
+            ? Gender.female
+            : Gender.undefine;
     _selectedDate = DateTime.tryParse(user.dateOfBirth ?? "");
   }
 
@@ -420,6 +424,9 @@ class _GenderSelector extends StatelessWidget {
         child: DropdownButton<Gender>(
           isExpanded: true,
           value: gender,
+          underline: SizedBox(),
+          borderRadius: BorderRadius.circular(TSize.s10),
+          dropdownColor: context.theme.cardColor,
           items: Gender.values
               .map((gender) => DropdownMenuItem(
                     value: gender,

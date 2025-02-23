@@ -25,6 +25,7 @@ enum UserType {
 }
 
 enum Gender {
+  undefine,
   male,
   female,
 }
