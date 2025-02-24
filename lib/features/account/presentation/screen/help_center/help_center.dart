@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -55,39 +54,42 @@ class _AccountScreenState extends State<HelpCenterScreen> {
                   onTap: () async {
                     switch (data[index].name) {
                       case 'Customer Service':
-                        final fcmToken = await sl<INotificationsService>().getFCMToken();
-
-                        // send a user model to the chat room screen
-                        UserModel receiverUser = UserModel(
-                          uid: 'dEHgKd4HtCO0jbopy4VoYP8cXfI3',
-                          name: "Naser Sami",
-                          email: "naser_ebedo@icloud.com",
-                          profilePic:
-                              "https://avatars.githubusercontent.com/u/136815868?v=4",
-                          token:
-                              "AMf-vBykMjkkkt4_OoIQTi9rL7sVMVCw64hWSLdOp9lJl5DN456q8EUS0_6I-nKnlPf7sRz4e2474qOsqppD8vD-vY3sRBHNPXyKCzmWFa7A3e5bJcGk7XZih1FCl-PMqgUfMXJNF_ZpYNDK5JEFEdW4MPzbKx7Jx07RwY5h1zHN8rqG2epgLsjSLq2WbTuIUA7x0kD7TqoAipzV49lkUrXYFj__7Cy7GuLsoDINCFePw1HWHoEw5UePGgXaB20zrGtAcP18TNcojp4vn6hcmQe6wFwujiiWOOhOh3N520YOpK5QitF3h1JQfLPPpbet2m9IDlyUGSo7UR2EdrnwVaidifmgj3gofQ",
-                          phone: '',
-                          address: '',
-                          createdAt: DateTime(2025, 2, 20),
-                          dateOfBirth: '',
-                          userType: UserType.admin,
-                          fcmToken: fcmToken,
-                          gender: Gender.male.name,
-                        );
-
-                        String userName = receiverUser.name == ''
-                            ? receiverUser.email.split('@')[0]
-                            : receiverUser.name;
 
                         // if the use is the customer service, then
                         // we will navigate to the users list screen
 
-                        if (sl<FirebaseAuth>().currentUser!.uid ==
-                            'dEHgKd4HtCO0jbopy4VoYP8cXfI3') {
+                        if (sl<UserCubit>().state!.userType == UserType.admin) {
                           if (context.mounted) {
                             context.push(UsersListScreen.routeName);
                           }
                         } else {
+                          final fcmToken =
+                              await sl<INotificationsService>().getFCMToken();
+
+                          final accessToken =
+                              "AMf-vBykMjkkkt4_OoIQTi9rL7sVMVCw64hWSLdOp9lJl5DN456q8EUS0_6I-nKnlPf7sRz4e2474qOsqppD8vD-vY3sRBHNPXyKCzmWFa7A3e5bJcGk7XZih1FCl-PMqgUfMXJNF_ZpYNDK5JEFEdW4MPzbKx7Jx07RwY5h1zHN8rqG2epgLsjSLq2WbTuIUA7x0kD7TqoAipzV49lkUrXYFj__7Cy7GuLsoDINCFePw1HWHoEw5UePGgXaB20zrGtAcP18TNcojp4vn6hcmQe6wFwujiiWOOhOh3N520YOpK5QitF3h1JQfLPPpbet2m9IDlyUGSo7UR2EdrnwVaidifmgj3gofQ";
+
+                          // send a user model to the chat room screen
+                          UserModel receiverUser = UserModel(
+                            uid: 'dEHgKd4HtCO0jbopy4VoYP8cXfI3',
+                            name: "Naser Sami",
+                            email: "naser_ebedo@icloud.com",
+                            profilePic:
+                                "https://avatars.githubusercontent.com/u/136815868?v=4",
+                            token: accessToken,
+                            phone: '',
+                            address: '',
+                            createdAt: DateTime(2025, 2, 20),
+                            dateOfBirth: '',
+                            userType: UserType.admin,
+                            fcmToken: fcmToken,
+                            gender: Gender.male.name,
+                          );
+
+                          String userName = receiverUser.name == ''
+                              ? receiverUser.email.split('@')[0]
+                              : receiverUser.name;
+
                           if (context.mounted) {
                             context.push("${CustomerServiceScreen.routeName}/$userName",
                                 extra: receiverUser);
