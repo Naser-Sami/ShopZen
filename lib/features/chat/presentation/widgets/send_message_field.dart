@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '/core/_core.dart';
 import '/config/_config.dart';
@@ -37,9 +38,13 @@ class _SendMessageFieldState extends State<SendMessageField> {
       try {
         sl<INotificationsService>().sendNotification(
           fcmToken: widget.user.fcmToken,
-          title: widget.user.name,
+          title: 'New message from ${context.read<UserCubit>().state!.name}',
           body: _controller.text.trim(),
-          data: {},
+          data: {
+            'userId': context.read<UserCubit>().state!.uid,
+            'name': context.read<UserCubit>().state!.name,
+            'user': context.read<UserCubit>().state!.toMap().toString(),
+          },
         );
       } catch (e) {
         log('Error sending notification On Send Message: $e');

@@ -63,50 +63,55 @@ class NotificationsServiceImpl implements INotificationsService {
     required Map<String, String> data,
   }) async {
     try {
-      final String accessToken = await getAccessToken();
+      final String accessToken = await getAccessToken(); // Ensure this is valid
       const String fcmUrl =
           'https://fcm.googleapis.com/v1/projects/shopzen-42af3/messages:send';
 
-      final response = await dioHelper.post(
-        path: fcmUrl,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $accessToken',
-        },
-        data: {
-          'message': {
-            'token': fcmToken,
+      Map<String, dynamic> headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      };
+
+      Map<String, dynamic> notificationPayload = {
+        'message': {
+          'token': fcmToken,
+          'notification': {
+            'title': title,
+            'body': body,
+          },
+          'data': data, // Custom data payload
+          'android': {
+            'priority': 'high',
             'notification': {
-              'title': title,
-              'body': body,
+              'sound': 'custom_sound',
+              'channel_id': 'high_importance_channel',
+              'click_action': 'FLUTTER_NOTIFICATION_CLICK'
             },
-            'data': data,
-            'android': {
-              'priority': 'high',
-              'notification': {
-                'sound': 'custom_sound',
-                'channel_id': 'high_importance_channel',
-              },
+          },
+          'apns': {
+            'headers': {
+              'apns-priority': '10',
             },
-            'apns': {
-              'headers': {
-                'apns-priority': '10',
-              },
-              'payload': {
-                'aps': {
-                  'sound': 'custom_sound.caf',
-                  'content-available': 1,
-                },
+            'payload': {
+              'aps': {
+                'sound': 'custom_sound.caf',
+                'content-available': 1,
               },
             },
           },
-        },
+        }
+      };
+
+      final response = await dioHelper.post(
+        path: fcmUrl,
+        headers: headers,
+        data: notificationPayload,
       );
 
-      log('Notification response: $response');
-      log('Notification sent successfully to $fcmToken');
+      log('✅ Notification response: $response');
+      log('✅ Notification sent successfully to $fcmToken');
     } catch (e) {
-      log('Error sending notification: $e');
+      log('❌ Error sending notification: $e');
     }
   }
 
