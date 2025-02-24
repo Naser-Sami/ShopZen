@@ -52,7 +52,7 @@ class UsersListScreen extends StatelessWidget {
     }
 
     // if the use is the admin, don't show them in the list
-    if (user.uid == 'dEHgKd4HtCO0jbopy4VoYP8cXfI3') {
+    if (user.userType == UserType.admin) {
       return const SizedBox.shrink();
     }
 
