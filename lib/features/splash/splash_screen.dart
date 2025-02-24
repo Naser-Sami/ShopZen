@@ -30,7 +30,7 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(Duration(seconds: 1)).then(
       (value) {
         if (mounted) {
-          if (sl<FirebaseAuth>().currentUser?.refreshToken != null) {
+          if (sl<FirebaseAuth>().currentUser != null) {
             context.go(BottomNavigationBarWidget.routeName);
           } else {
             context.go(OnboardingScreen.routeName);

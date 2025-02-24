@@ -18,6 +18,7 @@ class UserCubit extends Cubit<UserModel?> {
     final result = await sl<IFirestoreService<UserModel>>().getDocument('users/$uid');
     result.handle(
       onSuccess: (user) {
+        log('User data: ${user.toString()}');
         emit(user);
       },
       onError: (error) {
@@ -26,11 +27,6 @@ class UserCubit extends Cubit<UserModel?> {
             message: error.toString());
       },
     );
-  }
-
-  // set user data
-  Future<void> setUserProfile(UserModel user) async {
-    emit(user);
   }
 
   /// Update user data

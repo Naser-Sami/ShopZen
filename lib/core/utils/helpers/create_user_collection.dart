@@ -17,7 +17,10 @@ Future<void> createOrUpdateUserCollection(UserCredential credential) async {
       // ✅ If user exists, update FCM token
       await sl<IFirestoreService<UserModel>>().updateDocument(
         'users/$userId',
-        {'fcmToken': fcmToken, 'token': credential.user?.refreshToken},
+        {
+          'fcmToken': fcmToken,
+          'token': credential.credential?.accessToken,
+        },
       );
       log('FCM token updated for existing user');
     },
@@ -33,7 +36,7 @@ Future<void> createOrUpdateUserCollection(UserCredential credential) async {
         createdAt: DateTime.now(),
         dateOfBirth: '',
         userType: UserType.user,
-        token: credential.user?.refreshToken ?? "",
+        token: credential.credential?.accessToken ?? "",
         fcmToken: fcmToken,
         gender: '',
       );
