@@ -208,6 +208,15 @@ final router = GoRouter(
       ),
     ),
 
+    // Notifications Screen Section
+    GoRoute(
+      path: NotificationsScreen.routeName,
+      name: 'Notifications',
+      pageBuilder: (context, state) => CupertinoPage(
+        child: NotificationsScreen(),
+      ),
+    ),
+
     // Profile Section
     GoRoute(
       path: ProfileScreen.routeName,
