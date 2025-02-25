@@ -60,7 +60,7 @@ class NotificationsServiceImpl implements INotificationsService {
     required String fcmToken,
     required String title,
     required String body,
-    required Map<String, dynamic> data,
+    required Map<String, String> data,
   }) async {
     try {
       final String accessToken = await getAccessToken(); // Ensure this is valid

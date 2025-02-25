@@ -1,13 +1,12 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shop_zen/features/_features.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '/core/_core.dart';
 import '/config/_config.dart';
+import '/features/_features.dart';
 
 class NotificationsIconWidget extends StatelessWidget {
   const NotificationsIconWidget({super.key});

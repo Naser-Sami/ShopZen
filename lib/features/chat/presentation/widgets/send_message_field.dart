@@ -41,8 +41,8 @@ class _SendMessageFieldState extends State<SendMessageField> {
           title: sl<UserCubit>().state?.name ?? "Anonymous",
           body: _controller.text.toString(),
           data: {
-            'userId': sl<UserCubit>().state?.uid,
-            'name': sl<UserCubit>().state?.name,
+            'userId': sl<UserCubit>().state?.uid ?? "",
+            'name': sl<UserCubit>().state?.name ?? "",
             'user': jsonEncode(
                 sl<UserCubit>().state!.toMap()) // encode the map to a JSON string
           },
