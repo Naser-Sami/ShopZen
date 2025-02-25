@@ -17,21 +17,22 @@ class NotificationsIconWidget extends StatelessWidget {
     final theme = Theme.of(context);
 
     return IconButton(
-      onPressed: () => context.push(NotificationsScreen.routeName),
-      // onPressed: () async {
-      //   final fcmToken = await FirebaseMessaging.instance.getToken();
-      //   await sl<INotificationsService>().sendNotification(
-      //     fcmToken: fcmToken ?? '',
-      //     title: "Test Notification",
-      //     body: "This is a test notification",
-      //     data: {
-      //       "userId": "o9RL7kIghgd6aDFEALfqP1KyudZ2",
-      //       "name": "Naser Sami Ebedo",
-      //       "user": jsonEncode(
-      //           sl<UserCubit>().state!.toMap()) // encode the map to a JSON string
-      //     },
-      //   );
-      // },
+      // onPressed: () => context.push(NotificationsScreen.routeName),
+      onPressed: () async {
+        final fcmToken = await FirebaseMessaging.instance.getToken();
+        await sl<INotificationsService>().sendNotification(
+          fcmToken: fcmToken ?? '',
+          title: "Test Notification",
+          body: "This is a test notification",
+          notificationType: 'chat',
+          data: {
+            "userId": "o9RL7kIghgd6aDFEALfqP1KyudZ2",
+            "name": "Naser Sami Ebedo",
+            "user": jsonEncode(
+                sl<UserCubit>().state!.toMap()) // encode the map to a JSON string
+          },
+        );
+      },
       icon: IconWidget(
         name: 'notification',
         color: theme.colorScheme.onSurface,

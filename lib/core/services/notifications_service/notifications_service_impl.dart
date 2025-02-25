@@ -60,6 +60,7 @@ class NotificationsServiceImpl implements INotificationsService {
     required String fcmToken,
     required String title,
     required String body,
+    required String notificationType,
     required Map<String, String> data,
   }) async {
     try {
@@ -79,7 +80,10 @@ class NotificationsServiceImpl implements INotificationsService {
             'title': title,
             'body': body,
           },
-          'data': data, // Custom data payload
+          'data': {
+            'notificationType': notificationType, // Add notification type here
+            ...data, // Include other custom data
+          },
           'android': {
             'priority': 'high',
             'notification': {

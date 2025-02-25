@@ -99,6 +99,9 @@ dependencies:
   flutter_staggered_animations: ^1.1.1
   encrypt: ^5.0.3
 
+  # Create a unique id
+  uuid: ^4.5.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

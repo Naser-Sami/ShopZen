@@ -2,21 +2,21 @@ import 'package:flutter/material.dart';
 
 import '/config/_config.dart';
 
-class NotificationsModel {
+class NotificationsSettingsModel {
   final String title;
   final bool active;
 
   // copy with value
-  NotificationsModel copyWith({
+  NotificationsSettingsModel copyWith({
     String? title,
     bool? active,
   }) =>
-      NotificationsModel(
+      NotificationsSettingsModel(
         title: title ?? this.title,
         active: active ?? this.active,
       );
 
-  NotificationsModel({required this.title, required this.active});
+  NotificationsSettingsModel({required this.title, required this.active});
 }
 
 class NotificationsSettingsScreen extends StatefulWidget {
@@ -28,40 +28,40 @@ class NotificationsSettingsScreen extends StatefulWidget {
 }
 
 class _NotificationsSettingsScreenState extends State<NotificationsSettingsScreen> {
-  List<NotificationsModel> data = [
-    NotificationsModel(
+  List<NotificationsSettingsModel> data = [
+    NotificationsSettingsModel(
       title: 'General Notifications',
       active: true,
     ),
-    NotificationsModel(
+    NotificationsSettingsModel(
       title: 'Sound',
       active: true,
     ),
-    NotificationsModel(
+    NotificationsSettingsModel(
       title: 'Vibrate',
       active: false,
     ),
-    NotificationsModel(
+    NotificationsSettingsModel(
       title: 'Special Offers',
       active: true,
     ),
-    NotificationsModel(
+    NotificationsSettingsModel(
       title: 'Promo & Discounts',
       active: true,
     ),
-    NotificationsModel(
+    NotificationsSettingsModel(
       title: 'Payments',
       active: false,
     ),
-    NotificationsModel(
+    NotificationsSettingsModel(
       title: 'Cashback',
       active: false,
     ),
-    NotificationsModel(
+    NotificationsSettingsModel(
       title: 'App Updates',
       active: true,
     ),
-    NotificationsModel(
+    NotificationsSettingsModel(
       title: 'New Services Available',
       active: true,
     ),

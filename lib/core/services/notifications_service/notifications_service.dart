@@ -8,6 +8,7 @@ abstract class INotificationsService {
       {required String fcmToken,
       required String title,
       required String body,
+      required String notificationType,
       required Map<String, String> data});
   void handleNotification(BuildContext context, Map<String, dynamic> data);
 }
