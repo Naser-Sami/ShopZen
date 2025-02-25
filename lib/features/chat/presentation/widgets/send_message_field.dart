@@ -41,6 +41,7 @@ class _SendMessageFieldState extends State<SendMessageField> {
           body: _controller.text.toString(),
           type: NotificationsType.newMessage,
           icon: 'new_message',
+          senderId: sl<UserCubit>().state?.uid ?? "",
           data: {
             'userId': sl<UserCubit>().state?.uid ?? "",
             'name': sl<UserCubit>().state?.name ?? "",

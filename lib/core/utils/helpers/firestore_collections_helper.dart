@@ -33,6 +33,7 @@ Future<void> createOrUpdateUserCollection(UserCredential credential) async {
           fcmToken: fcmToken,
           title: "Welcome to ${AppConfig.appName}",
           body: "Welcome to ${AppConfig.appName}, we hope you enjoy your stay.",
+          senderId: AppConfig.adminID,
         );
       }
     },
@@ -72,6 +73,7 @@ Future<void> createOrUpdateUserCollection(UserCredential credential) async {
           fcmToken: fcmToken,
           title: "Welcome to ${AppConfig.appName}",
           body: "Welcome to ${AppConfig.appName}, we hope you enjoy your stay.",
+          senderId: AppConfig.adminID,
         );
       }
     },
@@ -85,6 +87,7 @@ Future<void> createOrSendNotification({
   required String body,
   Map<String, String>? data,
   String? icon,
+  required String senderId,
   NotificationsType type = NotificationsType.adminMessage,
 }) async {
   try {
@@ -102,7 +105,7 @@ Future<void> createOrSendNotification({
       isRead: false,
       icon: icon ?? 'LogoIcon',
       type: type.name,
-      senderId: uid,
+      senderId: senderId,
     );
 
     // Create a new notification document

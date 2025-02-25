@@ -36,6 +36,7 @@ class EmptyNotifications extends StatelessWidget {
             TextWidget(
               "We'll alert you when something cool happens.",
               style: textTheme.bodyMedium,
+              textAlign: TextAlign.center,
             ),
           ],
         ),
