@@ -31,6 +31,7 @@ enum Gender {
 }
 
 enum NotificationsType {
+  normal,
   adminMessage,
   newMessage,
   newFollower,
@@ -42,4 +43,5 @@ enum NotificationsType {
   newFollowerRequestRejected,
   newFollowerRequestCancelled,
   newFollowerRequestExpired,
+  newOrder,
 }

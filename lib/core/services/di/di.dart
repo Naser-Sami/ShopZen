@@ -53,6 +53,9 @@ class DI {
     sl.registerSingleton<IFirestoreService<UserModel>>(
       FirestoreServiceImpl<UserModel>(UserModel.fromJson),
     );
+    sl.registerSingleton<IFirestoreService<NotificationsModel>>(
+      FirestoreServiceImpl<NotificationsModel>(NotificationsModel.fromMap),
+    );
 
     // BLOC's
     sl.registerLazySingleton<ProductsBloc>(

@@ -22,10 +22,10 @@ class NotificationsIconWidget extends StatelessWidget {
           fcmToken: fcmToken ?? '',
           title: "Test Notification",
           body: "This is a test notification",
-          notificationType: NotificationsType.newMessage,
           data: {
             "userId": "o9RL7kIghgd6aDFEALfqP1KyudZ2",
             "name": "Naser Sami Ebedo",
+            "notificationType": NotificationsType.newMessage.name,
             "user": jsonEncode(
                 sl<UserCubit>().state!.toMap()) // encode the map to a JSON string
           },

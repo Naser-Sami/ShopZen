@@ -22,9 +22,9 @@ class NotificationsModel extends Equatable {
   });
 
   // from map
-  factory NotificationsModel.fromMap(Map<String, dynamic> map) {
+  factory NotificationsModel.fromMap(Map<String, dynamic> map, String id) {
     return NotificationsModel(
-      id: map['id'] ?? "",
+      id: id,
       title: map['title'] ?? "",
       body: map['body'] ?? "",
       data: map['data'] ?? "",

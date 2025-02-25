@@ -116,11 +116,18 @@ class MessagingConfig {
   static void _handleNotificationData(Map<String, dynamic> data) {
     log('Handling notification data: $data');
 
-    final notificationType = data['notificationType'] as NotificationsType;
+    NotificationsType notificationType = EnumExtension.fromString(
+      data['notificationType'] as String,
+      NotificationsType.values,
+      defaultValue: NotificationsType.normal, // Default case
+    );
 
     switch (notificationType) {
       case NotificationsType.newMessage:
         ChatController.handleNotificationChatData(data);
+        break;
+      case NotificationsType.adminMessage:
+        log('Admin Notification');
         break;
       default:
         log('Unknown notification type: $notificationType');
@@ -131,11 +138,20 @@ class MessagingConfig {
     log('Handling notification payload: $payload');
 
     final data = jsonDecode(payload) as Map<String, dynamic>;
-    final notificationType = data['notificationType'] as NotificationsType;
+
+    NotificationsType notificationType = EnumExtension.fromString(
+      data['notificationType'] as String,
+      NotificationsType.values,
+      defaultValue: NotificationsType.normal, // Default case
+    );
 
     switch (notificationType) {
       case NotificationsType.newMessage:
         ChatController.handleNotificationChatPayload(payload);
+        break;
+      case NotificationsType.adminMessage:
+        // AdminController.handleNotificationAdminData(data);
+        log('Admin Notification');
         break;
       default:
         log('Unknown notification type: $notificationType');

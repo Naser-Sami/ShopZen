@@ -26,7 +26,8 @@ Future<void> createOrUpdateUserCollection(UserCredential credential) async {
       );
       log('FCM token updated securely for existing user');
 
-      // createNotificationCollection(credential);
+      // TODO:: remove this later
+      createNotificationCollection(credential);
     },
 
     // if user doesn't exist, create a new user document
@@ -58,13 +59,14 @@ Future<void> createOrUpdateUserCollection(UserCredential credential) async {
         onError: (error) => log('Error creating user document: $error'),
       );
 
-      // createNotificationCollection(credential);
+      createNotificationCollection(credential);
     },
   );
 }
 
 Future<void> createNotificationCollection(UserCredential credential) async {
   try {
+    final fcmToken = await sl<INotificationsService>().getFCMToken();
     final userId = credential.user?.uid ?? "";
 
     if (userId.isEmpty) return;
@@ -80,18 +82,33 @@ Future<void> createNotificationCollection(UserCredential credential) async {
       createdAt: DateTime.now(),
       isRead: false,
       icon: 'LogoIcon',
-      type: 'Normal',
+      type: NotificationsType.adminMessage.name,
     );
 
     // Create a new notification document
-    final createResult = await sl<IFirestoreService>().setDocument(
+    final createResult = await sl<IFirestoreService<NotificationsModel>>().setDocument(
       'notifications/$userId',
       data.toMap(),
     );
 
     // Handle the result of creating the notification document
     createResult.handle(
-      onSuccess: (_) => log('Notification document created securely'),
+      onSuccess: (_) {
+        log('Notification document created successfully');
+
+        try {
+          sl<INotificationsService>().sendNotification(
+            fcmToken: fcmToken,
+            title: "Welcome to ShopZen",
+            body: "Find the best deals on your favorite products",
+            data: {
+              "notificationType": NotificationsType.adminMessage.name,
+            },
+          );
+        } catch (e) {
+          log('Error sending notification On Send Message: $e');
+        }
+      },
       onError: (error) => log('Error creating notification document: $error'),
     );
   } catch (e) {
