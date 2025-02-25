@@ -1,3 +1,3 @@
-export 'screen/screen.dart';
+export 'screen/notifications_screen.dart';
 export 'widgets/_widgets.dart';
 export 'controllers/_controllers.dart';

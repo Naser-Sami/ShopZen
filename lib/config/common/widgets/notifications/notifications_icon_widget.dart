@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:badges/badges.dart' as badges;
 
 import '/config/_config.dart';
 import '/features/_features.dart';
@@ -30,9 +31,35 @@ class NotificationsIconWidget extends StatelessWidget {
       //     },
       //   );
       // },
-      icon: IconWidget(
-        name: 'notification',
-        color: theme.colorScheme.onSurface,
+      icon: badges.Badge(
+        showBadge: true,
+        position: badges.BadgePosition.topEnd(top: -14, end: -8),
+        badgeContent: StreamBuilder<List<NotificationsModel>>(
+          stream: NotificationsController.getNotifications(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const SizedBox();
+            }
+            if (snapshot.hasError) {
+              return const SizedBox();
+            }
+            if (!snapshot.hasData || snapshot.data == null) {
+              return const SizedBox();
+            }
+            return Text(
+              snapshot.data!.length.toString(),
+              style: theme.textTheme.bodyMedium,
+            );
+          },
+        ),
+        badgeStyle: badges.BadgeStyle(
+          badgeColor: theme.colorScheme.primaryContainer,
+          shape: badges.BadgeShape.circle,
+        ),
+        child: IconWidget(
+          name: 'notification',
+          color: theme.colorScheme.onSurface,
+        ),
       ),
     );
   }
