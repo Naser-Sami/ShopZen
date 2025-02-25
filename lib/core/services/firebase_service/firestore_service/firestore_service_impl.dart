@@ -14,6 +14,16 @@ class FirestoreServiceImpl<T> implements IFirestoreService<T> {
   }) : _firestore = firestore ?? FirebaseFirestore.instance;
 
   @override
+  Future<Result<String>> addDocument(String path, Map<String, dynamic> data) async {
+    try {
+      final docRef = await _firestore.collection(path).add(data);
+      return Result.success(docRef.id);
+    } on FirebaseException catch (e) {
+      return Result.failure(_handleFirestoreError(e));
+    }
+  }
+
+  @override
   Future<Result<T>> getDocument(String path) async {
     try {
       final doc = await _firestore.doc(path).get();

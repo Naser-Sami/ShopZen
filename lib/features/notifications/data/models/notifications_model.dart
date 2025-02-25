@@ -9,6 +9,7 @@ class NotificationsModel extends Equatable {
   final bool isRead;
   final String icon;
   final String type;
+  final String senderId;
 
   const NotificationsModel({
     required this.id,
@@ -19,6 +20,7 @@ class NotificationsModel extends Equatable {
     required this.isRead,
     required this.icon,
     required this.type,
+    required this.senderId,
   });
 
   // from map
@@ -32,6 +34,7 @@ class NotificationsModel extends Equatable {
       isRead: map['isRead'] ?? false,
       icon: map['icon'] ?? "",
       type: map['type'] ?? "",
+      senderId: map['senderId'] ?? "",
     );
   }
 
@@ -46,13 +49,14 @@ class NotificationsModel extends Equatable {
       'isRead': isRead,
       'icon': icon,
       'type': type,
+      'senderId': senderId,
     };
   }
 
   // string
   @override
   String toString() {
-    return 'NotificationsModel(id: $id, title: $title, body: $body, data: $data, createdAt: $createdAt, isRead: $isRead, icon: $icon, type: $type)';
+    return 'NotificationsModel(id: $id, title: $title, body: $body, data: $data, createdAt: $createdAt, isRead: $isRead, icon: $icon, type: $type, senderId: $senderId)';
   }
 
   @override
@@ -65,5 +69,6 @@ class NotificationsModel extends Equatable {
         isRead,
         icon,
         type,
+        senderId,
       ];
 }

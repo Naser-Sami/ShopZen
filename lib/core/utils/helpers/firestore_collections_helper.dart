@@ -27,7 +27,14 @@ Future<void> createOrUpdateUserCollection(UserCredential credential) async {
       log('FCM token updated securely for existing user');
 
       // TODO:: remove this later
-      createNotificationCollection(credential);
+      if (credential.user?.uid != null) {
+        createOrSendNotification(
+          uid: credential.user!.uid,
+          fcmToken: fcmToken,
+          title: "Welcome to ${AppConfig.appName}",
+          body: "Welcome to ${AppConfig.appName}, we hope you enjoy your stay.",
+        );
+      }
     },
 
     // if user doesn't exist, create a new user document
@@ -59,37 +66,61 @@ Future<void> createOrUpdateUserCollection(UserCredential credential) async {
         onError: (error) => log('Error creating user document: $error'),
       );
 
-      createNotificationCollection(credential);
+      if (credential.user?.uid != null) {
+        createOrSendNotification(
+          uid: credential.user!.uid,
+          fcmToken: fcmToken,
+          title: "Welcome to ${AppConfig.appName}",
+          body: "Welcome to ${AppConfig.appName}, we hope you enjoy your stay.",
+        );
+      }
     },
   );
 }
 
-Future<void> createNotificationCollection(UserCredential credential) async {
+Future<void> createOrSendNotification({
+  required String uid,
+  required String fcmToken,
+  required String title,
+  required String body,
+  Map<String, String>? data,
+  String? icon,
+  NotificationsType type = NotificationsType.adminMessage,
+}) async {
   try {
-    final fcmToken = await sl<INotificationsService>().getFCMToken();
-    final userId = credential.user?.uid ?? "";
-
-    if (userId.isEmpty) return;
+    if (uid.isEmpty) return;
 
     // Generate a unique ID for the notification
     final uuid = Uuid();
 
     // Create a welcome notification
-    final data = NotificationsModel(
+    final notificationsModel = NotificationsModel(
       id: uuid.v4(),
-      title: "ShopZen",
-      body: "Welcome to ShopZen",
+      title: title,
+      body: body,
       createdAt: DateTime.now(),
       isRead: false,
-      icon: 'LogoIcon',
-      type: NotificationsType.adminMessage.name,
+      icon: icon ?? 'LogoIcon',
+      type: type.name,
+      senderId: uid,
     );
 
     // Create a new notification document
-    final createResult = await sl<IFirestoreService<NotificationsModel>>().setDocument(
-      'notifications/$userId',
-      data.toMap(),
+    final createResult = await sl<IFirestoreService<NotificationsModel>>().addDocument(
+      'notifications/$uid/notifications-list',
+      notificationsModel.toMap(),
     );
+
+    if (data != null) {
+      data = {
+        ...data,
+        "notificationType": type.name,
+      };
+    } else {
+      data = {
+        "notificationType": type.name,
+      };
+    }
 
     // Handle the result of creating the notification document
     createResult.handle(
@@ -99,11 +130,9 @@ Future<void> createNotificationCollection(UserCredential credential) async {
         try {
           sl<INotificationsService>().sendNotification(
             fcmToken: fcmToken,
-            title: "Welcome to ShopZen",
-            body: "Find the best deals on your favorite products",
-            data: {
-              "notificationType": NotificationsType.adminMessage.name,
-            },
+            title: title,
+            body: body,
+            data: data!,
           );
         } catch (e) {
           log('Error sending notification On Send Message: $e');

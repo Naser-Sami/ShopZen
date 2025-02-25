@@ -32,14 +32,15 @@ class _SendMessageFieldState extends State<SendMessageField> {
   void _sendMessage() async {
     if (_controller.text.trim().isNotEmpty) {
       _chatService.sendMessage(widget.user.uid, _controller.text.trim());
-      _controller.clear();
-      focusNode?.requestFocus();
 
       try {
-        sl<INotificationsService>().sendNotification(
+        await createOrSendNotification(
+          uid: widget.user.uid,
           fcmToken: widget.user.fcmToken,
           title: sl<UserCubit>().state?.name ?? "Anonymous",
           body: _controller.text.toString(),
+          type: NotificationsType.newMessage,
+          icon: 'new_message',
           data: {
             'userId': sl<UserCubit>().state?.uid ?? "",
             'name': sl<UserCubit>().state?.name ?? "",
@@ -48,6 +49,9 @@ class _SendMessageFieldState extends State<SendMessageField> {
                 sl<UserCubit>().state!.toMap()) // encode the map to a JSON string
           },
         );
+
+        _controller.clear();
+        focusNode?.requestFocus();
       } catch (e) {
         log('Error sending notification On Send Message: $e');
       }
