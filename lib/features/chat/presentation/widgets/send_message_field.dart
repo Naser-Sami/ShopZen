@@ -1,8 +1,8 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '/core/_core.dart';
 import '/config/_config.dart';
@@ -38,12 +38,13 @@ class _SendMessageFieldState extends State<SendMessageField> {
       try {
         sl<INotificationsService>().sendNotification(
           fcmToken: widget.user.fcmToken,
-          title: 'New message from ${context.read<UserCubit>().state!.name}',
-          body: _controller.text.trim(),
+          title: sl<UserCubit>().state?.name ?? "Anonymous",
+          body: _controller.text.toString(),
           data: {
-            'userId': context.read<UserCubit>().state!.uid,
-            'name': context.read<UserCubit>().state!.name,
-            'user': context.read<UserCubit>().state!.toMap().toString(),
+            'userId': sl<UserCubit>().state?.uid,
+            'name': sl<UserCubit>().state?.name,
+            'user': jsonEncode(
+                sl<UserCubit>().state!.toMap()) // encode the map to a JSON string
           },
         );
       } catch (e) {
@@ -52,34 +53,63 @@ class _SendMessageFieldState extends State<SendMessageField> {
     }
   }
 
+  bool showMic = true;
+
+  void _toggleMic() {
+    if (_controller.text.isEmpty) {
+      setState(() {
+        showMic = true;
+      });
+    } else {
+      setState(() {
+        showMic = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    return Expanded(
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(TSize.s12),
-          border: Border.all(
-            color: colorScheme.onSurface.withValues(alpha: 0.10),
+    return Row(
+      children: [
+        Expanded(
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(TSize.s12),
+              border: Border.all(
+                color: colorScheme.onSurface.withValues(alpha: 0.10),
+              ),
+            ),
+            child: CupertinoTextFormFieldRow(
+              controller: _controller,
+              minLines: 1,
+              maxLines: 6, // Adjust max height here
+              keyboardType: TextInputType.text,
+              style: theme.textTheme.bodyMedium,
+              autofocus: true,
+              focusNode: focusNode,
+              onChanged: (value) => _toggleMic(),
+              onFieldSubmitted: (value) => _sendMessage(),
+              placeholder: 'Write your message...',
+              padding: EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 18,
+              ),
+            ),
           ),
         ),
-        child: CupertinoTextFormFieldRow(
-          controller: _controller,
-          minLines: 1,
-          maxLines: 6, // Adjust max height here
-          keyboardType: TextInputType.text,
-          style: theme.textTheme.bodyMedium,
-          autofocus: true,
-          focusNode: focusNode,
-          onFieldSubmitted: (value) => _sendMessage(),
-          placeholder: 'Write your message...',
-          padding: EdgeInsets.symmetric(
-            horizontal: 12,
-            vertical: 18,
-          ),
+        const SizedBox(width: TSize.s16),
+        MicButton(
+          icon: showMic ? CupertinoIcons.mic : CupertinoIcons.paperplane,
+          onPressed: () {
+            if (showMic) {
+            } else {
+              _sendMessage();
+            }
+          },
         ),
-      ),
+      ],
     );
   }
 }

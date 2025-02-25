@@ -11,7 +11,7 @@ final router = GoRouter(
   observers: [
     AppNavigatorObserver(),
   ],
-  navigatorKey: NavigationService.rootNavigator,
+  navigatorKey: navigatorKey,
   errorBuilder: (context, state) {
     if (state.uri.path.contains('/link')) {
       return HomeScreen();
@@ -83,7 +83,7 @@ final router = GoRouter(
       branches: [
         // Home Section
         StatefulShellBranch(
-          navigatorKey: NavigationService.sectionNavigator,
+          navigatorKey: sectionNavigator,
           routes: [
             GoRoute(
               path: HomeScreen.routeName,
@@ -175,7 +175,7 @@ final router = GoRouter(
     GoRoute(
       path: "${CustomerServiceScreen.routeName}/:userName",
       name: 'Customer Service',
-      parentNavigatorKey: NavigationService.rootNavigator, // Ensures no bottom nav
+      parentNavigatorKey: navigatorKey, // Ensures no bottom nav
       pageBuilder: (context, state) {
         final user = state.extra as UserModel;
 

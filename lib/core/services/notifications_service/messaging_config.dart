@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:go_router/go_router.dart';
 
 import '/features/_features.dart';
 import '/core/_core.dart';
@@ -69,6 +70,7 @@ class MessagingConfig {
     await flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
       onDidReceiveNotificationResponse: (NotificationResponse response) {
+        log('Notification response: ${response.payload}');
         if (response.payload != null) {
           _handleNotificationPayload(response.payload!);
         }
@@ -101,8 +103,8 @@ class MessagingConfig {
     FirebaseMessaging.instance.getInitialMessage().then((RemoteMessage? message) {
       if (message != null) {
         log("getInitialMessage message: $message");
-        sl<INotificationsService>().handleNotification(
-            NavigationService.rootNavigator.currentContext!, message.data);
+        sl<INotificationsService>()
+            .handleNotification(navigatorKey.currentContext!, message.data);
       }
     });
 
@@ -113,35 +115,72 @@ class MessagingConfig {
   }
 
   static void _handleNotificationData(Map<String, dynamic> data) {
+    log('Handling notification data: $data');
+
     try {
       final userId = data['userId'] as String;
       final userName = data['name'] as String;
       final userJson = data['user'] as String;
+      log('User data: $userJson');
+
       final user = UserModel.fromJson(jsonDecode(userJson), userId);
 
-      NavigationService.rootNavigator.push(
-        "${ChatRoomScreen.routeName}/$userName",
-        extra: user,
-      );
+      try {
+        // Get the current context safely
+        final context = navigatorKey.currentContext;
+        if (context != null) {
+          GoRouter.of(context).push(
+            "${ChatRoomScreen.routeName}/$userName",
+            extra: user,
+          );
+        } else {
+          log('Error: No valid context found');
+        }
+      } catch (e) {
+        log('onMessageOpenedApp, Error navigating to chat room: $e');
+      }
     } catch (e) {
-      log('Error handling notification data: $e');
+      log('onMessageOpenedApp, Error handling notification data: $e');
     }
   }
 
   static void _handleNotificationPayload(String payload) {
+    // log('Handling notification payload: $payload');
+
     try {
       final data = jsonDecode(payload) as Map<String, dynamic>;
+
       final userId = data['userId'] as String;
       final userName = data['name'] as String;
-      final userJson = data['user'] as String;
-      final user = UserModel.fromJson(jsonDecode(userJson), userId);
+      final userAsString = data['user'] as String;
 
-      NavigationService.rootNavigator.push(
-        "${ChatRoomScreen.routeName}/$userName",
-        extra: user,
-      );
-    } catch (e) {
+      // 🔥 Ensure 'user' is parsed correctly
+      final jsonUserString =
+          userAsString.replaceAll("''", '""'); // Replace single quotes with double quotes
+
+      final parsedUser = jsonDecode(jsonUserString) as Map<String, dynamic>;
+
+      final user = UserModel.fromJson(parsedUser, userId);
+
+      try {
+        // Get the current context safely
+        final context = navigatorKey.currentContext;
+        if (context != null) {
+          GoRouter.of(context).push(
+            "${ChatRoomScreen.routeName}/$userName",
+            extra: user,
+          );
+        } else {
+          log('Error: No valid context found');
+        }
+      } catch (e) {
+        log('Error navigating to chat room: $e');
+      }
+
+      log('Payload passed');
+    } catch (e, stacktrace) {
       log('Error handling notification payload: $e');
+      log(stacktrace.toString());
     }
   }
 

@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import '/config/_config.dart';
 
 class MicButton extends StatelessWidget {
-  const MicButton({super.key});
+  const MicButton({super.key, required this.icon, this.onPressed});
+
+  final IconData icon;
+  final void Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +14,7 @@ class MicButton extends StatelessWidget {
     final colorScheme = theme.colorScheme;
 
     return MaterialButton(
-      onPressed: () {},
+      onPressed: onPressed,
       minWidth: TSize.s56,
       height: TSize.s56,
       padding: EdgeInsets.zero,
@@ -26,7 +29,7 @@ class MicButton extends StatelessWidget {
           color: colorScheme.primary,
         ),
         child: Icon(
-          Icons.mic_none_outlined,
+          icon,
           size: 33,
           color: colorScheme.onPrimary,
         ),

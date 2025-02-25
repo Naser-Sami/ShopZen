@@ -16,13 +16,14 @@ class TDeviceUtils {
   static const mediumLayout = 868;
   static const smallLayout = 650;
 
-  static BuildContext context = NavigationService.navigatorKey.currentContext!;
+  static BuildContext context = navigatorKey.currentContext!;
 
   static final size = MediaQuery.of(context).size;
 
   static void hideKeyboard() => FocusScope.of(context).requestFocus(FocusNode());
 
-  static Future<void> setStatusBarColor(Color color) async => SystemChrome.setSystemUIOverlayStyle(
+  static Future<void> setStatusBarColor(Color color) async =>
+      SystemChrome.setSystemUIOverlayStyle(
         SystemUiOverlayStyle(statusBarColor: color),
       );
 
@@ -50,7 +51,9 @@ class TDeviceUtils {
 
   static Future<bool> isKeyboardVisible() async => View.of(context).viewInsets.bottom > 0;
 
-  static bool isPhysicalDevice() => defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS;
+  static bool isPhysicalDevice() =>
+      defaultTargetPlatform == TargetPlatform.android ||
+      defaultTargetPlatform == TargetPlatform.iOS;
 
   static bool isSmallLayout() => getScreenWidth() <= smallLayout;
 
@@ -63,7 +66,8 @@ class TDeviceUtils {
     Future.delayed(duration, () => HapticFeedback.vibrate());
   }
 
-  static Future<void> setPreferredOrientations(List<DeviceOrientation> orientations) async =>
+  static Future<void> setPreferredOrientations(
+          List<DeviceOrientation> orientations) async =>
       await SystemChrome.setPreferredOrientations(orientations);
 
   static void hideStatusBar() => SystemChrome.setEnabledSystemUIMode(

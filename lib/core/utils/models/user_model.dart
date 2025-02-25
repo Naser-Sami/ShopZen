@@ -71,7 +71,7 @@ class UserModel extends Equatable {
       phone: json['phone'] ?? "",
       address: json['address'] ?? "",
       createdAt: DateTime.tryParse(json['createdAt']),
-      dateOfBirth: json['dateOfBirth'],
+      dateOfBirth: json['dateOfBirth'] ?? "",
       userType: UserType.values.byName(json['userType']),
       fcmToken: json['fcmToken'] ?? "",
       gender: json['gender'] ?? "",

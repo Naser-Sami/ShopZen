@@ -23,7 +23,7 @@ class UserCubit extends Cubit<UserModel?> {
       },
       onError: (error) {
         log(error.toString());
-        ToastNotification.showErrorNotification(NavigationService.rootNavigator,
+        ToastNotification.showErrorNotification(navigatorKey.currentContext!,
             message: error.toString());
       },
     );

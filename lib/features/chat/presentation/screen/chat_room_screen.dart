@@ -59,17 +59,10 @@ class ChatRoomScreen extends StatelessWidget {
                 Container(
                   width: size.width,
                   padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: Row(
-                    children: [
-                      SendMessageField(
-                        user: user,
-                      ),
-                      const SizedBox(width: TSize.s16),
-                      MicButton(),
-                    ],
+                  child: SendMessageField(
+                    user: user,
                   ),
                 ),
-
                 const SizedBox(height: TSize.s16),
               ],
             ),
