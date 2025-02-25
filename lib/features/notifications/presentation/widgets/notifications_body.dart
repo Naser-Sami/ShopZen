@@ -16,12 +16,10 @@ class NotificationsBody extends StatefulWidget {
 }
 
 class _NotificationsBodyState extends State<NotificationsBody> {
-  void _onDismissed(DismissDirection direction, String notificationId) {
-    (DismissDirection direction) async {
-      if (direction == DismissDirection.endToStart) {
-        await NotificationsController.deleteNotification(notificationId);
-      }
-    };
+  Future<void> _onDismissed(DismissDirection direction, String notificationId) async {
+    await NotificationsController.deleteNotification(notificationId);
+
+    widget.notifications.removeWhere((n) => n.id == notificationId);
   }
 
   Future<void> _onNotificationTap(NotificationsModel notification) async {
@@ -68,7 +66,8 @@ class _NotificationsBodyState extends State<NotificationsBody> {
             Dismissible(
               key: Key(notification.id),
               direction: DismissDirection.horizontal,
-              onDismissed: (direction) => _onDismissed(direction, notification.id),
+              onDismissed: (DismissDirection direction) async =>
+                  await _onDismissed(direction, notification.id),
               background: _swipeToDelete(),
               child: ListTile(
                 onTap: () => _onNotificationTap(notification),

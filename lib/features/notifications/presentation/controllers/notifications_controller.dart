@@ -5,6 +5,11 @@ import '/features/_features.dart';
 
 class NotificationsController {
   static Stream<List<NotificationsModel>> getNotifications() {
+    final userId = sl<UserCubit>().state?.uid;
+    if (userId == null) {
+      return Stream.value([]); // Prevents crash if user is null
+    }
+
     return FirebaseFirestore.instance
         .collection('notifications/${sl<UserCubit>().state!.uid}/notifications-list')
         .snapshots() // 🔥 Listen to real-time updates

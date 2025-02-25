@@ -5,9 +5,15 @@ import 'package:badges/badges.dart' as badges;
 import '/config/_config.dart';
 import '/features/_features.dart';
 
-class NotificationsIconWidget extends StatelessWidget {
+class NotificationsIconWidget extends StatefulWidget {
   const NotificationsIconWidget({super.key});
 
+  @override
+  State<NotificationsIconWidget> createState() => _NotificationsIconWidgetState();
+}
+
+class _NotificationsIconWidgetState extends State<NotificationsIconWidget> {
+  final showBadge = false;
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -32,7 +38,7 @@ class NotificationsIconWidget extends StatelessWidget {
       //   );
       // },
       icon: badges.Badge(
-        showBadge: true,
+        showBadge: showBadge,
         position: badges.BadgePosition.topEnd(top: -14, end: -8),
         badgeContent: StreamBuilder<List<NotificationsModel>>(
           stream: NotificationsController.getNotifications(),
@@ -46,8 +52,16 @@ class NotificationsIconWidget extends StatelessWidget {
             if (!snapshot.hasData || snapshot.data == null) {
               return const SizedBox();
             }
+
+            final notificationsCount =
+                snapshot.data?.where((e) => !e.isRead).length.toString();
+
+            if (notificationsCount == '0') {
+              return const SizedBox();
+            }
+
             return Text(
-              snapshot.data!.length.toString(),
+              notificationsCount ?? '0',
               style: theme.textTheme.bodyMedium,
             );
           },
