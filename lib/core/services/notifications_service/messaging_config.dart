@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:go_router/go_router.dart';
 
 import '/features/_features.dart';
 import '/core/_core.dart';
@@ -117,10 +116,10 @@ class MessagingConfig {
   static void _handleNotificationData(Map<String, dynamic> data) {
     log('Handling notification data: $data');
 
-    final notificationType = data['notificationType'] as String;
+    final notificationType = data['notificationType'] as NotificationsType;
 
-    switch (notificationType.toLowerCase()) {
-      case 'chat':
+    switch (notificationType) {
+      case NotificationsType.newMessage:
         ChatController.handleNotificationChatData(data);
         break;
       default:
@@ -132,10 +131,10 @@ class MessagingConfig {
     log('Handling notification payload: $payload');
 
     final data = jsonDecode(payload) as Map<String, dynamic>;
-    final notificationType = data['notificationType'] as String;
+    final notificationType = data['notificationType'] as NotificationsType;
 
-    switch (notificationType.toLowerCase()) {
-      case 'chat':
+    switch (notificationType) {
+      case NotificationsType.newMessage:
         ChatController.handleNotificationChatPayload(payload);
         break;
       default:

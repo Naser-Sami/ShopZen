@@ -40,7 +40,7 @@ class _SendMessageFieldState extends State<SendMessageField> {
           fcmToken: widget.user.fcmToken,
           title: sl<UserCubit>().state?.name ?? "Anonymous",
           body: _controller.text.toString(),
-          notificationType: 'chat',
+          notificationType: NotificationsType.newMessage,
           data: {
             'userId': sl<UserCubit>().state?.uid ?? "",
             'name': sl<UserCubit>().state?.name ?? "",

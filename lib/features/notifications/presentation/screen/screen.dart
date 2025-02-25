@@ -9,9 +9,9 @@ class NotificationsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final textTheme = theme.textTheme;
-    final size = MediaQuery.of(context).size;
+    // final theme = Theme.of(context);
+    // final textTheme = theme.textTheme;
+    // final size = MediaQuery.of(context).size;
 
     return Scaffold(
       appBar: AppBar(

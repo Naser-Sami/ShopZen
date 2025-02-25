@@ -29,3 +29,17 @@ enum Gender {
   male,
   female,
 }
+
+enum NotificationsType {
+  adminMessage,
+  newMessage,
+  newFollower,
+  newComment,
+  newLike,
+  newPost,
+  newFollowerRequest,
+  newFollowerRequestAccepted,
+  newFollowerRequestRejected,
+  newFollowerRequestCancelled,
+  newFollowerRequestExpired,
+}

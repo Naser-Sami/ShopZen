@@ -60,7 +60,7 @@ class NotificationsServiceImpl implements INotificationsService {
     required String fcmToken,
     required String title,
     required String body,
-    required String notificationType,
+    required NotificationsType notificationType,
     required Map<String, String> data,
   }) async {
     try {

@@ -1,9 +1,7 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:go_router/go_router.dart';
 
 import '/core/_core.dart';
 import '/config/_config.dart';
@@ -24,7 +22,7 @@ class NotificationsIconWidget extends StatelessWidget {
           fcmToken: fcmToken ?? '',
           title: "Test Notification",
           body: "This is a test notification",
-          notificationType: 'chat',
+          notificationType: NotificationsType.newMessage,
           data: {
             "userId": "o9RL7kIghgd6aDFEALfqP1KyudZ2",
             "name": "Naser Sami Ebedo",
