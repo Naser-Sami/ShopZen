@@ -125,7 +125,7 @@ class AuthController {
   }
 
   void _navToHomeScreen(BuildContext context, String msg) {
-    if (sl<UserCubit>().state?.address == null) {
+    if (sl<FirebaseAuth>().currentUser == null) {
       context.push(AccessLocationScreen.routeName);
     } else {
       context.go(BottomNavigationBarWidget.routeName);

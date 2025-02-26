@@ -43,7 +43,15 @@ class _YourLocationScreenState extends State<YourLocationScreen> {
     _controller.dispose();
   }
 
-  Future<void> updateUserData(String address) async {
+  void _navTo() {
+    if (mounted) {
+      context.go(BottomNavigationBarWidget.routeName);
+      ToastNotification.showSuccessNotification(context,
+          message: 'Welcome to the ShopZen App');
+    }
+  }
+
+  Future<void> _updateUserData(String address) async {
     try {
       await sl<IFirestoreService<UserModel>>().updateDocument(
         'users/${sl<UserCubit>().state?.uid}',
@@ -51,12 +59,6 @@ class _YourLocationScreenState extends State<YourLocationScreen> {
           'address': address,
         },
       );
-
-      if (mounted) {
-        context.go(BottomNavigationBarWidget.routeName);
-        ToastNotification.showSuccessNotification(context,
-            message: 'Welcome to the ShopZen App');
-      }
     } catch (e) {
       log(e.toString());
     }
@@ -66,7 +68,8 @@ class _YourLocationScreenState extends State<YourLocationScreen> {
     final address =
         await sl<IGeoCodeService>().getAddressFromCoordinates(widget.lat, widget.lng);
 
-    updateUserData('${address.countryName}, ${address.city}');
+    await _updateUserData('${address.countryName}, ${address.city}');
+    _navTo();
   }
 
   Future<void> _getSelectedLocation(String location) async {
@@ -74,7 +77,9 @@ class _YourLocationScreenState extends State<YourLocationScreen> {
       final coordinates = await sl<IGeoCodeService>().getCoordinatesFromAddress(location);
       final address = await sl<IGeoCodeService>().getAddressFromCoordinates(
           coordinates.latitude ?? 0, coordinates.longitude ?? 0);
-      updateUserData('${address.countryName}, ${address.city}');
+
+      await _updateUserData('${address.countryName}, ${address.city}');
+      _navTo();
     } catch (e) {
       log(e.toString());
     }
