@@ -73,6 +73,18 @@ final router = GoRouter(
       ),
     ),
 
+    // Forgot Password Section
+
+    // Select Location Section
+
+    GoRoute(
+      path: SelectLocationScreen.routeName,
+      name: 'Select Location',
+      pageBuilder: (context, state) => CupertinoPage(
+        child: SelectLocationScreen(),
+      ),
+    ),
+
     // StatefulShellRoute for BottomNavigationBarWidget
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {

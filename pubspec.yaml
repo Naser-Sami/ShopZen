@@ -109,6 +109,12 @@ dependencies:
   geocode: ^1.0.3
   geocoding: ^3.0.0
 
+  # Location Search
+  flutter_location_search: ^1.2.0
+
+dependency_overrides:
+  intl: ^0.18.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
