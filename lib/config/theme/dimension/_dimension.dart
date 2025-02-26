@@ -12,6 +12,9 @@ class TRadius {
   static const double r12 = 12.0;
   static const double r16 = 16.0;
   static const double r30 = 30.0;
+  static const double r35 = 35.0;
+  static const double r40 = 40.0;
+  static const double r42 = 42.0;
 }
 
 class TPadding {

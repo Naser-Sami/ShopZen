@@ -23,7 +23,9 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _getCurrentUserData() async {
-    await sl<UserCubit>().getCurrentUserData(sl<FirebaseAuth>().currentUser!.uid);
+    if (sl<FirebaseAuth>().currentUser?.uid != null) {
+      await sl<UserCubit>().getCurrentUserData(sl<FirebaseAuth>().currentUser!.uid);
+    }
   }
 
   navToNextPage() async {

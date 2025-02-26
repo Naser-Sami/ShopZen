@@ -79,5 +79,14 @@
 			<string>remote-notification</string>
 		</array>
 
+		<!-- ACCESS FOR LOCATION -->
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>ShopZen needs access to location when open.</string>
+		<key>NSLocationTemporaryUsageDescriptionDictionary</key>
+		<dict>
+			<key>YourPurposeKey</key>
+			<string>The example App requires temporary access to the device&apos;s precise location.</string>
+		</dict>
+
 	</dict>
 </plist>

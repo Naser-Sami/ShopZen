@@ -41,7 +41,7 @@ class LightThemeColors {
 
   // Outline Colors
   static const outline = Color(0xFF79747E);
-  static const outlineVariant = Color(0xFFCAC4D0);
+  static const outlineVariant = Color(0xFFEEEEF1);
 
   static const shadow = Color(0xFF000000);
   static const surfaceTint = Color(0xFF2c1ab9);

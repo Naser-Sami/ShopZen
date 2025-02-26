@@ -73,6 +73,31 @@ final router = GoRouter(
       ),
     ),
 
+    // Select Your Location Section
+    GoRoute(
+      path: AccessLocationScreen.routeName,
+      name: 'Access Location',
+      pageBuilder: (context, state) => CupertinoPage(
+        child: AccessLocationScreen(),
+      ),
+    ),
+    GoRoute(
+      path: YourLocationScreen.routeName,
+      name: 'Your Location',
+      pageBuilder: (context, state) {
+        final data = state.extra as Map<String, dynamic>;
+        final lat = data['lat'] as double;
+        final lng = data['lng'] as double;
+
+        return CupertinoPage(
+          child: YourLocationScreen(
+            lat: lat,
+            lng: lng,
+          ),
+        );
+      },
+    ),
+
     // StatefulShellRoute for BottomNavigationBarWidget
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {

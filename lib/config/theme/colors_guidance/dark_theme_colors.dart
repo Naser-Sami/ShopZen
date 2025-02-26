@@ -53,7 +53,7 @@ class DarkThemeColors {
 
   // Outline Colors
   static const outline = Color(0xFF79747E);
-  static const outlineVariant = Color(0xFFCAC4D0);
+  static const outlineVariant = Color(0xFF7F7B87);
 
   // Other Colors
   static const shadow = Color(0xFF000000);

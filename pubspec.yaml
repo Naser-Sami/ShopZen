@@ -108,6 +108,7 @@ dependencies:
   # Locations Services
   geocode: ^1.0.3
   geocoding: ^3.0.0
+  geolocator: ^13.0.2
 
 dev_dependencies:
   flutter_test:
@@ -137,6 +138,7 @@ flutter:
     - assets/icons/
     - assets/translations/
     - assets/notifications_key/
+    - assets/json/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

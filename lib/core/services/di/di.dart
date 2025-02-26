@@ -81,6 +81,17 @@ class DI {
       ),
     );
 
+    // Location Services
+    sl.registerLazySingleton<IGeolocatorService>(
+      () => GeolocatorServiceImpl(),
+    );
+    sl.registerLazySingleton<IGeocodingService>(
+      () => GeocodingServiceImpl(),
+    );
+    sl.registerLazySingleton<IGeoCodeService>(
+      () => GeoCodeServiceImpl(),
+    );
+
     // Controllers
     sl.registerLazySingleton<AuthController>(
       () => AuthController(),

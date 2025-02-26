@@ -4,8 +4,8 @@ import '/config/_config.dart';
 final darkTextButtonTheme = TextButtonThemeData(
   style: TextButton.styleFrom(
     elevation: 0,
-    overlayColor: DarkThemeColors.primary,
-    foregroundColor: DarkThemeColors.onPrimary,
+    overlayColor: DarkThemeColors.onPrimary,
+    foregroundColor: DarkThemeColors.primary,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(TRadius.r08),
     ),
@@ -18,8 +18,8 @@ final darkTextButtonTheme = TextButtonThemeData(
 final lightTextButtonTheme = TextButtonThemeData(
   style: TextButton.styleFrom(
     elevation: 0,
-    overlayColor: LightThemeColors.primary,
-    foregroundColor: LightThemeColors.onPrimary,
+    overlayColor: LightThemeColors.onPrimary,
+    foregroundColor: LightThemeColors.primary,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(TRadius.r08),
     ),
