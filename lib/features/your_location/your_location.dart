@@ -1,7 +1,10 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
+import '/features/_features.dart';
 import '/config/_config.dart';
 import '/core/_core.dart';
 
@@ -16,7 +19,9 @@ class YourLocationScreen extends StatefulWidget {
 }
 
 class _YourLocationScreenState extends State<YourLocationScreen> {
+  final TextEditingController _controller = TextEditingController();
   final FocusNode? focusNode = FocusNode();
+  List<CountryModel> countries = [];
 
   bool inset = false;
 
@@ -27,8 +32,52 @@ class _YourLocationScreenState extends State<YourLocationScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    context.read<SearchLocationCubit>().loadLocations('assets/json/countries.json');
+  }
+
+  @override
   void dispose() {
     super.dispose();
+    _controller.dispose();
+  }
+
+  Future<void> updateUserData(String address) async {
+    try {
+      await sl<IFirestoreService<UserModel>>().updateDocument(
+        'users/${sl<UserCubit>().state?.uid}',
+        {
+          'address': address,
+        },
+      );
+
+      if (mounted) {
+        context.go(BottomNavigationBarWidget.routeName);
+        ToastNotification.showSuccessNotification(context,
+            message: 'Welcome to the ShopZen App');
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
+  Future<void> _getCurrentLocation() async {
+    final address =
+        await sl<IGeoCodeService>().getAddressFromCoordinates(widget.lat, widget.lng);
+
+    updateUserData('${address.countryName}, ${address.city}');
+  }
+
+  Future<void> _getSelectedLocation(String location) async {
+    try {
+      final coordinates = await sl<IGeoCodeService>().getCoordinatesFromAddress(location);
+      final address = await sl<IGeoCodeService>().getAddressFromCoordinates(
+          coordinates.latitude ?? 0, coordinates.longitude ?? 0);
+      updateUserData('${address.countryName}, ${address.city}');
+    } catch (e) {
+      log(e.toString());
+    }
   }
 
   @override
@@ -61,6 +110,10 @@ class _YourLocationScreenState extends State<YourLocationScreen> {
                       _onInset(true);
                       focusNode?.requestFocus();
                     },
+                    controller: _controller,
+                    onChanged: (value) {
+                      context.read<SearchLocationCubit>().search(value);
+                    },
                     focusNode: focusNode,
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.symmetric(vertical: TPadding.p12),
@@ -82,15 +135,40 @@ class _YourLocationScreenState extends State<YourLocationScreen> {
                 leading:
                     IconWidget(name: 'location-arrow', color: theme.colorScheme.primary),
                 title: TextWidget('Use my current Location'),
-                onTap: () async {
-                  final address = await sl<IGeoCodeService>()
-                      .getAddressFromCoordinates(widget.lat, widget.lng);
-
-                  log('Country: ${address.countryName}');
-                  log('City: ${address.city}');
-                },
+                onTap: () async => await _getCurrentLocation(),
               ),
               Divider(),
+              const SizedBox(height: TSize.s24),
+              BlocBuilder<SearchLocationCubit, List<CountryModel>>(
+                builder: (context, results) {
+                  if (results.isEmpty) {
+                    return const SizedBox();
+                  }
+
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: results.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        leading: IconWidget(
+                          name: 'location-arrow',
+                          color: theme.colorScheme.primary,
+                        ),
+                        title: Text(results[index].country ?? ""),
+                        subtitle: results[index].cities != null
+                            ? Text(results[index].cities?.first ?? "")
+                            : null,
+                        onTap: () async {
+                          _controller.text = results[index].country ?? "";
+                          context.read<SearchLocationCubit>().search('');
+                          await _getSelectedLocation(
+                              _controller.text = results[index].country ?? "");
+                        },
+                      );
+                    },
+                  );
+                },
+              ),
             ],
           ),
         ),

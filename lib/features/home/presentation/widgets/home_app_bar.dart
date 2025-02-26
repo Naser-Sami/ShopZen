@@ -28,7 +28,7 @@ class HomeSliverAppBar extends StatelessWidget {
             style: theme.textTheme.bodyLarge,
           ),
           TextWidget(
-            'Amman, Jordan',
+            user?.address ?? '',
             style: theme.textTheme.titleLarge,
           ),
         ],

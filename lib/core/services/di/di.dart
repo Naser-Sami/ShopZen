@@ -71,6 +71,10 @@ class DI {
       () => UserCubit(),
     );
 
+    sl.registerLazySingleton<SearchLocationCubit>(
+      () => SearchLocationCubit(),
+    );
+
     // Local Storage Services
     sl.registerLazySingleton<SecureStorageService>(
       () => SecureStorageService(),

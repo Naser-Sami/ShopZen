@@ -125,7 +125,11 @@ class AuthController {
   }
 
   void _navToHomeScreen(BuildContext context, String msg) {
-    context.go(BottomNavigationBarWidget.routeName);
-    ToastNotification.showSuccessNotification(context, message: msg);
+    if (sl<UserCubit>().state?.address == null) {
+      context.push(AccessLocationScreen.routeName);
+    } else {
+      context.go(BottomNavigationBarWidget.routeName);
+      ToastNotification.showSuccessNotification(context, message: msg);
+    }
   }
 }

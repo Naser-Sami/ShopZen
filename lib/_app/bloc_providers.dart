@@ -13,4 +13,7 @@ final providers = [
   BlocProvider<ProductsBloc>(
     create: (context) => sl<ProductsBloc>(),
   ),
+  BlocProvider<SearchLocationCubit>(
+    create: (context) => sl<SearchLocationCubit>(),
+  ),
 ];
