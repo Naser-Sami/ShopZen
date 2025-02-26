@@ -3,6 +3,8 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:speech_to_text/speech_recognition_result.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 
 import '/core/_core.dart';
 import '/config/_config.dart';
@@ -21,6 +23,48 @@ class _SendMessageFieldState extends State<SendMessageField> {
   final TextEditingController _controller = TextEditingController();
   final FocusNode? focusNode = FocusNode();
   final _chatService = sl<IChatRepository>();
+
+  // For Voice Recording
+  SpeechToText speechToText = SpeechToText();
+  bool speechEnabled = false;
+  String lastWords = '';
+
+  /// This has to happen only once per app
+  void _initSpeech() async {
+    speechEnabled = await speechToText.initialize();
+    setState(() {});
+  }
+
+  /// Each time to start a speech recognition session
+  void _startListening() async {
+    await speechToText.listen(onResult: _onSpeechResult);
+    setState(() {});
+  }
+
+  /// Manually stop the active speech recognition session
+  /// Note that there are also timeouts that each platform enforces
+  /// and the SpeechToText plugin supports setting timeouts on the
+  /// listen method.
+  void _stopListening() async {
+    await speechToText.stop();
+    setState(() {});
+  }
+
+  /// This is the callback that the SpeechToText plugin calls when
+  /// the platform returns recognized words.
+  void _onSpeechResult(SpeechRecognitionResult result) {
+    setState(() {
+      lastWords = result.recognizedWords;
+      _controller.text = lastWords;
+    });
+  }
+  // End of Voice Recording
+
+  @override
+  void initState() {
+    super.initState();
+    _initSpeech();
+  }
 
   @override
   void dispose() {
@@ -106,15 +150,41 @@ class _SendMessageFieldState extends State<SendMessageField> {
           ),
         ),
         const SizedBox(width: TSize.s16),
-        MicButton(
-          icon: showMic ? CupertinoIcons.mic : CupertinoIcons.paperplane,
-          onPressed: () {
-            if (showMic) {
-            } else {
-              _sendMessage();
-            }
-          },
-        ),
+        Container(
+          width: TSize.s56,
+          height: TSize.s56,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(TSize.s12),
+            color: colorScheme.primary,
+          ),
+          child: IconButton(
+            onPressed: () {
+              if (showMic) {
+                speechToText.isNotListening ? _startListening() : _stopListening();
+              } else {
+                _sendMessage();
+              }
+            },
+            tooltip: 'Listen',
+            icon: Icon(
+              showMic
+                  ? (speechToText.isNotListening
+                      ? CupertinoIcons.mic
+                      : CupertinoIcons.mic_off)
+                  : CupertinoIcons.paperplane,
+              color: colorScheme.onPrimary,
+            ),
+          ),
+        )
+        // MicButton(
+        //   icon: showMic ? CupertinoIcons.mic : CupertinoIcons.paperplane,
+        //   onPressed: () {
+        //     if (showMic) {
+        //     } else {
+        //       _sendMessage();
+        //     }
+        //   },
+        // ),
       ],
     );
   }

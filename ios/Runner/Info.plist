@@ -88,5 +88,12 @@
 			<string>The example App requires temporary access to the device&apos;s precise location.</string>
 		</dict>
 
+		<!-- ACCESS FOR  VOICE -->
+		<key>NSSpeechRecognitionUsageDescription</key>
+		<string>ShopZen needs access to microphone.</string>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>ShopZen needs access to microphone.</string>
+
+
 	</dict>
 </plist>
