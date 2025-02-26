@@ -98,6 +98,15 @@ final router = GoRouter(
       },
     ),
 
+    // Search Section
+    GoRoute(
+      path: SearchScreen.routeName,
+      name: 'Search',
+      pageBuilder: (context, state) => CupertinoPage(
+        child: SearchScreen(),
+      ),
+    ),
+
     // StatefulShellRoute for BottomNavigationBarWidget
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {

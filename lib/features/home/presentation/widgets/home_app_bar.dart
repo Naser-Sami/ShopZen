@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '/core/_core.dart';
 import '/config/_config.dart';
@@ -45,6 +46,8 @@ PreferredSizeWidget? homeAppBar(BuildContext context) {
   return AppBar(
     automaticallyImplyLeading: false,
     centerTitle: false,
-    title: HomeSearchBar(),
+    title: HomeSearchBar(
+      onTap: () => context.push(SearchScreen.routeName),
+    ),
   );
 }

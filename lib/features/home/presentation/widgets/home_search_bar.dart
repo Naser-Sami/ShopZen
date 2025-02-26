@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
-
 import '/config/_config.dart';
 
-class HomeSearchBar extends StatelessWidget {
-  const HomeSearchBar({super.key});
+class HomeSearchBar extends StatefulWidget {
+  const HomeSearchBar({super.key, this.onTap, this.autofocus = false, this.controller});
+
+  final TextEditingController? controller;
+  final void Function()? onTap;
+  final bool autofocus;
+
+  @override
+  State<HomeSearchBar> createState() => _HomeSearchBarState();
+}
+
+class _HomeSearchBarState extends State<HomeSearchBar> {
+  final focusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +35,10 @@ class HomeSearchBar extends StatelessWidget {
         ],
       ),
       child: TextFormFieldComponent(
+        controller: widget.controller,
+        onTap: widget.onTap,
+        focusNode: focusNode,
+        autofocus: widget.autofocus,
         hintText: 'Find your favorite items',
         enabledBorder: InputBorder.none,
         prefixIcon: IconButton(

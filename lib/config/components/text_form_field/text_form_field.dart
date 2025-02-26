@@ -20,6 +20,9 @@ class TextFormFieldComponent extends StatelessWidget {
     this.onChanged,
     this.successColor,
     this.enabledBorder,
+    this.onTap,
+    this.focusNode,
+    this.autofocus = false,
   });
 
   // Variables
@@ -37,10 +40,13 @@ class TextFormFieldComponent extends StatelessWidget {
 
   // Controllers
   final TextEditingController? controller;
+  final FocusNode? focusNode;
+  final bool autofocus;
 
   // Functions
   final String? Function(String?)? validator;
   final void Function(String)? onChanged;
+  final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +71,10 @@ class TextFormFieldComponent extends StatelessWidget {
     final theme = Theme.of(context);
 
     return TextFormField(
+      focusNode: focusNode,
+      autofocus: autofocus,
       controller: controller,
+      onTap: onTap,
       validator: validator,
       onChanged: onChanged,
       obscureText: obscureText,
