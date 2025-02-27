@@ -24,28 +24,32 @@ class FavoriteIconWidget extends StatelessWidget {
             builder: (context, state) {
               // Get the updated list of products
               if (state is ProductsLoadedState) {
-                final updatedProduct =
-                    state.products.firstWhere((prod) => prod.id == product.id);
+                try {
+                  final updatedProduct =
+                      state.products.firstWhere((prod) => prod.id == product.id);
 
-                return IconButton(
-                  onPressed: () {
-                    context
-                        .read<ProductsBloc>()
-                        .add(ToggleFavoriteEvent(product: updatedProduct));
-                  },
-                  iconSize: 16,
-                  padding: EdgeInsets.zero,
-                  icon: Center(
-                    child: Icon(
-                      updatedProduct.isFavorite
-                          ? Icons.favorite
-                          : Icons.favorite_border_outlined,
-                      color: updatedProduct.isFavorite ? Colors.red : Colors.black,
+                  return IconButton(
+                    onPressed: () {
+                      context
+                          .read<ProductsBloc>()
+                          .add(ToggleFavoriteEvent(product: updatedProduct));
+                    },
+                    iconSize: 16,
+                    padding: EdgeInsets.zero,
+                    icon: Center(
+                      child: Icon(
+                        updatedProduct.isFavorite
+                            ? Icons.favorite
+                            : Icons.favorite_border_outlined,
+                        color: updatedProduct.isFavorite ? Colors.red : Colors.black,
+                      ),
                     ),
-                  ),
-                );
+                  );
+                } catch (e) {
+                  return SizedBox();
+                }
               } else {
-                return Container();
+                return SizedBox();
               }
             },
           );

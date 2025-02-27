@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '/core/_core.dart';
@@ -103,8 +104,23 @@ final router = GoRouter(
       path: SearchScreen.routeName,
       name: 'Search',
       pageBuilder: (context, state) => CupertinoPage(
-        child: SearchScreen(),
+        child: BlocProvider<SearchBloc>(
+          create: (context) => sl<SearchBloc>(),
+          child: SearchScreen(),
+        ),
       ),
+      routes: [
+        GoRoute(
+          path: "${ProductDetailsScreen.routeName}/:index",
+          name: "Search Products Details",
+          pageBuilder: (context, state) {
+            final product = state.extra as ProductEntity;
+            return CupertinoPage(
+              child: ProductDetailsScreen(product: product),
+            );
+          },
+        ),
+      ],
     ),
 
     // StatefulShellRoute for BottomNavigationBarWidget

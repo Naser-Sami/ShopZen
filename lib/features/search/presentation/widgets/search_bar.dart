@@ -2,11 +2,21 @@ import 'package:flutter/material.dart';
 import '/config/_config.dart';
 
 class SearchBarWidget extends StatefulWidget {
-  const SearchBarWidget({super.key, this.onTap, this.autofocus = false, this.controller});
+  const SearchBarWidget(
+      {super.key,
+      this.onTap,
+      this.autofocus = false,
+      this.controller,
+      this.onChanged,
+      this.onSubmitted,
+      this.onTapOutside});
 
   final TextEditingController? controller;
   final void Function()? onTap;
   final bool autofocus;
+  final void Function(String)? onChanged;
+  final void Function(String)? onSubmitted;
+  final void Function(PointerDownEvent)? onTapOutside;
 
   @override
   State<SearchBarWidget> createState() => _SearchBarWidgetState();
@@ -24,6 +34,9 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
       autoFocus: widget.autofocus,
       controller: widget.controller,
       onTap: widget.onTap,
+      onChanged: widget.onChanged,
+      onSubmitted: widget.onSubmitted,
+      onTapOutside: widget.onTapOutside,
       hintText: 'Find your favorite items',
       keyboardType: TextInputType.name,
       shape: WidgetStatePropertyAll(

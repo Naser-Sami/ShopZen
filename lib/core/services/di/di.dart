@@ -59,7 +59,14 @@ class DI {
 
     // BLOC's
     sl.registerLazySingleton<ProductsBloc>(
-      () => ProductsBloc(productRepository: sl<IProductRepository>()),
+      () => ProductsBloc(
+        productRepository: sl<IProductRepository>(),
+      ),
+    );
+    sl.registerLazySingleton<SearchBloc>(
+      () => SearchBloc(
+        searchProductRepository: sl<ISearchProductRepository>(),
+      ),
     );
 
     // CUBIT's

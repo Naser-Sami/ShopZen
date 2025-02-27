@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '/core/_core.dart';
 import '/config/_config.dart';
 import '/features/_features.dart';
@@ -13,14 +15,6 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController _searchController = TextEditingController();
-  final popularSearches = [
-    'Jeans',
-    'Casual' 'clothes',
-    'Hoodie',
-    'Nike' 'shoes' 'black',
-    ' V-neck t-shirt',
-    ' Winter clothes'
-  ];
 
   @override
   void initState() {
@@ -30,66 +24,54 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void dispose() {
     super.dispose();
+
     _searchController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.all(TPadding.p20),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SearchBarWidget(
               controller: _searchController,
               autofocus: true,
+              onChanged: (String query) {
+                // after 1 second, search
+                // Future.delayed(const Duration(milliseconds: 1000), () {
+                //   if (context.mounted) {
+                //     context.read<SearchBloc>().add(SearchProductEvent(query));
+                //   }
+                // });
+              },
+              onSubmitted: (String query) {
+                context.read<SearchBloc>().add(SearchProductEvent(query));
+              },
             ),
             TSize.s24.toHeight,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextWidget(
-                  'Popular Searches',
-                  style: theme.textTheme.titleLarge,
-                ),
-                TextButton(
-                  onPressed: () {
-                    FocusScopeNode currentFocus = FocusScope.of(context);
+            BlocBuilder<SearchBloc, SearchState>(
+              builder: (context, state) {
+                switch (state) {
+                  case SearchLoadingState():
+                    return const Center(child: CircularProgressIndicator());
+                  case SearchLoadedState():
+                    final products = (state).products;
 
-                    if (!currentFocus.hasPrimaryFocus) {
-                      currentFocus.unfocus();
+                    if (products.isEmpty) {
+                      return const EmptySearchWidget();
                     }
-                  },
-                  child: TextWidget(
-                    'Clear All',
-                    style: theme.textTheme.labelLarge,
-                  ),
-                ),
-              ],
-            ),
-            TSize.s16.toHeight,
-            Expanded(
-              child: ListView.separated(
-                itemCount: popularSearches.length,
-                separatorBuilder: (context, index) => Divider(),
-                itemBuilder: (context, index) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      TextWidget(
-                        popularSearches[index],
-                        style: theme.textTheme.bodyMedium,
-                      ),
-                      TextButton(
-                        onPressed: () {},
-                        child: IconWidget(name: 'cancel-circle'),
-                      ),
-                    ],
-                  );
-                },
-              ),
+                    return SearchResultWidget(products: products);
+                  case SearchErrorState():
+                    final error = (state).error;
+                    return Text(error);
+                  default:
+                    return PopularSearchesWidget();
+                }
+              },
             ),
           ],
         ),

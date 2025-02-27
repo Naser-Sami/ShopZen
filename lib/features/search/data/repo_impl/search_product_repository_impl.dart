@@ -11,7 +11,7 @@ class SearchProductRepositoryImpl extends ISearchProductRepository {
       final response = await remoteDataSource.searchProduct(query);
 
       // convert to entity
-      final products = ProductsMapper.mapToEntity(response.products);
+      final products = ProductsMapper.mapToEntity(response?.products ?? []);
       return products;
     } catch (e) {
       rethrow;
