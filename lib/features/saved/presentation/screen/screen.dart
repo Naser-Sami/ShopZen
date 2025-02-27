@@ -1,7 +1,10 @@
-import 'package:flutter/material.dart';
+import 'dart:developer';
 
-import '/core/_core.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '/config/_config.dart';
+import '/features/_features.dart';
 
 class SavedItemsScreen extends StatelessWidget {
   static const routeName = '/saved';
@@ -9,10 +12,6 @@ class SavedItemsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final textTheme = theme.textTheme;
-    final size = MediaQuery.of(context).size;
-
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -21,32 +20,39 @@ class SavedItemsScreen extends StatelessWidget {
           NotificationsIconWidget(),
         ],
       ),
-      body: SizedBox(
-        width: size.width,
-        height: size.height,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const IconWidget(
-              name: 'saved',
-              width: TSize.s64,
-              height: TSize.s64,
-            ),
-            TSize.s16.toHeight,
-            TextWidget(
-              "No Saved Items!",
-              style: textTheme.titleLarge,
-            ),
-            TSize.s12.toHeight,
-            TextWidget(
-              "You don't have any saved items.",
-              style: textTheme.bodySmall,
-            ),
-            TextWidget(
-              "Go to home and add some.",
-              style: textTheme.bodySmall,
-            ),
-          ],
+      body: Padding(
+        padding: const EdgeInsets.all(TPadding.p20),
+        child: BlocBuilder<ProductsBloc, ProductsState>(
+          builder: (context, state) {
+            log('STATE ${state.runtimeType}');
+
+            switch (state) {
+              case ProductsLoadingState():
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+
+              case ProductsLoadedState():
+                final favoriteProducts =
+                    state.products.where((p) => p.isFavorite).toList();
+
+                if (favoriteProducts.isEmpty) {
+                  return const EmptySavedItemsWidget();
+                }
+
+                return ProductsListViewWidget(
+                  products: favoriteProducts,
+                  physics: const BouncingScrollPhysics(),
+                );
+
+              case ProductsErrorState():
+                return const Center(
+                  child: Text('Error loading products'),
+                );
+              default:
+                return const EmptySavedItemsWidget();
+            }
+          },
         ),
       ),
     );

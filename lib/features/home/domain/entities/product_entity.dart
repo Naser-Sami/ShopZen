@@ -1,29 +1,79 @@
+import 'package:hive/hive.dart';
 import 'package:equatable/equatable.dart';
-import '/features/home/_home.dart';
 
+import '/features/_features.dart';
+
+part 'product_entity.g.dart';
+
+@HiveType(typeId: 0)
 class ProductEntity extends Equatable {
-  final num? id;
-  final String? title;
-  final String? description;
-  final String? category;
-  final num? price;
-  final num? discountPercentage;
-  final num? rating;
-  final num? stock;
+  @HiveField(0)
+  final num id;
+
+  @HiveField(1)
+  final String title;
+
+  @HiveField(2)
+  final String description;
+
+  @HiveField(3)
+  final String category;
+
+  @HiveField(4)
+  final num price;
+
+  @HiveField(5)
+  final num discountPercentage;
+
+  @HiveField(6)
+  final num rating;
+
+  @HiveField(7)
+  final num stock;
+
+  @HiveField(8)
   final List<String> tags;
-  final String? brand;
-  final String? sku;
-  final num? weight;
-  final DimensionsEntity? dimensions;
-  final String? warrantyInformation;
-  final String? shippingInformation;
-  final String? availabilityStatus;
+
+  @HiveField(9)
+  final String brand;
+
+  @HiveField(10)
+  final String sku;
+
+  @HiveField(11)
+  final num weight;
+
+  @HiveField(12)
+  final DimensionsEntity dimensions;
+
+  @HiveField(13)
+  final String warrantyInformation;
+
+  @HiveField(14)
+  final String shippingInformation;
+
+  @HiveField(15)
+  final String availabilityStatus;
+
+  @HiveField(16)
   final List<ReviewEntity> reviews;
-  final String? returnPolicy;
-  final num? minimumOrderQuantity;
-  final MetaEntity? meta;
+
+  @HiveField(17)
+  final String returnPolicy;
+
+  @HiveField(18)
+  final num minimumOrderQuantity;
+
+  @HiveField(19)
+  final MetaEntity meta;
+
+  @HiveField(20)
   final List<String> images;
-  final String? thumbnail;
+
+  @HiveField(21)
+  final String thumbnail;
+
+  @HiveField(22)
   final bool isFavorite;
 
   const ProductEntity({
@@ -51,6 +101,62 @@ class ProductEntity extends Equatable {
     required this.thumbnail,
     this.isFavorite = false,
   });
+
+  // from model method
+  factory ProductEntity.fromModel(ProductModel model) {
+    return ProductEntity(
+      id: model.id ?? 0,
+      title: model.title ?? '',
+      description: model.description ?? '',
+      category: model.category ?? '',
+      price: model.price ?? 0,
+      discountPercentage: model.discountPercentage ?? 0,
+      rating: model.rating ?? 0,
+      stock: model.stock ?? 0,
+      tags: model.tags,
+      brand: model.brand ?? '',
+      sku: model.sku ?? '',
+      weight: model.weight ?? 0,
+      dimensions: DimensionsEntity.fromModel(model.dimensions),
+      warrantyInformation: model.warrantyInformation ?? '',
+      shippingInformation: model.shippingInformation ?? '',
+      availabilityStatus: model.availabilityStatus ?? '',
+      reviews: model.reviews.map((review) => ReviewEntity.fromModel(review)).toList(),
+      returnPolicy: model.returnPolicy ?? '',
+      minimumOrderQuantity: model.minimumOrderQuantity ?? 0,
+      meta: MetaEntity.fromModel(model.meta),
+      images: model.images,
+      thumbnail: model.thumbnail ?? '',
+    );
+  }
+
+  // to model method
+  ProductModel toModel() {
+    return ProductModel(
+      id: id,
+      title: title,
+      description: description,
+      category: category,
+      price: price,
+      discountPercentage: discountPercentage,
+      rating: rating,
+      stock: stock,
+      tags: tags.map((tag) => tag.toString()).toList(),
+      brand: brand,
+      sku: sku,
+      weight: weight,
+      dimensions: dimensions.toModel(),
+      warrantyInformation: warrantyInformation,
+      shippingInformation: shippingInformation,
+      availabilityStatus: availabilityStatus,
+      reviews: reviews.map((review) => review.toModel()).toList(),
+      returnPolicy: returnPolicy,
+      minimumOrderQuantity: minimumOrderQuantity,
+      meta: meta.toModel(),
+      images: images,
+      thumbnail: thumbnail,
+    );
+  }
 
   // copyWith method
   ProductEntity copyWith({
@@ -105,68 +211,6 @@ class ProductEntity extends Equatable {
     );
   }
 
-  // from model method
-  factory ProductEntity.fromModel(ProductModel model) {
-    return ProductEntity(
-      id: model.id,
-      title: model.title,
-      description: model.description,
-      category: model.category,
-      price: model.price,
-      discountPercentage: model.discountPercentage,
-      rating: model.rating,
-      stock: model.stock,
-      tags: model.tags,
-      brand: model.brand,
-      sku: model.sku,
-      weight: model.weight,
-      dimensions: DimensionsEntity.fromModel(model.dimensions),
-      warrantyInformation: model.warrantyInformation,
-      shippingInformation: model.shippingInformation,
-      availabilityStatus: model.availabilityStatus,
-      reviews: model.reviews.map((review) => ReviewEntity.fromModel(review)).toList(),
-      returnPolicy: model.returnPolicy,
-      minimumOrderQuantity: model.minimumOrderQuantity,
-      meta: MetaEntity.fromModel(model.meta),
-      images: model.images,
-      thumbnail: model.thumbnail,
-    );
-  }
-
-  // to model method
-  ProductModel toModel() {
-    return ProductModel(
-      id: id,
-      title: title,
-      description: description,
-      category: category,
-      price: price,
-      discountPercentage: discountPercentage,
-      rating: rating,
-      stock: stock,
-      tags: tags.map((tag) => tag.toString()).toList(),
-      brand: brand,
-      sku: sku,
-      weight: weight,
-      dimensions: dimensions?.toModel(),
-      warrantyInformation: warrantyInformation,
-      shippingInformation: shippingInformation,
-      availabilityStatus: availabilityStatus,
-      reviews: reviews.map((review) => review.toModel()).toList(),
-      returnPolicy: returnPolicy,
-      minimumOrderQuantity: minimumOrderQuantity,
-      meta: meta?.toModel(),
-      images: images,
-      thumbnail: thumbnail,
-    );
-  }
-
-  // to string method
-  @override
-  String toString() {
-    return 'ProductEntity(id: $id, title: $title, description: $description, category: $category, price: $price, discountPercentage: $discountPercentage, rating: $rating, stock: $stock, tags: $tags, brand: $brand, sku: $sku, weight: $weight, dimensions: $dimensions, warrantyInformation: $warrantyInformation, shippingInformation: $shippingInformation, availabilityStatus: $availabilityStatus, reviews: $reviews, returnPolicy: $returnPolicy, minimumOrderQuantity: $minimumOrderQuantity, meta: $meta, images: $images, thumbnail: $thumbnail, isFavorite: $isFavorite)';
-  }
-
   @override
   List<Object?> get props => [
         id,
@@ -191,20 +235,45 @@ class ProductEntity extends Equatable {
         meta,
         images,
         thumbnail,
-        isFavorite,
+        isFavorite
       ];
 }
 
+// DimensionsEntity Adapter
+@HiveType(typeId: 1)
 class DimensionsEntity extends Equatable {
+  @HiveField(0)
+  final num width;
+
+  @HiveField(1)
+  final num height;
+
+  @HiveField(2)
+  final num depth;
+
   const DimensionsEntity({
     required this.width,
     required this.height,
     required this.depth,
   });
 
-  final num? width;
-  final num? height;
-  final num? depth;
+  // from model method
+  factory DimensionsEntity.fromModel(DimensionsModel? model) {
+    return DimensionsEntity(
+      width: model?.width ?? 0,
+      height: model?.height ?? 0,
+      depth: model?.depth ?? 0,
+    );
+  }
+
+  // to model method
+  DimensionsModel toModel() {
+    return DimensionsModel(
+      width: width,
+      height: height,
+      depth: depth,
+    );
+  }
 
   DimensionsEntity copyWith({
     num? width,
@@ -218,63 +287,31 @@ class DimensionsEntity extends Equatable {
     );
   }
 
-  // from model method
-  factory DimensionsEntity.fromModel(DimensionsModel? model) {
-    return DimensionsEntity(
-      width: model?.width,
-      height: model?.height,
-      depth: model?.depth,
-    );
-  }
-
-  // to model method
-  DimensionsModel toModel() {
-    return DimensionsModel(
-      width: width,
-      height: height,
-      depth: depth,
-    );
-  }
-
   @override
-  String toString() {
-    return "$width, $height, $depth, ";
-  }
-
-  @override
-  List<Object?> get props => [
-        width,
-        height,
-        depth,
-      ];
+  List<Object?> get props => [width, height, depth];
 }
 
+// MetaEntity Adapter
+@HiveType(typeId: 2)
 class MetaEntity extends Equatable {
+  @HiveField(0)
+  final DateTime? createdAt;
+
+  @HiveField(1)
+  final DateTime? updatedAt;
+
+  @HiveField(2)
+  final String? barcode;
+
+  @HiveField(3)
+  final String? qrCode;
+
   const MetaEntity({
     required this.createdAt,
     required this.updatedAt,
     required this.barcode,
     required this.qrCode,
   });
-
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-  final String? barcode;
-  final String? qrCode;
-
-  MetaEntity copyWith({
-    DateTime? createdAt,
-    DateTime? updatedAt,
-    String? barcode,
-    String? qrCode,
-  }) {
-    return MetaEntity(
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
-      barcode: barcode ?? this.barcode,
-      qrCode: qrCode ?? this.qrCode,
-    );
-  }
 
   // from model method
   factory MetaEntity.fromModel(MetaModel? model) {
@@ -296,21 +333,42 @@ class MetaEntity extends Equatable {
     );
   }
 
-  @override
-  String toString() {
-    return "$createdAt, $updatedAt, $barcode, $qrCode, ";
+  MetaEntity copyWith({
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? barcode,
+    String? qrCode,
+  }) {
+    return MetaEntity(
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      barcode: barcode ?? this.barcode,
+      qrCode: qrCode ?? this.qrCode,
+    );
   }
 
   @override
-  List<Object?> get props => [
-        createdAt,
-        updatedAt,
-        barcode,
-        qrCode,
-      ];
+  List<Object?> get props => [createdAt, updatedAt, barcode, qrCode];
 }
 
+// ReviewEntity Adapter
+@HiveType(typeId: 3)
 class ReviewEntity extends Equatable {
+  @HiveField(0)
+  final num rating;
+
+  @HiveField(1)
+  final String comment;
+
+  @HiveField(2)
+  final DateTime? date;
+
+  @HiveField(3)
+  final String reviewerName;
+
+  @HiveField(4)
+  final String reviewerEmail;
+
   const ReviewEntity({
     required this.rating,
     required this.comment,
@@ -319,11 +377,27 @@ class ReviewEntity extends Equatable {
     required this.reviewerEmail,
   });
 
-  final num? rating;
-  final String? comment;
-  final DateTime? date;
-  final String? reviewerName;
-  final String? reviewerEmail;
+  // from model method
+  factory ReviewEntity.fromModel(ReviewModel? model) {
+    return ReviewEntity(
+      rating: model?.rating ?? 0,
+      comment: model?.comment ?? '',
+      date: model?.date,
+      reviewerName: model?.reviewerName ?? '',
+      reviewerEmail: model?.reviewerEmail ?? '',
+    );
+  }
+
+  // to model method
+  ReviewModel toModel() {
+    return ReviewModel(
+      rating: rating,
+      comment: comment,
+      date: date,
+      reviewerName: reviewerName,
+      reviewerEmail: reviewerEmail,
+    );
+  }
 
   ReviewEntity copyWith({
     num? rating,
@@ -341,39 +415,6 @@ class ReviewEntity extends Equatable {
     );
   }
 
-  // from model method
-  factory ReviewEntity.fromModel(ReviewModel? model) {
-    return ReviewEntity(
-      rating: model?.rating,
-      comment: model?.comment,
-      date: model?.date,
-      reviewerName: model?.reviewerName,
-      reviewerEmail: model?.reviewerEmail,
-    );
-  }
-
-  // to model method
-  ReviewModel toModel() {
-    return ReviewModel(
-      rating: rating,
-      comment: comment,
-      date: date,
-      reviewerName: reviewerName,
-      reviewerEmail: reviewerEmail,
-    );
-  }
-
   @override
-  String toString() {
-    return "$rating, $comment, $date, $reviewerName, $reviewerEmail, ";
-  }
-
-  @override
-  List<Object?> get props => [
-        rating,
-        comment,
-        date,
-        reviewerName,
-        reviewerEmail,
-      ];
+  List<Object?> get props => [rating, comment, date, reviewerName, reviewerEmail];
 }

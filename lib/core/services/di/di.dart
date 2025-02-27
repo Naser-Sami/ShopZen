@@ -23,6 +23,22 @@ class DI {
     );
 
     // Services
+    // Local Storage Services
+    sl.registerLazySingleton<SecureStorageService>(
+      () => SecureStorageService(),
+    );
+    sl.registerLazySingleton<IHiveService<dynamic>>(
+      () => HiveService<dynamic>(
+        boxName: 'settings',
+      ),
+    );
+
+    sl.registerLazySingleton<IHiveService<ProductEntity>>(
+      () => HiveService<ProductEntity>(
+        boxName: 'favorites',
+        adapter: ProductEntityAdapter(),
+      ),
+    );
 
     // Firebase Service
     final firebaseAuth = FirebaseAuth.instance;
@@ -63,7 +79,9 @@ class DI {
         productRepository: sl<IProductRepository>(),
         getProductCategoryListRepository: sl<IGetProductCategoryListRepository>(),
         getProductsByCategoryRepository: sl<IGetProductsByCategoryRepository>(),
-      ),
+      )..add(
+          LoadFavoriteProductsEvent(),
+        ),
     );
     sl.registerLazySingleton<SearchBloc>(
       () => SearchBloc(
@@ -82,16 +100,6 @@ class DI {
 
     sl.registerLazySingleton<SearchLocationCubit>(
       () => SearchLocationCubit(),
-    );
-
-    // Local Storage Services
-    sl.registerLazySingleton<SecureStorageService>(
-      () => SecureStorageService(),
-    );
-    sl.registerLazySingleton<HiveService<dynamic>>(
-      () => HiveService<dynamic>(
-        boxName: 'settings',
-      ),
     );
 
     // Location Services

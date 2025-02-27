@@ -101,16 +101,15 @@ class _ProductsListViewWidgetState extends State<ProductsListViewWidget> {
                                   maxLines: 1,
                                   text: TextSpan(
                                     children: [
-                                      if (product.price != null)
-                                        TextSpan(
-                                          text:
-                                              "\$${(product.price! * (product.discountPercentage != null ? (1 - product.discountPercentage! / 100) : 1)).toStringAsFixed(2)}",
-                                          style: theme.textTheme.bodyLarge?.copyWith(
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
                                       TextSpan(
-                                        text: "\$${product.price?.toStringAsFixed(2)}",
+                                        text:
+                                            "\$${(product.price * (product.discountPercentage != null ? (1 - product.discountPercentage / 100) : 1)).toStringAsFixed(2)}",
+                                        style: theme.textTheme.bodyLarge?.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: "\$${product.price.toStringAsFixed(2)}",
                                         style: theme.textTheme.bodyMedium?.copyWith(
                                           decoration: TextDecoration.lineThrough,
                                         ),

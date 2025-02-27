@@ -51,7 +51,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    selectedThumbnail = widget.product.thumbnail ?? '';
+    selectedThumbnail = widget.product.thumbnail;
   }
 
   @override
@@ -127,20 +127,19 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       children: [
                         TSize.s16.toHeight,
                         TextWidget(
-                          widget.product.title ?? "",
+                          widget.product.title,
                           style: theme.textTheme.titleLarge,
                         ),
                         TSize.s16.toHeight,
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            if (widget.product.price != null)
-                              TextWidget(
-                                "\$${(widget.product.price! * (widget.product.discountPercentage != null ? (1 - widget.product.discountPercentage! / 100) : 1)).toStringAsFixed(2)}",
-                                style: theme.textTheme.bodyLarge?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            TextWidget(
+                              "\$${(widget.product.price * ((1 - widget.product.discountPercentage / 100))).toStringAsFixed(2)}",
+                              style: theme.textTheme.bodyLarge?.copyWith(
+                                fontWeight: FontWeight.bold,
                               ),
+                            ),
                             ProductReviewsRatioWidget(product: widget.product),
                           ],
                         ),
@@ -151,7 +150,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         ),
                         const SizedBox(height: TSize.s08),
                         ReadMoreText(
-                          widget.product.description ?? "",
+                          widget.product.description,
                           trimMode: TrimMode.Line,
                           trimLines: 3,
                           trimCollapsedText: ' Read more',
@@ -170,8 +169,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         TSize.s16.toHeight,
 
                         // If product has sizes
-                        if (widget.product.category!.contains('shirt') ||
-                            widget.product.category!.contains('tops')) ...[
+                        if (widget.product.category.contains('shirt') ||
+                            widget.product.category.contains('tops')) ...[
                           TextWidget('Select Size', style: theme.textTheme.titleMedium),
                           TSize.s16.toHeight,
                           Wrap(
@@ -284,7 +283,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                       RatingBar.builder(
                                         ignoreGestures: true,
                                         itemSize: 24,
-                                        initialRating: review.rating?.toDouble() ?? 0,
+                                        initialRating: review.rating.toDouble(),
                                         allowHalfRating: true,
                                         itemPadding:
                                             const EdgeInsets.symmetric(horizontal: 4.0),
@@ -296,7 +295,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                       ),
                                       TSize.s16.toWidth,
                                       TextWidget(
-                                        review.reviewerName?.split(' ')[0] ?? '',
+                                        review.reviewerName.split(' ')[0],
                                         style: theme.textTheme.titleSmall,
                                       ),
                                     ],
@@ -306,7 +305,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                       style: theme.textTheme.titleLarge),
                                   TSize.s16.toHeight,
                                   TextWidget(
-                                    review.comment ?? '',
+                                    review.comment,
                                     style: theme.textTheme.bodyMedium,
                                   ),
                                   TSize.s16.toHeight,
@@ -314,7 +313,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                     text: TextSpan(
                                       children: [
                                         TextSpan(
-                                          text: review.reviewerName ?? '',
+                                          text: review.reviewerName,
                                           style: theme.textTheme.titleSmall?.copyWith(
                                             color: theme.colorScheme.outline,
                                           ),

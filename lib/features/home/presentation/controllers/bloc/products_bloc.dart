@@ -1,5 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+
+import '/core/_core.dart';
 import '/features/_features.dart';
 
 part 'products_event.dart';
@@ -22,6 +24,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
     on<ToggleFavoriteEvent>(_onToggleFavoriteEvent);
     on<GetProductCategoryListEvent>(_onGetProductCategoryListEvent);
     on<GetProductsByCategoryEvent>(_onGetProductsByCategoryEvent);
+    on<LoadFavoriteProductsEvent>(_onLoadFavoriteProducts);
   }
 
   Future<void> _onFetchProducts(
@@ -50,28 +53,18 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
           ? (state as ProductsLoadedState).productsByCategory
           : [];
 
+      List<ProductEntity> existingFavoriteProducts = state is ProductsLoadedState
+          ? (state as ProductsLoadedState).favoriteProducts
+          : [];
+
       emit(ProductsLoadedState(products,
           categories: existingCategories,
-          productsByCategory: existingProductsByCategory));
+          productsByCategory: existingProductsByCategory,
+          favoriteProducts: existingFavoriteProducts));
       isLoadingMoreData = false;
     } catch (e) {
       emit(ProductsErrorState(e.toString()));
       isLoadingMoreData = false;
-    }
-  }
-
-  void _onToggleFavoriteEvent(ToggleFavoriteEvent event, Emitter<ProductsState> emit) {
-    if (state is ProductsLoadedState) {
-      final state = this.state as ProductsLoadedState;
-      final updatedProducts = state.products.map((product) {
-        if (product.id == event.product.id) {
-          return product.copyWith(isFavorite: !product.isFavorite);
-        }
-        return product;
-      }).toList();
-
-      emit(ProductsLoadedState(updatedProducts,
-          categories: state.categories, productsByCategory: state.productsByCategory));
     }
   }
 
@@ -98,12 +91,59 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
           await getProductsByCategoryRepository.getProductsByCategory(event.category);
       if (state is ProductsLoadedState) {
         final currentState = state as ProductsLoadedState;
-        emit(currentState.copyWith(productsByCategory: productsByCategory));
+        emit(
+          currentState.copyWith(
+            productsByCategory: productsByCategory,
+            categories: currentState.categories,
+            favoriteProducts: currentState.favoriteProducts,
+          ),
+        );
       } else {
         emit(ProductsLoadedState(const [], productsByCategory: productsByCategory));
       }
     } catch (e) {
       emit(ProductsErrorState(e.toString()));
+    }
+  }
+
+  Future<void> _onToggleFavoriteEvent(
+      ToggleFavoriteEvent event, Emitter<ProductsState> emit) async {
+    final box = sl<IHiveService<ProductEntity>>();
+
+    if (state is ProductsLoadedState) {
+      final currentState = state as ProductsLoadedState;
+      final updatedProducts = currentState.products.map((product) {
+        if (product.id == event.product.id) {
+          final updatedProduct = product.copyWith(isFavorite: !product.isFavorite);
+
+          if (updatedProduct.isFavorite) {
+            box.put(updatedProduct.id, updatedProduct);
+          } else {
+            box.delete(updatedProduct.id);
+          }
+
+          return updatedProduct;
+        }
+        return product;
+      }).toList();
+
+      emit(ProductsLoadedState(updatedProducts,
+          categories: currentState.categories,
+          productsByCategory: currentState.productsByCategory,
+          favoriteProducts: currentState.favoriteProducts));
+    }
+  }
+
+  void _onLoadFavoriteProducts(
+      LoadFavoriteProductsEvent event, Emitter<ProductsState> emit) async {
+    final box = sl<IHiveService<ProductEntity>>();
+    final favoriteProducts = box.getAll();
+
+    if (state is ProductsLoadedState) {
+      final currentState = state as ProductsLoadedState;
+      emit(currentState.copyWith(favoriteProducts: favoriteProducts));
+    } else {
+      emit(ProductsLoadedState(const [], favoriteProducts: favoriteProducts));
     }
   }
 }
