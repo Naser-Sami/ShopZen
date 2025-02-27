@@ -46,7 +46,8 @@ PreferredSizeWidget? homeAppBar(BuildContext context) {
   return AppBar(
     automaticallyImplyLeading: false,
     centerTitle: false,
-    title: HomeSearchBar(
+    toolbarHeight: 80,
+    title: SearchBarWidget(
       onTap: () => context.push(SearchScreen.routeName),
     ),
   );

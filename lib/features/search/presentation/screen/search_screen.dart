@@ -42,7 +42,7 @@ class _SearchScreenState extends State<SearchScreen> {
         padding: const EdgeInsets.all(TPadding.p20),
         child: Column(
           children: [
-            HomeSearchBar(
+            SearchBarWidget(
               controller: _searchController,
               autofocus: true,
             ),
