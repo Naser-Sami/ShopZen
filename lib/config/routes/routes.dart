@@ -103,11 +103,8 @@ final router = GoRouter(
     GoRoute(
       path: SearchScreen.routeName,
       name: 'Search',
-      pageBuilder: (context, state) => CupertinoPage(
-        child: BlocProvider<SearchBloc>(
-          create: (context) => sl<SearchBloc>(),
-          child: const SearchScreen(),
-        ),
+      pageBuilder: (context, state) => const CupertinoPage(
+        child: SearchScreen(),
       ),
       routes: [
         GoRoute(

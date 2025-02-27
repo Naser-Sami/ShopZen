@@ -67,7 +67,7 @@ class _ProductsListViewWidgetState extends State<ProductsListViewWidget> {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(TRadius.r08),
                                     image: DecorationImage(
-                                      image: NetworkImage(product.thumbnail ?? ""),
+                                      image: NetworkImage(product.thumbnail),
                                       fit: BoxFit.fill,
                                     ),
                                   ),
@@ -92,7 +92,7 @@ class _ProductsListViewWidgetState extends State<ProductsListViewWidget> {
                               children: [
                                 const SizedBox(height: TSize.s16),
                                 TextWidget(
-                                  product.title ?? "",
+                                  product.title,
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -103,7 +103,7 @@ class _ProductsListViewWidgetState extends State<ProductsListViewWidget> {
                                     children: [
                                       TextSpan(
                                         text:
-                                            "\$${(product.price * (product.discountPercentage != null ? (1 - product.discountPercentage / 100) : 1)).toStringAsFixed(2)}",
+                                            "\$${(product.price * ((1 - product.discountPercentage / 100))).toStringAsFixed(2)}",
                                         style: theme.textTheme.bodyLarge?.copyWith(
                                           fontWeight: FontWeight.bold,
                                         ),

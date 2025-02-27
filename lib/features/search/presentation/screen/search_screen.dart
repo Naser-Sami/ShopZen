@@ -17,12 +17,12 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   Timer? _debounce;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    context.read<SearchBloc>().add(SearchResetEvent()); // Reset state when screen opens
   }
 
   void _onSearchChanged(String query) {
@@ -38,13 +38,13 @@ class _SearchScreenState extends State<SearchScreen> {
   void dispose() {
     _debounce?.cancel();
     _searchController.dispose();
-    context.read<SearchBloc>().add(SearchResetEvent());
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.all(TPadding.p20),

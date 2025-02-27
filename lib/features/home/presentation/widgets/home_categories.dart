@@ -80,7 +80,8 @@ class _HomeCategoriesState extends State<HomeCategories> {
                             TextWidget(
                               categories[index]
                                   .replaceAll('womens', 'w')
-                                  .replaceAll('mens', 'm'),
+                                  .replaceAll('mens', 'm')
+                                  .toCapitalized,
                               style: theme.textTheme.labelSmall
                                   ?.copyWith(fontWeight: FontWeight.w500),
                               maxLines: 2,

@@ -113,6 +113,7 @@ dependencies:
   speech_to_text_ultra: ^0.0.3
   speech_to_text: ^6.6.0
   hive_generator: ^2.0.1
+  flutter_slidable: ^4.0.0
 
 dev_dependencies:
   flutter_test:

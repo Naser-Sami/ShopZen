@@ -14,6 +14,7 @@ class NotificationsIconWidget extends StatefulWidget {
 
 class _NotificationsIconWidgetState extends State<NotificationsIconWidget> {
   final showBadge = false;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -38,7 +39,6 @@ class _NotificationsIconWidgetState extends State<NotificationsIconWidget> {
       //   );
       // },
       icon: badges.Badge(
-        showBadge: showBadge,
         position: badges.BadgePosition.topEnd(top: -14, end: -8),
         badgeContent: StreamBuilder<List<NotificationsModel>>(
           stream: NotificationsController.getNotifications(),
