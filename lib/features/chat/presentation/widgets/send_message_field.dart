@@ -47,7 +47,9 @@ class _SendMessageFieldState extends State<SendMessageField> {
   /// listen method.
   void _stopListening() async {
     await speechToText.stop();
-    setState(() {});
+    setState(() {
+      showMic = false;
+    });
   }
 
   /// This is the callback that the SpeechToText plugin calls when
@@ -66,11 +68,18 @@ class _SendMessageFieldState extends State<SendMessageField> {
     _initSpeech();
   }
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    focusNode?.dispose();
-    super.dispose();
+  bool showMic = true;
+
+  void _toggleMic() {
+    if (_controller.text.isEmpty) {
+      setState(() {
+        showMic = true;
+      });
+    } else {
+      setState(() {
+        showMic = false;
+      });
+    }
   }
 
   void _sendMessage() async {
@@ -103,18 +112,11 @@ class _SendMessageFieldState extends State<SendMessageField> {
     }
   }
 
-  bool showMic = true;
-
-  void _toggleMic() {
-    if (_controller.text.isEmpty) {
-      setState(() {
-        showMic = true;
-      });
-    } else {
-      setState(() {
-        showMic = false;
-      });
-    }
+  @override
+  void dispose() {
+    _controller.dispose();
+    focusNode?.dispose();
+    super.dispose();
   }
 
   @override
@@ -175,16 +177,7 @@ class _SendMessageFieldState extends State<SendMessageField> {
               color: colorScheme.onPrimary,
             ),
           ),
-        )
-        // MicButton(
-        //   icon: showMic ? CupertinoIcons.mic : CupertinoIcons.paperplane,
-        //   onPressed: () {
-        //     if (showMic) {
-        //     } else {
-        //       _sendMessage();
-        //     }
-        //   },
-        // ),
+        ),
       ],
     );
   }
