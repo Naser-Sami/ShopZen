@@ -106,6 +106,10 @@ class DI {
       () => ProductsRemoteDataSourceImpl(),
     );
 
+    sl.registerLazySingleton<ISearchProductRemoteDataSource>(
+      () => SearchProductRemoteDataSourceImpl(),
+    );
+
     // Repositories
     sl.registerLazySingleton<IProductRepository>(
       () => ProductRepositoryImpl(
@@ -127,6 +131,13 @@ class DI {
 
     sl.registerLazySingleton<IChatRepository>(
       () => ChatRepositoryImpl(),
+    );
+
+    // Repositories for Search
+    sl.registerLazySingleton<ISearchProductRepository>(
+      () => SearchProductRepositoryImpl(
+        remoteDataSource: sl<ISearchProductRemoteDataSource>(),
+      ),
     );
 
     // Use cases
