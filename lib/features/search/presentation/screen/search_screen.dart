@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,18 +16,30 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
+  Timer? _debounce;
   final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+    context.read<SearchBloc>().add(SearchResetEvent()); // Reset state when screen opens
+  }
+
+  void _onSearchChanged(String query) {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(seconds: 1), () {
+      if (query.isNotEmpty) {
+        context.read<SearchBloc>().add(SearchProductEvent(query));
+      }
+    });
   }
 
   @override
   void dispose() {
-    super.dispose();
-
+    _debounce?.cancel();
     _searchController.dispose();
+    context.read<SearchBloc>().add(SearchResetEvent());
+    super.dispose();
   }
 
   @override
@@ -40,14 +54,7 @@ class _SearchScreenState extends State<SearchScreen> {
             SearchBarWidget(
               controller: _searchController,
               autofocus: true,
-              onChanged: (String query) {
-                // after 1 second, search
-                // Future.delayed(const Duration(milliseconds: 1000), () {
-                //   if (context.mounted) {
-                //     context.read<SearchBloc>().add(SearchProductEvent(query));
-                //   }
-                // });
-              },
+              onChanged: _onSearchChanged,
               onSubmitted: (String query) {
                 context.read<SearchBloc>().add(SearchProductEvent(query));
               },

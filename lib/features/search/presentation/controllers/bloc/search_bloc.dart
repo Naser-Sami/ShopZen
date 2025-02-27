@@ -10,6 +10,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   final ISearchProductRepository searchProductRepository;
 
   SearchBloc({required this.searchProductRepository}) : super(SearchInitial()) {
+    on<SearchResetEvent>((event, emit) => emit(SearchInitial())); // Handle reset event
     on<SearchProductEvent>(_onSearchProductEvent);
   }
 
