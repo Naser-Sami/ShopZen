@@ -16,7 +16,7 @@ class Sender extends StatelessWidget {
           maxWidth: maxWidth, // Ensures max width is 75% of screen
         ),
         child: Container(
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             horizontal: TPadding.p20,
             vertical: TPadding.p12,
           ),
@@ -24,7 +24,7 @@ class Sender extends StatelessWidget {
             color: Colors.black.withValues(
               alpha: 0.75,
             ),
-            borderRadius: BorderRadiusDirectional.only(
+            borderRadius: const BorderRadiusDirectional.only(
               topStart: Radius.circular(TSize.s12),
               topEnd: Radius.circular(TSize.s12),
               bottomStart: Radius.circular(TSize.s12),

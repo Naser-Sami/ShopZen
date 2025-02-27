@@ -6,7 +6,6 @@ ColorScheme? _colorSchemeLight = const ColorScheme.light(
   onSurface: LightThemeColors.onSurface,
 
   primary: LightThemeColors.primary,
-  onPrimary: LightThemeColors.onPrimary,
   primaryContainer: LightThemeColors.primaryContainer,
   onPrimaryContainer: LightThemeColors.onPrimaryContainer,
   primaryFixed: LightThemeColors.onPrimaryFixed,
@@ -15,7 +14,6 @@ ColorScheme? _colorSchemeLight = const ColorScheme.light(
 
   // ---
   error: LightThemeColors.error,
-  onError: LightThemeColors.onError,
   errorContainer: LightThemeColors.errorContainer,
   onErrorContainer: LightThemeColors.onErrorContainer,
 

@@ -21,7 +21,6 @@ abstract class IGeolocatorService {
 
 class GeolocatorServiceImpl implements IGeolocatorService {
   LocationSettings locationSettings = const LocationSettings(
-    accuracy: LocationAccuracy.best,
     distanceFilter: 100,
   );
 

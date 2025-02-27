@@ -105,7 +105,7 @@ class _YourLocationScreenState extends State<YourLocationScreen> {
               NeumorphismContainer(
                 inset: inset,
                 blurRadius: 2,
-                offset: Offset(2, 0),
+                offset: const Offset(2, 0),
                 surfaceColor: theme.colorScheme.outlineVariant,
                 borderRadius: BorderRadius.circular(TRadius.r08),
                 child: Padding(
@@ -139,10 +139,10 @@ class _YourLocationScreenState extends State<YourLocationScreen> {
               ListTile(
                 leading:
                     IconWidget(name: 'location-arrow', color: theme.colorScheme.primary),
-                title: TextWidget('Use my current Location'),
+                title: const TextWidget('Use my current Location'),
                 onTap: () async => await _getCurrentLocation(),
               ),
-              Divider(),
+              const Divider(),
               const SizedBox(height: TSize.s24),
               BlocBuilder<SearchLocationCubit, List<CountryModel>>(
                 builder: (context, results) {

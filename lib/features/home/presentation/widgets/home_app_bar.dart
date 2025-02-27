@@ -34,7 +34,7 @@ class HomeSliverAppBar extends StatelessWidget {
           ),
         ],
       ),
-      actions: [
+      actions: const [
         NotificationsIconWidget(),
       ],
       bottom: homeAppBar(context),

@@ -76,7 +76,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     final error = (state).error;
                     return Text(error);
                   default:
-                    return PopularSearchesWidget();
+                    return const PopularSearchesWidget();
                 }
               },
             ),

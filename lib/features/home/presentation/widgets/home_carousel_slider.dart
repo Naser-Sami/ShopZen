@@ -78,7 +78,7 @@ class _HomeCarouselSliderState extends State<HomeCarouselSlider> {
                 child: Container(
                   width: 6.0,
                   height: 6.0,
-                  margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                  margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: theme.colorScheme.primary

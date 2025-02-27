@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '/config/_config.dart';
 
-final bottomSheetThemeDark = BottomSheetThemeData(
+final bottomSheetThemeDark = const BottomSheetThemeData(
   backgroundColor: DarkThemeColors.secondaryContainer,
   modalBackgroundColor: DarkThemeColors.secondaryContainer,
   shape: RoundedRectangleBorder(
@@ -11,7 +11,7 @@ final bottomSheetThemeDark = BottomSheetThemeData(
   ),
 );
 
-final bottomSheetThemeLight = BottomSheetThemeData(
+final bottomSheetThemeLight = const BottomSheetThemeData(
   backgroundColor: LightThemeColors.background,
   modalBackgroundColor: LightThemeColors.background,
   shape: RoundedRectangleBorder(

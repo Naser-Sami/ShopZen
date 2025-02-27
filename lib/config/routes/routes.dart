@@ -15,7 +15,7 @@ final router = GoRouter(
   navigatorKey: navigatorKey,
   errorBuilder: (context, state) {
     if (state.uri.path.contains('/link')) {
-      return HomeScreen();
+      return const HomeScreen();
     }
 
     return ErrorPage(
@@ -32,14 +32,14 @@ final router = GoRouter(
     GoRoute(
       path: SplashScreen.routeName,
       name: 'Splash',
-      pageBuilder: (context, state) => CupertinoPage(
+      pageBuilder: (context, state) => const CupertinoPage(
         child: SplashScreen(),
       ),
     ),
     GoRoute(
       path: OnboardingScreen.routeName,
       name: 'Onboarding',
-      pageBuilder: (context, state) => CupertinoPage(
+      pageBuilder: (context, state) => const CupertinoPage(
         child: OnboardingScreen(),
       ),
     ),
@@ -49,27 +49,27 @@ final router = GoRouter(
       pageBuilder: (context, state) => slideFadeTransitionPage(
         context,
         state,
-        LoginWithSocialScreen(),
+        const LoginWithSocialScreen(),
       ),
     ),
     GoRoute(
       path: LoginWithEmailScreen.routeName,
       name: 'Login With Email',
-      pageBuilder: (context, state) => CupertinoPage(
+      pageBuilder: (context, state) => const CupertinoPage(
         child: LoginWithEmailScreen(),
       ),
     ),
     GoRoute(
       path: SignUpWithSocialScreen.routeName,
       name: 'Sign Up With Social',
-      pageBuilder: (context, state) => CupertinoPage(
+      pageBuilder: (context, state) => const CupertinoPage(
         child: SignUpWithSocialScreen(),
       ),
     ),
     GoRoute(
       path: SignUpWithEmailScreen.routeName,
       name: 'Sign Up With Email',
-      pageBuilder: (context, state) => CupertinoPage(
+      pageBuilder: (context, state) => const CupertinoPage(
         child: SignUpWithEmailScreen(),
       ),
     ),
@@ -78,7 +78,7 @@ final router = GoRouter(
     GoRoute(
       path: AccessLocationScreen.routeName,
       name: 'Access Location',
-      pageBuilder: (context, state) => CupertinoPage(
+      pageBuilder: (context, state) => const CupertinoPage(
         child: AccessLocationScreen(),
       ),
     ),
@@ -106,7 +106,7 @@ final router = GoRouter(
       pageBuilder: (context, state) => CupertinoPage(
         child: BlocProvider<SearchBloc>(
           create: (context) => sl<SearchBloc>(),
-          child: SearchScreen(),
+          child: const SearchScreen(),
         ),
       ),
       routes: [
@@ -138,7 +138,7 @@ final router = GoRouter(
             GoRoute(
               path: HomeScreen.routeName,
               name: 'Home',
-              pageBuilder: (context, state) => CupertinoPage(
+              pageBuilder: (context, state) => const CupertinoPage(
                 child: HomeScreen(),
               ),
               routes: [
@@ -163,10 +163,9 @@ final router = GoRouter(
             GoRoute(
               path: SavedItemsScreen.routeName,
               name: 'Saved Items',
-              pageBuilder: (context, state) => CupertinoPage(
+              pageBuilder: (context, state) => const CupertinoPage(
                 child: SavedItemsScreen(),
               ),
-              routes: [],
             ),
           ],
         ),
@@ -177,7 +176,7 @@ final router = GoRouter(
             GoRoute(
               path: CartScreen.routeName,
               name: 'Cart',
-              pageBuilder: (context, state) => CupertinoPage(
+              pageBuilder: (context, state) => const CupertinoPage(
                 child: CartScreen(),
               ),
             ),
@@ -190,7 +189,7 @@ final router = GoRouter(
             GoRoute(
               path: UsersListScreen.routeName,
               name: 'Users List',
-              pageBuilder: (context, state) => CupertinoPage(
+              pageBuilder: (context, state) => const CupertinoPage(
                 child: UsersListScreen(),
               ),
             ),
@@ -203,14 +202,14 @@ final router = GoRouter(
             GoRoute(
               path: AccountScreen.routeName,
               name: 'Account',
-              pageBuilder: (context, state) => CupertinoPage(
+              pageBuilder: (context, state) => const CupertinoPage(
                 child: AccountScreen(),
               ),
               routes: [
                 GoRoute(
                   path: HelpCenterScreen.routeName,
                   name: 'Help Center',
-                  pageBuilder: (context, state) => CupertinoPage(
+                  pageBuilder: (context, state) => const CupertinoPage(
                     child: HelpCenterScreen(),
                   ),
                 ),
@@ -253,7 +252,7 @@ final router = GoRouter(
     GoRoute(
       path: NotificationsSettingsScreen.routeName,
       name: 'Notifications Settings',
-      pageBuilder: (context, state) => CupertinoPage(
+      pageBuilder: (context, state) => const CupertinoPage(
         child: NotificationsSettingsScreen(),
       ),
     ),
@@ -262,7 +261,7 @@ final router = GoRouter(
     GoRoute(
       path: NotificationsScreen.routeName,
       name: 'Notifications',
-      pageBuilder: (context, state) => CupertinoPage(
+      pageBuilder: (context, state) => const CupertinoPage(
         child: NotificationsScreen(),
       ),
     ),
@@ -271,7 +270,7 @@ final router = GoRouter(
     GoRoute(
       path: ProfileScreen.routeName,
       name: 'Profile',
-      pageBuilder: (context, state) => CupertinoPage(
+      pageBuilder: (context, state) => const CupertinoPage(
         child: ProfileScreen(),
       ),
     ),

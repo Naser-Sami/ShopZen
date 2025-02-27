@@ -63,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: CustomScrollView(
           shrinkWrap: true,
           controller: scrollController,
-          slivers: [
+          slivers: const [
             HomeSliverAppBar(),
             HomeBody(),
           ],

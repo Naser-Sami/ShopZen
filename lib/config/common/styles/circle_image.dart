@@ -20,13 +20,12 @@ class CircleImageWidget extends StatelessWidget {
         height: radius ?? 60,
         decoration: BoxDecoration(
           border: Border.all(
-            color: Colors.black,
             width: 2.4,
           ),
           shape: BoxShape.circle,
         ),
         child: Padding(
-          padding: EdgeInsets.all(2.0),
+          padding: const EdgeInsets.all(2.0),
           child: CircleAvatar(
             backgroundImage: NetworkImage(
               imageUrl,
@@ -39,7 +38,7 @@ class CircleImageWidget extends StatelessWidget {
     return Container(
       width: radius ?? 60,
       height: radius ?? 60,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         shape: BoxShape.circle,
       ),
       child: CircleAvatar(

@@ -16,7 +16,7 @@ class UsersListScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Users'),
-        actions: [
+        actions: const [
           NotificationsIconWidget(),
         ],
       ),

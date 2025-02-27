@@ -94,7 +94,7 @@ Future<void> createOrSendNotification({
     if (uid.isEmpty) return;
 
     // Generate a unique ID for the notification
-    final uuid = Uuid();
+    final uuid = const Uuid();
 
     // Create a welcome notification
     final notificationsModel = NotificationsModel(

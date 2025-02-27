@@ -56,10 +56,10 @@ extension DateTimeExtensions on DateTime {
   DateTime weeksFromNow(int n) => startOfWeek.add(Duration(days: 7 * n));
 
   /// Returns the first day of the current month.
-  DateTime get startOfMonth => DateTime(year, month, 1);
+  DateTime get startOfMonth => DateTime(year, month);
 
   /// Returns the first day of the last month.
-  DateTime get lastMonth => DateTime(year, month - 1, 1);
+  DateTime get lastMonth => DateTime(year, month - 1);
 
   /// Returns the first day of the month [n] months ago.
   DateTime monthsAgo(int n) {
@@ -67,7 +67,7 @@ extension DateTimeExtensions on DateTime {
     final int yearAdjustment = (newMonth <= 0) ? (newMonth - 1) ~/ 12 : 0;
     final int adjustedYear = year + yearAdjustment;
     final int adjustedMonth = newMonth > 0 ? newMonth : (12 + newMonth % 12);
-    return DateTime(adjustedYear, adjustedMonth, 1);
+    return DateTime(adjustedYear, adjustedMonth);
   }
 
   /// Returns the first day of the month [n] months from now.
@@ -76,20 +76,20 @@ extension DateTimeExtensions on DateTime {
     final int yearAdjustment = (newMonth - 1) ~/ 12;
     final int adjustedYear = year + yearAdjustment;
     final int adjustedMonth = (newMonth - 1) % 12 + 1;
-    return DateTime(adjustedYear, adjustedMonth, 1);
+    return DateTime(adjustedYear, adjustedMonth);
   }
 
   /// Returns the start of the current year.
-  DateTime get startOfYear => DateTime(year, 1, 1);
+  DateTime get startOfYear => DateTime(year);
 
   /// Returns the first day of the previous year.
-  DateTime get lastYear => DateTime(year - 1, 1, 1);
+  DateTime get lastYear => DateTime(year - 1);
 
   /// Returns the start of the year [n] years ago.
-  DateTime yearsAgo(int n) => DateTime(year - n, 1, 1);
+  DateTime yearsAgo(int n) => DateTime(year - n);
 
   /// Returns the start of the year [n] years from now.
-  DateTime yearsFromNow(int n) => DateTime(year + n, 1, 1);
+  DateTime yearsFromNow(int n) => DateTime(year + n);
 
   /// Returns the start of the day (00:00:00).
   DateTime get startOfDay => DateTime(year, month, day);

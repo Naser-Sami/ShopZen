@@ -105,7 +105,7 @@ class _LoginWithEmailScreenState extends State<LoginWithEmailScreen> {
                                 Icons.check_circle_outline_outlined,
                                 color: borderSuccessColor,
                               )
-                            : Icon(Icons.info_outline)
+                            : const Icon(Icons.info_outline)
                         : null,
                     onChanged: onFieldChanged,
                     successColor: isEmailValid() ? borderSuccessColor : null,
@@ -142,7 +142,7 @@ class _LoginWithEmailScreenState extends State<LoginWithEmailScreen> {
                   TSize.s48.toHeight,
                   ElevatedButton(
                     onPressed: enableButton ? onLogin : null,
-                    child: TextWidget('Login with Email'),
+                    child: const TextWidget('Login with Email'),
                   ),
                 ],
               ),

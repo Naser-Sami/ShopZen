@@ -63,7 +63,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
         return product;
       }).toList();
 
-      emit(ProductsLoadedState(updatedProducts));
+      emit(ProductsLoadedState(updatedProducts, categories: state.categories));
     }
   }
 
@@ -76,7 +76,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
         final currentState = state as ProductsLoadedState;
         emit(currentState.copyWith(categories: categories));
       } else {
-        emit(ProductsLoadedState([], categories: categories));
+        emit(ProductsLoadedState(const [], categories: categories));
       }
     } catch (e) {
       emit(ProductsErrorState(e.toString()));

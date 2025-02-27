@@ -74,7 +74,7 @@ class _NotificationsSettingsScreenState extends State<NotificationsSettingsScree
     return Scaffold(
       appBar: AppBar(
         title: const Text('Notifications'),
-        actions: [
+        actions: const [
           NotificationsIconWidget(),
         ],
       ),
@@ -82,10 +82,10 @@ class _NotificationsSettingsScreenState extends State<NotificationsSettingsScree
         padding: const EdgeInsets.all(TPadding.p20),
         child: ListView(
           children: [
-            SizedBox(height: TSize.s24),
+            const SizedBox(height: TSize.s24),
             ListView.separated(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: data.length,
               separatorBuilder: (context, index) => const SizedBox(
                 height: TSize.s08,

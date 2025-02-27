@@ -19,9 +19,8 @@ class EmptyNotifications extends StatelessWidget {
         padding: const EdgeInsets.all(TPadding.p42),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            IconWidget(
+            const IconWidget(
               name: 'notification-big',
               width: TSize.s64,
               height: TSize.s64,

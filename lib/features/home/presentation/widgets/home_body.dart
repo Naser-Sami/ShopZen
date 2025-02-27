@@ -36,7 +36,7 @@ class HomeBody extends StatelessWidget {
           ),
           const HomeCategories(),
           TSize.s24.toHeight,
-          HomeCarouselSlider(),
+          const HomeCarouselSlider(),
           Padding(
             padding:
                 const EdgeInsets.symmetric(horizontal: TSize.s20, vertical: TSize.s16),
@@ -45,7 +45,7 @@ class HomeBody extends StatelessWidget {
               style: theme.textTheme.titleLarge,
             ),
           ),
-          HomeHotDeals(),
+          const HomeHotDeals(),
         ],
       ),
     );

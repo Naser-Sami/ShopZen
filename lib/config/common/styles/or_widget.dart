@@ -10,7 +10,7 @@ class OrWidget extends StatelessWidget {
 
     return Row(
       children: [
-        Flexible(child: Divider()),
+        const Flexible(child: Divider()),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: TPadding.p10),
           child: TextWidget(
@@ -18,7 +18,7 @@ class OrWidget extends StatelessWidget {
             style: theme.textTheme.bodyMedium,
           ),
         ),
-        Flexible(child: Divider()),
+        const Flexible(child: Divider()),
       ],
     );
   }

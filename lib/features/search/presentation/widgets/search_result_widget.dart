@@ -16,7 +16,7 @@ class SearchResultWidget extends StatelessWidget {
     return Expanded(
       child: ListView.separated(
         itemCount: products.length,
-        separatorBuilder: (context, index) => Divider(),
+        separatorBuilder: (context, index) => const Divider(),
         itemBuilder: (context, index) {
           final product = products[index];
 

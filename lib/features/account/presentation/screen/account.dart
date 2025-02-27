@@ -37,7 +37,7 @@ class _AccountScreenState extends State<AccountScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: const Text('Account'),
-        actions: [
+        actions: const [
           NotificationsIconWidget(),
         ],
       ),
@@ -48,7 +48,7 @@ class _AccountScreenState extends State<AccountScreen> {
             TSize.s24.toHeight,
             ListView.separated(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: data.length,
               separatorBuilder: (context, index) => const Divider(height: 8),
               itemBuilder: (context, index) {
@@ -76,7 +76,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     color: colorScheme.onSurface,
                   ),
                   title: TextWidget(data[index].name),
-                  trailing: Icon(
+                  trailing: const Icon(
                     Icons.arrow_forward_ios_outlined,
                     size: 20,
                   ),
@@ -88,7 +88,7 @@ class _AccountScreenState extends State<AccountScreen> {
             ListTile(
               onTap: logout,
               minTileHeight: TSize.s64,
-              leading: IconWidget(name: 'logout'),
+              leading: const IconWidget(name: 'logout'),
               title: TextWidget(
                 'Log Out',
                 style: textTheme.bodyLarge?.copyWith(

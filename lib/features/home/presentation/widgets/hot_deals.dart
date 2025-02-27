@@ -15,7 +15,7 @@ class _HomeHotDealsState extends State<HomeHotDeals> {
   @override
   void initState() {
     super.initState();
-    context.read<ProductsBloc>().add(FetchProductsEvent(limit: 30, skip: 0));
+    context.read<ProductsBloc>().add(const FetchProductsEvent());
   }
 
   @override
@@ -26,7 +26,7 @@ class _HomeHotDealsState extends State<HomeHotDeals> {
       child: BlocBuilder<ProductsBloc, ProductsState>(
         builder: (context, state) {
           if (state is ProductsLoadingState) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
           if (state is ProductsErrorState) {
             return Center(child: Text("Error: ${state.error}"));
@@ -51,7 +51,7 @@ class _HomeHotDealsState extends State<HomeHotDeals> {
           //           ),
           //         ),
 
-          return Center(child: Text("No data"));
+          return const Center(child: Text("No data"));
         },
       ),
     );

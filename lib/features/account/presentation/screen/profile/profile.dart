@@ -424,7 +424,7 @@ class _GenderSelector extends StatelessWidget {
         child: DropdownButton<Gender>(
           isExpanded: true,
           value: gender,
-          underline: SizedBox(),
+          underline: const SizedBox(),
           borderRadius: BorderRadius.circular(TSize.s10),
           dropdownColor: context.theme.cardColor,
           items: Gender.values
@@ -485,20 +485,20 @@ class _ReAuthenticationDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Security Check'),
+      title: const Text('Security Check'),
       content: TextFormField(
         controller: _passwordController,
         obscureText: true,
-        decoration: InputDecoration(labelText: 'Enter your password'),
+        decoration: const InputDecoration(labelText: 'Enter your password'),
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: Text('Cancel', style: TextStyle(color: Colors.red)),
+          child: const Text('Cancel', style: TextStyle(color: Colors.red)),
         ),
         TextButton(
           onPressed: () => Navigator.pop(context, _passwordController.text),
-          child: Text('Confirm', style: TextStyle(color: Colors.blue)),
+          child: const Text('Confirm', style: TextStyle(color: Colors.blue)),
         ),
       ],
     );

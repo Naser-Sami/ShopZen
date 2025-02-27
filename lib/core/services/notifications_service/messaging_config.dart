@@ -35,13 +35,7 @@ class MessagingConfig {
     FirebaseMessaging messaging = FirebaseMessaging.instance;
 
     NotificationSettings settings = await messaging.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
+      
     );
 
     messaging.setForegroundNotificationPresentationOptions(
@@ -168,9 +162,6 @@ class MessagingConfig {
       channelDescription: 'This channel is used for important notifications.',
       importance: Importance.max,
       priority: Priority.high,
-      playSound: true,
-      // sound: RawResourceAndroidNotificationSound('custom_sound'),
-      enableVibration: true,
       setAsGroupSummary: true,
     );
 
@@ -208,7 +199,7 @@ class MessagingConfig {
         message.hashCode,
         message.notification?.title,
         message.notification?.body,
-        NotificationDetails(
+        const NotificationDetails(
           android: AndroidNotificationDetails(
             'high_importance_channel',
             'High Importance Notifications',

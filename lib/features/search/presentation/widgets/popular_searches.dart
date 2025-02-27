@@ -53,7 +53,7 @@ class _PopularSearchesWidgetState extends State<PopularSearchesWidget> {
           Expanded(
             child: ListView.separated(
               itemCount: popularSearches.length,
-              separatorBuilder: (context, index) => Divider(),
+              separatorBuilder: (context, index) => const Divider(),
               itemBuilder: (context, index) {
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -64,7 +64,7 @@ class _PopularSearchesWidgetState extends State<PopularSearchesWidget> {
                     ),
                     TextButton(
                       onPressed: () {},
-                      child: IconWidget(name: 'cancel-circle'),
+                      child: const IconWidget(name: 'cancel-circle'),
                     ),
                   ],
                 );

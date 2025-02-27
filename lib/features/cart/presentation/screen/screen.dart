@@ -17,7 +17,7 @@ class CartScreen extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: const Text('My Cart'),
-        actions: [
+        actions: const [
           NotificationsIconWidget(),
         ],
       ),
@@ -26,9 +26,8 @@ class CartScreen extends StatelessWidget {
         height: size.height,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            IconWidget(
+            const IconWidget(
               name: 'shopping-cart',
               width: TSize.s64,
               height: TSize.s64,

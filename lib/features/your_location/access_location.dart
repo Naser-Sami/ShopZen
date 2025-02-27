@@ -21,9 +21,8 @@ class AccessLocationScreen extends StatelessWidget {
           height: size.height,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              CircleAvatar(
+              const CircleAvatar(
                 radius: TRadius.r42,
                 child: IconWidget(
                   width: 36,
@@ -56,12 +55,12 @@ class AccessLocationScreen extends StatelessWidget {
                     }
                   });
                 },
-                child: TextWidget('Allow Location Access'),
+                child: const TextWidget('Allow Location Access'),
               ),
               const SizedBox(height: TSize.s32),
               TextButton(
                 onPressed: () {},
-                child: TextWidget('Enter Location Manually'),
+                child: const TextWidget('Enter Location Manually'),
               ),
             ],
           ),

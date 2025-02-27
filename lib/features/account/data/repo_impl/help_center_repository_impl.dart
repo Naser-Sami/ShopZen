@@ -4,27 +4,27 @@ class HelpCenterRepositoryImpl implements IHelpCenterRepository {
   @override
   List<HelpCenterFieldsEntity> getHelpCenterFields() {
     return [
-      HelpCenterFieldsEntity(
+      const HelpCenterFieldsEntity(
         icon: 'support',
         name: 'Customer Service',
       ),
-      HelpCenterFieldsEntity(
+      const HelpCenterFieldsEntity(
         icon: 'whatsapp',
         name: 'WhatsApp',
       ),
-      HelpCenterFieldsEntity(
+      const HelpCenterFieldsEntity(
         icon: 'website',
         name: 'Website',
       ),
-      HelpCenterFieldsEntity(
+      const HelpCenterFieldsEntity(
         icon: 'facebook-logo',
         name: 'Facebook',
       ),
-      HelpCenterFieldsEntity(
+      const HelpCenterFieldsEntity(
         icon: 'Twitter',
         name: 'Twitter',
       ),
-      HelpCenterFieldsEntity(
+      const HelpCenterFieldsEntity(
         icon: 'Instagram',
         name: 'Instagram',
       ),

@@ -35,7 +35,7 @@ class _AccountScreenState extends State<HelpCenterScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Help Center'),
-        actions: [
+        actions: const [
           NotificationsIconWidget(),
         ],
       ),
@@ -46,7 +46,7 @@ class _AccountScreenState extends State<HelpCenterScreen> {
             TSize.s24.toHeight,
             ListView.separated(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: data.length,
               separatorBuilder: (context, index) => const SizedBox(height: TSize.s16),
               itemBuilder: (context, index) {

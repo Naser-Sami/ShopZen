@@ -46,10 +46,10 @@ class FavoriteIconWidget extends StatelessWidget {
                     ),
                   );
                 } catch (e) {
-                  return SizedBox();
+                  return const SizedBox();
                 }
               } else {
-                return SizedBox();
+                return const SizedBox();
               }
             },
           );

@@ -23,7 +23,7 @@ class _ProductsListViewWidgetState extends State<ProductsListViewWidget> {
     return AnimationLimiter(
       child: GridView.builder(
         shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: size.width / 2, // Approximate width per card
           mainAxisSpacing: 8.0,
@@ -89,7 +89,7 @@ class _ProductsListViewWidgetState extends State<ProductsListViewWidget> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               mainAxisSize: MainAxisSize.min, // Dynamic height
                               children: [
-                                SizedBox(height: TSize.s16),
+                                const SizedBox(height: TSize.s16),
                                 TextWidget(
                                   product.title ?? "",
                                   maxLines: 2,

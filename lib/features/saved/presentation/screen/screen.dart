@@ -17,7 +17,7 @@ class SavedItemsScreen extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: const Text('Saved Items'),
-        actions: [
+        actions: const [
           NotificationsIconWidget(),
         ],
       ),
@@ -26,9 +26,8 @@ class SavedItemsScreen extends StatelessWidget {
         height: size.height,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            IconWidget(
+            const IconWidget(
               name: 'saved',
               width: TSize.s64,
               height: TSize.s64,

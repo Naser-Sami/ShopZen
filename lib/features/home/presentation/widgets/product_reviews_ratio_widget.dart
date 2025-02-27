@@ -13,9 +13,8 @@ class ProductReviewsRatioWidget extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        IconWidget(name: 'star'),
+        const IconWidget(name: 'star'),
         TSize.s08.toWidth,
         RichText(
           text: TextSpan(

@@ -61,14 +61,14 @@ class LoginWithSocialScreen extends StatelessWidget {
                     ),
                   ),
                 TSize.s48.toHeight,
-                OrWidget(),
+                const OrWidget(),
                 TSize.s48.toHeight,
                 ElevatedButton(
                   onPressed: () =>
                       context.push(LoginWithEmailScreen.routeName),
-                  child: TextWidget('Login with Email'),
+                  child: const TextWidget('Login with Email'),
                 ),
-                Spacer(),
+                const Spacer(),
                 AuthenticationRichTextWidget(
                   text: "Don't have an account yet? ",
                   hyperlinkText: "Sign up",

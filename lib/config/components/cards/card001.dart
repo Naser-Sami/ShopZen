@@ -17,8 +17,8 @@ class CardComponent001 extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ListTile(
-              contentPadding: EdgeInsets.all(25.0),
-              leading: CircleImageWidget(
+              contentPadding: const EdgeInsets.all(25.0),
+              leading: const CircleImageWidget(
                 imageUrl:
                     'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
               ),
@@ -46,7 +46,7 @@ class CardComponent001 extends StatelessWidget {
                 width: double.infinity,
               ),
             ),
-            Padding(
+            const Padding(
               padding: EdgeInsets.all(25.0),
               child: TextWidget(
                 'This is a basic card',

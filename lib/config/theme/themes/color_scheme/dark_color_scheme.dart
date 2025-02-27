@@ -10,9 +10,6 @@ ColorScheme? _colorSchemeDark = const ColorScheme.dark(
   primaryFixed: DarkThemeColors.onPrimaryFixed,
   primaryFixedDim: DarkThemeColors.primaryFixedDim,
   onPrimaryFixedVariant: DarkThemeColors.onPrimaryFixedVariant,
-
-  // ---
-  error: DarkThemeColors.error,
   onError: DarkThemeColors.onError,
   errorContainer: DarkThemeColors.errorContainer,
   onErrorContainer: DarkThemeColors.onErrorContainer,

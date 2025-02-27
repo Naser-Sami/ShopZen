@@ -34,12 +34,10 @@ class SocialMediaAuthenticationWidget extends StatelessWidget {
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
               width: 200,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   IconWidget(
                     name: icon,

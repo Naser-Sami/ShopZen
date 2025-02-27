@@ -64,9 +64,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         child: CustomScrollView(
           slivers: [
             SliverAppBar(
-              pinned: false,
-              floating: false,
-              snap: false,
               stretch: true,
               expandedHeight: 420,
               backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.10),
@@ -152,7 +149,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           "Product Details",
                           style: theme.textTheme.titleMedium,
                         ),
-                        SizedBox(height: TSize.s08),
+                        const SizedBox(height: TSize.s08),
                         ReadMoreText(
                           widget.product.description ?? "",
                           trimMode: TrimMode.Line,
@@ -169,7 +166,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           ),
                         ),
                         TSize.s16.toHeight,
-                        Divider(),
+                        const Divider(),
                         TSize.s16.toHeight,
 
                         // If product has sizes
@@ -219,7 +216,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               GestureDetector(
                                 onTap: () => onColorSelected(color),
                                 child: Container(
-                                  padding: EdgeInsets.all(1),
+                                  padding: const EdgeInsets.all(1),
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     border: Border.all(
@@ -239,7 +236,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         ),
                         TSize.s24.toHeight,
                         ExpansionTile(
-                          title: TextWidget('Rating & Reviews'),
+                          title: const TextWidget('Rating & Reviews'),
                           children: [
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: TSize.s20)
@@ -276,7 +273,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 ],
                               ),
                             ),
-                            Divider(),
+                            const Divider(),
                             TSize.s24.toHeight,
                             for (var review in widget.product.reviews) ...[
                               Column(
@@ -288,13 +285,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                         ignoreGestures: true,
                                         itemSize: 24,
                                         initialRating: review.rating?.toDouble() ?? 0,
-                                        minRating: 0,
-                                        direction: Axis.horizontal,
                                         allowHalfRating: true,
-                                        itemCount: 5,
                                         itemPadding:
-                                            EdgeInsets.symmetric(horizontal: 4.0),
-                                        itemBuilder: (context, _) => Icon(
+                                            const EdgeInsets.symmetric(horizontal: 4.0),
+                                        itemBuilder: (context, _) => const Icon(
                                           Icons.star,
                                           color: Colors.amber,
                                         ),
@@ -377,11 +371,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             TSize.s24.toHeight,
                           ],
                         ),
-                        Divider(),
+                        const Divider(),
                         TSize.s60.toHeight,
                         ElevatedButton(
                           onPressed: () {},
-                          child: TextWidget('Add to Cart'),
+                          child: const TextWidget('Add to Cart'),
                         ),
                         TSize.s24.toHeight,
                       ],

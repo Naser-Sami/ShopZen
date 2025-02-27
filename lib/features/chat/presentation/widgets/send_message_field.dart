@@ -144,7 +144,7 @@ class _SendMessageFieldState extends State<SendMessageField> {
               onChanged: (value) => _toggleMic(),
               onFieldSubmitted: (value) => _sendMessage(),
               placeholder: 'Write your message...',
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 horizontal: 12,
                 vertical: 18,
               ),

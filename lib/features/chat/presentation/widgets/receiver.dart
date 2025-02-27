@@ -17,7 +17,7 @@ class Receiver extends StatelessWidget {
           maxWidth: maxWidth, // Ensures max width is 75% of screen
         ),
         child: Container(
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             horizontal: TPadding.p20,
             vertical: TPadding.p12,
           ),
@@ -25,7 +25,7 @@ class Receiver extends StatelessWidget {
             color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(
                   alpha: 0.5,
                 ),
-            borderRadius: BorderRadiusDirectional.only(
+            borderRadius: const BorderRadiusDirectional.only(
               topStart: Radius.circular(TSize.s12),
               topEnd: Radius.circular(TSize.s12),
               bottomEnd: Radius.circular(TSize.s12),

@@ -18,7 +18,7 @@ class _HomeCategoriesState extends State<HomeCategories> {
   @override
   void initState() {
     super.initState();
-    context.read<ProductsBloc>().add(GetProductCategoryListEvent());
+    context.read<ProductsBloc>().add(const GetProductCategoryListEvent());
   }
 
   @override
@@ -45,7 +45,7 @@ class _HomeCategoriesState extends State<HomeCategories> {
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: index == 0
-                        ? EdgeInsetsDirectional.only(start: TSize.s20)
+                        ? const EdgeInsetsDirectional.only(start: TSize.s20)
                         : EdgeInsets.zero,
                     child: GestureDetector(
                       onTap: () {

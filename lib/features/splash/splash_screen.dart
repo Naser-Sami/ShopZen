@@ -29,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   navToNextPage() async {
-    await Future.delayed(Duration(seconds: 1)).then(
+    await Future.delayed(const Duration(seconds: 1)).then(
       (value) {
         if (mounted) {
           if (sl<FirebaseAuth>().currentUser != null) {
@@ -47,7 +47,7 @@ class _SplashScreenState extends State<SplashScreen> {
     final theme = Theme.of(context);
     return Scaffold(
       backgroundColor: theme.colorScheme.primary,
-      body: Center(
+      body: const Center(
         child: IconWidget(
           name: 'logo',
           height: 80,

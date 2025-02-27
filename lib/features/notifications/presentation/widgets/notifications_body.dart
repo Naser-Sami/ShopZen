@@ -65,7 +65,6 @@ class _NotificationsBodyState extends State<NotificationsBody> {
               _buildTimestamp(context, dateTime),
             Dismissible(
               key: Key(notification.id),
-              direction: DismissDirection.horizontal,
               onDismissed: (DismissDirection direction) async =>
                   await _onDismissed(direction, notification.id),
               background: _swipeToDelete(),
@@ -94,9 +93,9 @@ class _NotificationsBodyState extends State<NotificationsBody> {
     );
   }
 
-  Widget? _swipeToDelete() => Row(
+  Widget? _swipeToDelete() => const Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
+        children: [
           Icon(
             Icons.delete_outline,
             color: Colors.grey,

@@ -68,7 +68,6 @@ class _NotificationsIconWidgetState extends State<NotificationsIconWidget> {
         ),
         badgeStyle: badges.BadgeStyle(
           badgeColor: theme.colorScheme.primaryContainer,
-          shape: badges.BadgeShape.circle,
         ),
         child: IconWidget(
           name: 'notification',

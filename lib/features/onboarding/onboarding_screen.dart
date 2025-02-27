@@ -21,7 +21,6 @@ class OnboardingScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -51,7 +50,7 @@ class OnboardingScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: TPadding.p20),
               child: ElevatedButton(
                 onPressed: navToLogin,
-                child: TextWidget("Get Started"),
+                child: const TextWidget("Get Started"),
               ),
             ),
           ],

@@ -54,7 +54,7 @@ class BottomNavigationBarWidget extends StatelessWidget {
             ),
             label: 'Cart',
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.chat_bubble_outline_outlined),
             label: 'Chat',
           ),

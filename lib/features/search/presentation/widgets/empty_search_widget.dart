@@ -13,9 +13,8 @@ class EmptySearchWidget extends StatelessWidget {
         width: double.infinity,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Expanded(
+            const Expanded(
               flex: 7,
               child: IconWidget(
                 name: 'Search-rafiki 1',

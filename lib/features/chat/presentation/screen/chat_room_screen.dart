@@ -36,7 +36,7 @@ class ChatRoomScreen extends StatelessWidget {
               ],
             ),
         centerTitle: false,
-        actions: [
+        actions: const [
           NotificationsIconWidget(),
         ],
       ),

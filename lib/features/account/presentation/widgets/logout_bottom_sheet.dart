@@ -21,8 +21,6 @@ Future<void> logoutBottomSheet(BuildContext context) async {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
                   width: 64,
@@ -35,7 +33,7 @@ Future<void> logoutBottomSheet(BuildContext context) async {
                 TSize.s40.toHeight,
                 TextWidget('Logout', style: textTheme.headlineMedium),
                 TSize.s24.toHeight,
-                Divider(),
+                const Divider(),
                 TSize.s24.toHeight,
                 TextWidget(
                   "Are you sure you want to log out?",
@@ -43,7 +41,7 @@ Future<void> logoutBottomSheet(BuildContext context) async {
                     color: theme.colorScheme.onSurface,
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
