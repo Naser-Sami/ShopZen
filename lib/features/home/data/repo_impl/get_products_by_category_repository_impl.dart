@@ -5,7 +5,7 @@ class GetProductsByCategoryRepositoryImpl implements IGetProductsByCategoryRepos
   GetProductsByCategoryRepositoryImpl({required this.remoteDataSource});
 
   @override
-  Future<List<ProductEntity>> getProductCategoryList(String category) async {
+  Future<List<ProductEntity>> getProductsByCategory(String category) async {
     try {
       final response = await remoteDataSource.getProductsByCategory(category);
       // convert to entity

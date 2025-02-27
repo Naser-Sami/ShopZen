@@ -1,5 +1,5 @@
 import '/features/_features.dart';
 
 abstract class IGetProductsByCategoryRepository {
-  Future<List<ProductEntity>> getProductCategoryList(String category);
+  Future<List<ProductEntity>> getProductsByCategory(String category);
 }

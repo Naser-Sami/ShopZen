@@ -22,6 +22,13 @@ class GetProductCategoryListEvent extends ProductsEvent {
   const GetProductCategoryListEvent();
 }
 
+class GetProductsByCategoryEvent extends ProductsEvent {
+  final String category;
+  const GetProductsByCategoryEvent({required this.category});
+  @override
+  List<Object> get props => [category];
+}
+
 class ToggleFavoriteEvent extends ProductsEvent {
   final ProductEntity product;
   const ToggleFavoriteEvent({required this.product});

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '/core/_core.dart';
 import '/config/_config.dart';
@@ -49,7 +50,12 @@ class _HomeCategoriesState extends State<HomeCategories> {
                         : EdgeInsets.zero,
                     child: GestureDetector(
                       onTap: () {
-                        log(categories[index]);
+                        final category = categories[index];
+
+                        context.push(
+                          '${HomeScreen.routeName}/${ProductsByCategoryScreen.routeName}/$index',
+                          extra: category,
+                        );
                       },
                       child: SizedBox(
                         width: TSize.s66,

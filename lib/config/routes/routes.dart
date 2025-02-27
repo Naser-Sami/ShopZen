@@ -115,6 +115,7 @@ final router = GoRouter(
           name: "Search Products Details",
           pageBuilder: (context, state) {
             final product = state.extra as ProductEntity;
+
             return CupertinoPage(
               child: ProductDetailsScreen(product: product),
             );
@@ -147,8 +148,21 @@ final router = GoRouter(
                   name: "Products Details",
                   pageBuilder: (context, state) {
                     final product = state.extra as ProductEntity;
+
                     return CupertinoPage(
                       child: ProductDetailsScreen(product: product),
+                    );
+                  },
+                ),
+                // Products By Category Section
+                GoRoute(
+                  path: "${ProductsByCategoryScreen.routeName}/:index",
+                  name: "Products By Category",
+                  pageBuilder: (context, state) {
+                    final category = state.extra as String;
+
+                    return CupertinoPage(
+                      child: ProductsByCategoryScreen(category: category),
                     );
                   },
                 ),

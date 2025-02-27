@@ -8,7 +8,8 @@ import '/features/home/_home.dart';
 
 class ProductsListViewWidget extends StatefulWidget {
   final List<ProductEntity> products;
-  const ProductsListViewWidget({super.key, required this.products});
+  final ScrollPhysics? physics;
+  const ProductsListViewWidget({super.key, required this.products, this.physics});
 
   @override
   State<ProductsListViewWidget> createState() => _ProductsListViewWidgetState();
@@ -23,12 +24,12 @@ class _ProductsListViewWidgetState extends State<ProductsListViewWidget> {
     return AnimationLimiter(
       child: GridView.builder(
         shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
+        physics: widget.physics ?? const NeverScrollableScrollPhysics(),
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: size.width / 2, // Approximate width per card
           mainAxisSpacing: 8.0,
           crossAxisSpacing: 8.0,
-          childAspectRatio: 0.64, // Adjust as needed based on content
+          childAspectRatio: 0.60, // Adjust as needed based on content
         ),
         padding: EdgeInsets.zero,
         itemCount: widget.products.length,
@@ -97,6 +98,7 @@ class _ProductsListViewWidgetState extends State<ProductsListViewWidget> {
                                 ),
                                 TSize.s08.toHeight,
                                 RichText(
+                                  maxLines: 1,
                                   text: TextSpan(
                                     children: [
                                       if (product.price != null)

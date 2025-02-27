@@ -21,6 +21,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
     on<FetchProductsEvent>(_onFetchProducts);
     on<ToggleFavoriteEvent>(_onToggleFavoriteEvent);
     on<GetProductCategoryListEvent>(_onGetProductCategoryListEvent);
+    on<GetProductsByCategoryEvent>(_onGetProductsByCategoryEvent);
   }
 
   Future<void> _onFetchProducts(
@@ -45,7 +46,13 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
       List<String> existingCategories =
           state is ProductsLoadedState ? (state as ProductsLoadedState).categories : [];
 
-      emit(ProductsLoadedState(products, categories: existingCategories));
+      List<ProductEntity> existingProductsByCategory = state is ProductsLoadedState
+          ? (state as ProductsLoadedState).productsByCategory
+          : [];
+
+      emit(ProductsLoadedState(products,
+          categories: existingCategories,
+          productsByCategory: existingProductsByCategory));
       isLoadingMoreData = false;
     } catch (e) {
       emit(ProductsErrorState(e.toString()));
@@ -63,7 +70,8 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
         return product;
       }).toList();
 
-      emit(ProductsLoadedState(updatedProducts, categories: state.categories));
+      emit(ProductsLoadedState(updatedProducts,
+          categories: state.categories, productsByCategory: state.productsByCategory));
     }
   }
 
@@ -77,6 +85,22 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
         emit(currentState.copyWith(categories: categories));
       } else {
         emit(ProductsLoadedState(const [], categories: categories));
+      }
+    } catch (e) {
+      emit(ProductsErrorState(e.toString()));
+    }
+  }
+
+  Future<void> _onGetProductsByCategoryEvent(
+      GetProductsByCategoryEvent event, Emitter<ProductsState> emit) async {
+    try {
+      final productsByCategory =
+          await getProductsByCategoryRepository.getProductsByCategory(event.category);
+      if (state is ProductsLoadedState) {
+        final currentState = state as ProductsLoadedState;
+        emit(currentState.copyWith(productsByCategory: productsByCategory));
+      } else {
+        emit(ProductsLoadedState(const [], productsByCategory: productsByCategory));
       }
     } catch (e) {
       emit(ProductsErrorState(e.toString()));
