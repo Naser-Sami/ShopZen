@@ -18,7 +18,7 @@ class UserCubit extends Cubit<UserModel?> {
     final result = await sl<IFirestoreService<UserModel>>().getDocument('users/$uid');
     result.handle(
       onSuccess: (user) {
-        log('User data: ${user.toString()}');
+        // log('User data: ${user.toString()}');
         emit(user);
       },
       onError: (error) {

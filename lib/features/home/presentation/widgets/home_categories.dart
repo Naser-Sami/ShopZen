@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '/core/_core.dart';
 import '/config/_config.dart';
@@ -14,17 +15,10 @@ class HomeCategories extends StatefulWidget {
 }
 
 class _HomeCategoriesState extends State<HomeCategories> {
-  List<CategoriesEntity> categories = [];
-
   @override
   void initState() {
     super.initState();
-    getCategories();
-  }
-
-  void getCategories() async {
-    categories = await sl<ICategoriesRepository>().getCategories();
-    setState(() {});
+    context.read<ProductsBloc>().add(GetProductCategoryListEvent());
   }
 
   @override
@@ -32,49 +26,83 @@ class _HomeCategoriesState extends State<HomeCategories> {
     final theme = Theme.of(context);
 
     return SizedBox(
-      height: TSize.s80,
-      child: ListView.separated(
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-        itemCount: categories.length,
-        separatorBuilder: (_, __) => const SizedBox(width: TSize.s16),
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: index == 0
-                ? EdgeInsetsDirectional.only(start: TSize.s20)
-                : EdgeInsets.zero,
-            child: GestureDetector(
-              onTap: () {
-                log(categories[index].name);
-              },
-              child: Column(
-                children: [
-                  Container(
-                    height: TSize.s55,
-                    width: TSize.s55,
-                    padding: const EdgeInsets.all(TPadding.p12),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(TRadius.r08),
-                      color: theme.colorScheme.primary.withValues(alpha: 0.05),
+      height: TSize.s96,
+      child: BlocBuilder<ProductsBloc, ProductsState>(
+        builder: (context, state) {
+          switch (state) {
+            case ProductsLoadingState():
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            case ProductsLoadedState():
+              final categories = state.categories;
+
+              return ListView.separated(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemCount: categories.length,
+                separatorBuilder: (_, __) => const SizedBox(width: TSize.s16),
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: index == 0
+                        ? EdgeInsetsDirectional.only(start: TSize.s20)
+                        : EdgeInsets.zero,
+                    child: GestureDetector(
+                      onTap: () {
+                        log(categories[index]);
+                      },
+                      child: SizedBox(
+                        width: TSize.s66,
+                        child: Column(
+                          children: [
+                            Container(
+                              height: TSize.s55,
+                              width: TSize.s55,
+                              padding: const EdgeInsets.all(TPadding.p12),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(TRadius.r08),
+                                color: theme.colorScheme.primary.withValues(alpha: 0.05),
+                              ),
+                              // child: IconWidget(
+                              //   name: categories[index],
+                              //   color: categories[index] == 'beauty'
+                              //       ? null
+                              //       : TFunctions.isDarkMode(context)
+                              //           ? Colors.grey.shade200
+                              //           : null,
+                              // ),
+                            ),
+                            TSize.s04.toHeight,
+                            TextWidget(
+                              categories[index]
+                                  .replaceAll('womens', 'w')
+                                  .replaceAll('mens', 'm'),
+                              style: theme.textTheme.labelSmall
+                                  ?.copyWith(fontWeight: FontWeight.w500),
+                              maxLines: 2,
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                    child: IconWidget(
-                      name: categories[index].image,
-                      color: categories[index].image == 'beauty'
-                          ? null
-                          : TFunctions.isDarkMode(context)
-                              ? Colors.grey.shade200
-                              : null,
-                    ),
-                  ),
-                  TSize.s04.toHeight,
-                  TextWidget(
-                    categories[index].name,
-                    style: theme.textTheme.labelLarge,
-                  ),
-                ],
-              ),
-            ),
-          );
+                  );
+                },
+              );
+
+            case ProductsErrorState():
+              final error = state.error;
+              return Center(
+                child: TextWidget(
+                  error,
+                  style: theme.textTheme.bodyMedium,
+                ),
+              );
+
+            default:
+              return const SizedBox();
+          }
         },
       ),
     );

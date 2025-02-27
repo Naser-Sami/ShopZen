@@ -19,10 +19,10 @@ class DioHelper {
   DioHelper() {
     dio.interceptors.add(
       PrettyDioLogger(
-        request: true,
-        requestHeader: true,
-        requestBody: true,
-        responseBody: true,
+        request: false,
+        requestHeader: false,
+        requestBody: false,
+        responseBody: false,
       ),
     );
   }

@@ -11,7 +11,7 @@ class ChatController {
       final userId = data['userId'] as String;
       final userName = data['name'] as String;
       final userJson = data['user'] as String;
-      log('User data: $userJson');
+      // log('User data: $userJson');
 
       final user = UserModel.fromJson(jsonDecode(userJson), userId);
 

@@ -1,9 +1,13 @@
+import 'dart:developer';
+
 import '/core/_core.dart';
 import '/features/home/_home.dart';
 
 abstract class IProductsRemoteDataSource {
   Future<ProductsModel?> getAllProducts({required int limit, int skip, String? select});
-  Future<ProductsModel> getProductById(int id);
+  Future<ProductsModel?> getProductById(int id);
+  Future<List<String>?> getProductCategoryList();
+  Future<ProductsModel?> getProductsByCategory(String category);
 }
 
 class ProductsRemoteDataSourceImpl implements IProductsRemoteDataSource {
@@ -26,10 +30,38 @@ class ProductsRemoteDataSourceImpl implements IProductsRemoteDataSource {
   }
 
   @override
-  Future<ProductsModel> getProductById(int id) async {
+  Future<ProductsModel?> getProductById(int id) async {
     try {
-      return await dioHelper.get(
+      return await dioHelper.get<ProductsModel>(
         path: '${ApiEndpoints.products}/$id',
+        parser: (data) => ProductsModel.fromJson(data),
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<String>?> getProductCategoryList() async {
+    try {
+      final response = await dioHelper.get<List<dynamic>>(
+        path: '${ApiEndpoints.products}/${ApiEndpoints.categoryList}',
+        parser: (data) => data.map((item) => "$item").toList(),
+      );
+
+      return response?.cast<String>();
+    } catch (e) {
+      log('Error fetching categories: $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<ProductsModel?> getProductsByCategory(String category) async {
+    try {
+      return await dioHelper.get<ProductsModel>(
+        path: '${ApiEndpoints.products}/${ApiEndpoints.category}/$category',
+        parser: (data) => ProductsModel.fromJson(data),
       );
     } catch (e) {
       rethrow;

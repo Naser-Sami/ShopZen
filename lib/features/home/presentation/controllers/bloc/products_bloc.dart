@@ -7,13 +7,20 @@ part 'products_state.dart';
 
 class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
   final IProductRepository productRepository;
+  final IGetProductCategoryListRepository getProductCategoryListRepository;
+  final IGetProductsByCategoryRepository getProductsByCategoryRepository;
 
   int totalProducts = 0;
   bool isLoadingMoreData = false;
 
-  ProductsBloc({required this.productRepository}) : super(ProductsInitial()) {
+  ProductsBloc({
+    required this.productRepository,
+    required this.getProductCategoryListRepository,
+    required this.getProductsByCategoryRepository,
+  }) : super(ProductsInitial()) {
     on<FetchProductsEvent>(_onFetchProducts);
     on<ToggleFavoriteEvent>(_onToggleFavoriteEvent);
+    on<GetProductCategoryListEvent>(_onGetProductCategoryListEvent);
   }
 
   Future<void> _onFetchProducts(
@@ -35,7 +42,10 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
         select: event.select,
       );
 
-      emit(ProductsLoadedState(products));
+      List<String> existingCategories =
+          state is ProductsLoadedState ? (state as ProductsLoadedState).categories : [];
+
+      emit(ProductsLoadedState(products, categories: existingCategories));
       isLoadingMoreData = false;
     } catch (e) {
       emit(ProductsErrorState(e.toString()));
@@ -54,6 +64,22 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
       }).toList();
 
       emit(ProductsLoadedState(updatedProducts));
+    }
+  }
+
+  Future<void> _onGetProductCategoryListEvent(
+      GetProductCategoryListEvent event, Emitter<ProductsState> emit) async {
+    try {
+      final categories = await getProductCategoryListRepository.getProductCategoryList();
+
+      if (state is ProductsLoadedState) {
+        final currentState = state as ProductsLoadedState;
+        emit(currentState.copyWith(categories: categories));
+      } else {
+        emit(ProductsLoadedState([], categories: categories));
+      }
+    } catch (e) {
+      emit(ProductsErrorState(e.toString()));
     }
   }
 }

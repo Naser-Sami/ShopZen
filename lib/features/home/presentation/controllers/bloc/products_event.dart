@@ -18,6 +18,10 @@ class FetchProductsEvent extends ProductsEvent {
   List<Object?> get props => [limit, skip, select];
 }
 
+class GetProductCategoryListEvent extends ProductsEvent {
+  const GetProductCategoryListEvent();
+}
+
 class ToggleFavoriteEvent extends ProductsEvent {
   final ProductEntity product;
   const ToggleFavoriteEvent({required this.product});

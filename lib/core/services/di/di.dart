@@ -61,6 +61,8 @@ class DI {
     sl.registerLazySingleton<ProductsBloc>(
       () => ProductsBloc(
         productRepository: sl<IProductRepository>(),
+        getProductCategoryListRepository: sl<IGetProductCategoryListRepository>(),
+        getProductsByCategoryRepository: sl<IGetProductsByCategoryRepository>(),
       ),
     );
     sl.registerLazySingleton<SearchBloc>(
@@ -124,8 +126,15 @@ class DI {
       ),
     );
 
-    sl.registerLazySingleton<ICategoriesRepository>(
-      () => CategoriesRepositoryImpl(),
+    sl.registerLazySingleton<IGetProductCategoryListRepository>(
+      () => GetProductCategoryListRepositoryImpl(
+        remoteDataSource: sl<IProductsRemoteDataSource>(),
+      ),
+    );
+    sl.registerLazySingleton<IGetProductsByCategoryRepository>(
+      () => GetProductsByCategoryRepositoryImpl(
+        remoteDataSource: sl<IProductsRemoteDataSource>(),
+      ),
     );
 
     sl.registerLazySingleton<IAccountRepository>(
