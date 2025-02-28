@@ -28,6 +28,7 @@ class TPadding {
   static const double p16 = 16.0;
   static const double p20 = 20.0;
   static const double p24 = 24.0;
+  static const double p26 = 26.0;
   static const double p32 = 32.0;
   static const double p36 = 36.0;
   static const double p42 = 42.0;
@@ -64,6 +65,7 @@ class TSize {
   static const double s80 = 80.0;
   static const double s96 = 96.0;
   static const double s100 = 100.0;
+  static const double s116 = 116.0;
   static const double s143 = 143.0;
   static const double s150 = 150.0;
   static const double s160 = 160.0;

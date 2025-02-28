@@ -1,18 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '/core/_core.dart';
 import '/config/_config.dart';
+import '/features/cart/_cart.dart';
 
-class CartScreen extends StatelessWidget {
+class CartScreen extends StatefulWidget {
   static const routeName = '/cart';
   const CartScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final textTheme = theme.textTheme;
-    final size = MediaQuery.of(context).size;
+  State<CartScreen> createState() => _CartScreenState();
+}
 
+class _CartScreenState extends State<CartScreen> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<CartBloc>().add(const GetCartsEvent(id: '8'));
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -21,29 +29,34 @@ class CartScreen extends StatelessWidget {
           NotificationsIconWidget(),
         ],
       ),
-      body: SizedBox(
-        width: size.width,
-        height: size.height,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const IconWidget(
-              name: 'shopping-cart',
-              width: TSize.s64,
-              height: TSize.s64,
-            ),
-            TSize.s16.toHeight,
-            TextWidget(
-              "Your Cart is Empty!",
-              style: textTheme.titleLarge,
-            ),
-            TSize.s12.toHeight,
-            TextWidget(
-              "When you add product, they will appear here.",
-              style: textTheme.bodySmall,
-            ),
-          ],
-        ),
+      body: BlocBuilder<CartBloc, CartState>(
+        builder: (context, state) {
+          switch (state) {
+            case CartLoading():
+              return const Center(child: CircularProgressIndicator());
+            case CartLoaded():
+              final cart = (state).cart;
+              return ListView(
+                children: [
+                  CartWidget(cart: cart),
+                  const SizedBox(height: TSize.s32),
+                  CartTotalWidget(cart: cart),
+                  Padding(
+                    padding: const EdgeInsets.all(TPadding.p20),
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      child: const TextWidget('Go to Checkout'),
+                    ),
+                  ),
+                ],
+              );
+            case CartError():
+              final error = (state).message;
+              return Center(child: Text(error));
+            default:
+              return const EmptyCartWidget();
+          }
+        },
       ),
     );
   }

@@ -88,6 +88,11 @@ class DI {
         searchProductRepository: sl<ISearchProductRepository>(),
       ),
     );
+    sl.registerLazySingleton<CartBloc>(
+      () => CartBloc(
+        sl<ICartRepository>(),
+      ),
+    );
 
     // CUBIT's
     sl.registerLazySingleton<ThemeCubit>(
@@ -127,6 +132,10 @@ class DI {
       () => SearchProductRemoteDataSourceImpl(),
     );
 
+    sl.registerLazySingleton<ICartRemoteDataSource>(
+      () => CartRemoteDataSource(),
+    );
+
     // Repositories
     sl.registerLazySingleton<IProductRepository>(
       () => ProductRepositoryImpl(
@@ -161,6 +170,11 @@ class DI {
     sl.registerLazySingleton<ISearchProductRepository>(
       () => SearchProductRepositoryImpl(
         remoteDataSource: sl<ISearchProductRemoteDataSource>(),
+      ),
+    );
+    sl.registerLazySingleton<ICartRepository>(
+      () => CartRepositoryImpl(
+        sl<ICartRemoteDataSource>(),
       ),
     );
 

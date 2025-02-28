@@ -4,4 +4,5 @@ class ApiEndpoints {
   static const String category = 'category';
   static const String categoryList = 'category-list';
   static const String search = 'products/search';
+  static const String cart = 'carts';
 }
