@@ -4,7 +4,6 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '/features/cart/_cart.dart';
 import '/config/_config.dart';
-import '/core/_core.dart';
 
 class CartWidget extends StatelessWidget {
   const CartWidget({super.key, required this.cart});
@@ -54,6 +53,11 @@ class CartWidget extends StatelessWidget {
                 height: TSize.s80,
                 decoration: BoxDecoration(
                   color: theme.colorScheme.outline.withValues(alpha: 0.05),
+                  boxShadow: [
+                    BoxShadow(
+                      color: theme.colorScheme.shadow.withValues(alpha: 0.15),
+                    )
+                  ],
                   borderRadius: const BorderRadius.all(
                     Radius.circular(TRadius.r08),
                   ),

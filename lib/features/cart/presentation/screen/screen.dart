@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '/config/_config.dart';
-import '/features/cart/_cart.dart';
+import '/features/_features.dart';
 
 class CartScreen extends StatefulWidget {
   static const routeName = '/cart';
@@ -44,7 +45,9 @@ class _CartScreenState extends State<CartScreen> {
                   Padding(
                     padding: const EdgeInsets.all(TPadding.p20),
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        context.push(PaymentScreen.routeName);
+                      },
                       child: const TextWidget('Go to Checkout'),
                     ),
                   ),

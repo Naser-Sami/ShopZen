@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -20,6 +22,13 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // set the publishable key for Stripe - this is mandatory
+  Stripe.publishableKey = stripePublishableKey;
+  //Load our .env file that contains our Stripe Secret key
+  await dotenv.load(fileName: "assets/.env");
+  // Stripe.merchantIdentifier = 'YOUR-APPLE-MERCHANT-IDENTIFIER';
+  Stripe.instance.applySettings();
 
   // Here we set the URL strategy for our web app.
   // It is safe to call this function when running on mobile or desktop as well.

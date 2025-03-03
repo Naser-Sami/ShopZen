@@ -94,6 +94,12 @@
 		<key>NSMicrophoneUsageDescription</key>
 		<string>ShopZen needs access to microphone.</string>
 
+		<!-- ACCESS FOR CARD SCANNER - STRIPE -->
+		<key>NSCameraUsageDescription</key>
+		<string>Scan your card to add it automatically</string>
+		<key>NSCameraUsageDescription</key>
+		<string>To scan cards</string>
+
 
 	</dict>
 </plist>

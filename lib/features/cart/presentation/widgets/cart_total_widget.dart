@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '/features/cart/_cart.dart';
 import '/config/_config.dart';
-import '/core/_core.dart';
 
 class CartTotalWidget extends StatelessWidget {
   const CartTotalWidget({super.key, required this.cart});

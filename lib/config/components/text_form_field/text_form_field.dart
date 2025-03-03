@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '/core/_core.dart';
 import '/config/_config.dart';
@@ -23,6 +24,9 @@ class TextFormFieldComponent extends StatelessWidget {
     this.onTap,
     this.focusNode,
     this.autofocus = false,
+    this.keyboardType,
+    this.inputFormatters,
+    this.onSaved,
   });
 
   // Variables
@@ -47,6 +51,10 @@ class TextFormFieldComponent extends StatelessWidget {
   final String? Function(String?)? validator;
   final void Function(String)? onChanged;
   final void Function()? onTap;
+  final void Function(String?)? onSaved;
+
+  final TextInputType? keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   Widget build(BuildContext context) {
@@ -77,8 +85,11 @@ class TextFormFieldComponent extends StatelessWidget {
       onTap: onTap,
       validator: validator,
       onChanged: onChanged,
+      onSaved: onSaved,
       obscureText: obscureText,
       obscuringCharacter: obscuringCharacter,
+      keyboardType: keyboardType,
+      inputFormatters: inputFormatters,
       decoration: InputDecoration(
         hintText: hintText,
         suffix: suffix,

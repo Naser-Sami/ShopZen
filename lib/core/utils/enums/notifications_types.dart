@@ -1,0 +1,15 @@
+enum NotificationsType {
+  normal,
+  adminMessage,
+  newMessage,
+  newFollower,
+  newComment,
+  newLike,
+  newPost,
+  newFollowerRequest,
+  newFollowerRequestAccepted,
+  newFollowerRequestRejected,
+  newFollowerRequestCancelled,
+  newFollowerRequestExpired,
+  newOrder,
+}

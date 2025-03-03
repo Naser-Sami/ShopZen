@@ -284,5 +284,14 @@ final router = GoRouter(
         child: ProfileScreen(),
       ),
     ),
+
+    // Payment Method Section
+    GoRoute(
+      path: PaymentScreen.routeName,
+      name: 'Payment',
+      pageBuilder: (context, state) => const CupertinoPage(
+        child: PaymentScreen(),
+      ),
+    ),
   ],
 );
