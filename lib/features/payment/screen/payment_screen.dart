@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:pay/pay.dart' as pay;
 import 'package:shop_zen/features/payment/widgets/_widgets.dart';
@@ -47,94 +46,60 @@ class _PaymentScreenState extends State<PaymentScreen> {
     _cartNumberController.addListener(_getCardTypeFrmNumber);
   }
 
+  void _getCardTypeFrmNumber() {
+    String input = CardUtils.getCleanedNumber(_cartNumberController.text);
+    CardType cardType = CardUtils.getCardTypeFrmNumber(input);
+    setState(() {
+      _paymentCard.type = cardType;
+    });
+  }
+
   Future<void> makePayment() async {
     try {
       paymentIntent = await createPaymentIntent('100', 'USD');
       log('Payment Intent: $paymentIntent');
 
       // // STEP 2: Initialize Payment Sheet
-      // await Stripe.instance
-      //     .initPaymentSheet(
-      //   paymentSheetParameters: SetupPaymentSheetParameters(
-      //     paymentIntentClientSecret:
-      //         paymentIntent?['client_secret'], //Gotten from payment intent
-      //     style: ThemeMode.system,
-      //     merchantDisplayName: 'ShopZen',
-      //   ),
-      // )
-      //     .then((value) {
-      //   // Display Payment sheet
-      //   log('value-> $value');
-      // });
+      await Stripe.instance
+          .initPaymentSheet(
+        paymentSheetParameters: SetupPaymentSheetParameters(
+          paymentIntentClientSecret:
+              paymentIntent?['client_secret'], //Gotten from payment intent
+          style: ThemeMode.system,
+          merchantDisplayName: 'ShopZen',
+        ),
+      )
+          .then((value) {
+        // Display Payment sheet
+        log('value-> $value');
+      });
 
-      _card = CardDetails(
-        number: _cartNumberController.text.replaceAll(' ', '').trim(),
-        expirationMonth: int.tryParse(_expiryDateController.text.split('/')[0]),
-        expirationYear: int.tryParse(_expiryDateController.text.split('/')[1]),
-        cvc: _cvcController.text.trim(),
-      );
+      // _card = CardDetails(
+      //   number: _cartNumberController.text.replaceAll(' ', '').trim(),
+      //   expirationMonth: int.tryParse(_expiryDateController.text.split('/')[0]),
+      //   expirationYear: int.tryParse(_expiryDateController.text.split('/')[1]),
+      //   cvc: _cvcController.text.trim(),
+      // );
 
-      log('Card Details: $_card');
+      // log('Card Details: $_card');
 
       /// Updates the internal card details.
       /// This method will not validate the card information so you should validate the information yourself.
       /// WARNING!!! Only do this if you're certain that you fulfill the necessary PCI compliance requirements.
       /// Make sure that you're not mistakenly logging or storing full card details!
       /// See the docs for details: https://stripe.com/docs/security/guide#validating-pci-compliance
+
+      // await Stripe.instance.dangerouslyUpdateCardDetails(_card);
       await Stripe.instance.dangerouslyUpdateCardDetails(_card);
 
       //STEP 3: Display Payment sheet
-      displayPaymentSheet();
+      // displayPaymentSheet();
+      // display the payment status as dialog or bottom sheet
+
+      ToastNotification.showSuccessNotification(context, message: 'Payment Successful');
     } catch (err) {
+      ToastNotification.showErrorNotification(context, message: 'Payment Failed');
       throw Exception(err);
-    }
-  }
-
-  displayPaymentSheet() async {
-    try {
-      // await Stripe.instance.presentPaymentSheet()
-      await Stripe.instance.dangerouslyUpdateCardDetails(_card).then((value) {
-        showDialog(
-            context: context,
-            builder: (_) => const AlertDialog(
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.check_circle,
-                        color: Colors.green,
-                        size: 100.0,
-                      ),
-                      SizedBox(height: 10.0),
-                      Text("Payment Successful!"),
-                    ],
-                  ),
-                ));
-
-        paymentIntent = null;
-      }).onError((error, stackTrace) {
-        throw Exception(error);
-      });
-    } on StripeException catch (e) {
-      print('Error is:---> $e');
-      const AlertDialog(
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              children: [
-                Icon(
-                  Icons.cancel,
-                  color: Colors.red,
-                ),
-                Text("Payment Failed"),
-              ],
-            ),
-          ],
-        ),
-      );
-    } catch (e) {
-      print('$e');
     }
   }
 
@@ -197,15 +162,41 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 ],
               ),
               const SizedBox(height: TSize.s48),
-              // ElevatedButton(
-              //   onPressed: () {
-              //     if (_formKey.currentState!.validate()) {
-              //       makePayment();
-              //     }
-              //   },
-              //   child: const TextWidget('Pay'),
-              // ),
-              _getPayButton(),
+              ElevatedButton(
+                onPressed: () async {
+                  // await makePayment();
+
+                  final o = StripePaymentHandle();
+                  o.stripeMakePayment();
+
+                  // await Stripe.instance.initCustomerSheet(
+                  //   customerSheetInitParams: CustomerSheetInitParams(
+                  //     // Main params
+                  //     setupIntentClientSecret: paymentIntent?['client_secret'],
+                  //     merchantDisplayName: 'Flutter Stripe Store Demo',
+                  //     // Customer params
+                  //     customerId: '1234567890',
+                  //     customerEphemeralKeySecret: 'sk_test_1234567890',
+                  //     style: ThemeMode.system,
+                  //     defaultBillingDetails: const BillingDetails(
+                  //       name: 'John Doe',
+                  //       email: 'john@doe.com',
+                  //       phone: '1234567890',
+                  //       address: Address(
+                  //         city: 'San Francisco',
+                  //         country: 'USA',
+                  //         line1: '123 Main St',
+                  //         line2: 'Apt 4',
+                  //         state: 'CA',
+                  //         postalCode: '12345',
+                  //       ),
+                  //     ),
+                  //   ),
+                  // );
+                },
+                child: const TextWidget('Pay'),
+              ),
+              // _getPayButton(),
             ],
           ),
         ),
@@ -228,14 +219,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
       ToastNotification.showSuccessNotification(context,
           message: 'Payment card is valid');
     }
-  }
-
-  void _getCardTypeFrmNumber() {
-    String input = CardUtils.getCleanedNumber(_cartNumberController.text);
-    CardType cardType = CardUtils.getCardTypeFrmNumber(input);
-    setState(() {
-      _paymentCard.type = cardType;
-    });
   }
 
   Widget _getPayButton() {

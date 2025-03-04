@@ -38,6 +38,9 @@ class PaymentController {
           ),
         ),
       );
+
+      log('apple pay >> paymentIntent : $paymentIntent');
+
       if (paymentIntent.status == PaymentIntentsStatus.Succeeded) {
         log('Payment Successful');
         return true;

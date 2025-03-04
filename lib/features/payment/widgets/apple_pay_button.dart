@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:pay/pay.dart';
 
+import '../payment_controller.dart';
 import '/config/_config.dart';
 import '../payment_configurations.dart';
 
@@ -18,6 +19,8 @@ class ApplePayButtonWidget extends StatefulWidget {
 
 class _ApplePayButtonWidgetState extends State<ApplePayButtonWidget> {
   void onApplePayResult(paymentResult) {
+    final o = PaymentController();
+    o.payWithApplePay();
     // Send the resulting Apple Pay token to your server / PSP
     log('Apple Pay Result: $paymentResult');
 

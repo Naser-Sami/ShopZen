@@ -1,9 +1,12 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:pay/pay.dart';
 
+import '../payment_service.dart';
 import '/config/_config.dart';
 import '../payment_configurations.dart';
 
@@ -17,9 +20,31 @@ class GooglePayButtonWidget extends StatefulWidget {
 }
 
 class _GooglePayButtonWidgetState extends State<GooglePayButtonWidget> {
-  void onGooglePayResult(paymentResult) {
-    // Send the resulting Google Pay token to your server / PSP
-    log('Google Pay Result: $paymentResult');
+  // void onGooglePayResult(paymentResult) {
+  //   // Send the resulting Google Pay token to your server / PSP
+  //   log('Google Pay Result: $paymentResult');
+
+  // }
+
+  Future<void> onGooglePayResult(paymentResult) async {
+    final response = await createPaymentIntent('150', 'USD');
+    final clientSecret = response['clientSecret'];
+
+    // Confirm Google pay payment method
+    log('paymentResult >> $paymentResult');
+    final token = paymentResult['paymentMethodData']['tokenizationData']['token'];
+    final tokenJson = Map.castFrom(json.decode(token));
+
+    final params = PaymentMethodParams.cardFromToken(
+      paymentMethodData: PaymentMethodDataCardFromToken(
+        token: tokenJson['id'],
+      ),
+    );
+    // Confirm Google pay payment method
+    await Stripe.instance.confirmPayment(
+      paymentIntentClientSecret: clientSecret,
+      data: params,
+    );
   }
 
   @override
