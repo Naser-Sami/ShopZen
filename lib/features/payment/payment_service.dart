@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import '/core/_core.dart';
-import 'payment_model.dart';
 
 class StripePaymentHandle {
   Map<String, dynamic>? paymentIntent;
@@ -58,7 +57,7 @@ class StripePaymentHandle {
             message: e.error.localizedMessage);
       } else {
         ToastNotification.showErrorNotification(navigatorKey.currentContext!,
-            message: 'Unforeseen error: ${e}');
+            message: 'Unforeseen error: $e');
       }
     }
   }
