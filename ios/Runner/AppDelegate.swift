@@ -20,7 +20,7 @@ import flutter_local_notifications
       UNUserNotificationCenter.current().delegate = self as? UNUserNotificationCenterDelegate
     }
 
-    GMSServices.provideAPIKey("AIzaSyDHHc9azYoOJWCgw7t-EkbrhOlRuLOiW2M")
+    GMSServices.provideAPIKey("API_SECRET_KEY")
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
