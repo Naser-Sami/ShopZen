@@ -74,16 +74,18 @@ createPaymentIntent(String amount, String currency) async {
   final DioHelper dioHelper = DioHelper();
   try {
     //Request body
-    // Map<String, dynamic> body = {
-    //   'amount': calculateAmount(amount),
-    //   'currency': currency,
-    // };
+    Map<String, dynamic> body = {
+      'amount': calculateAmount(amount),
+      'currency': currency,
+    };
 
-    PaymentModel body = const PaymentModel();
-    body.copyWith(
-      amount: calculateAmount(amount),
-      currency: currency,
-    );
+    // PaymentModel body = const PaymentModel();
+    // body = body.copyWith(
+    //   amount: calculateAmount(amount),
+    //   currency: currency,
+    // );
+
+    // log('body message-> $body');
 
     final response = await dioHelper.post<Map<String, dynamic>>(
       path: "https://api.stripe.com/v1/payment_intents",

@@ -1429,6 +1429,7 @@ PODS:
     - Flutter
   - speech_to_text (0.0.1):
     - Flutter
+    - FlutterMacOS
     - Try
   - sqflite_darwin (0.0.4):
     - Flutter
@@ -1510,7 +1511,7 @@ DEPENDENCIES:
   - pay_ios (from `.symlinks/plugins/pay_ios/ios`)
   - PhoneNumberKit (~> 3.7.6)
   - sign_in_with_apple (from `.symlinks/plugins/sign_in_with_apple/ios`)
-  - speech_to_text (from `.symlinks/plugins/speech_to_text/ios`)
+  - speech_to_text (from `.symlinks/plugins/speech_to_text/darwin`)
   - sqflite_darwin (from `.symlinks/plugins/sqflite_darwin/darwin`)
   - stripe_ios (from `.symlinks/plugins/stripe_ios/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
@@ -1594,7 +1595,7 @@ EXTERNAL SOURCES:
   sign_in_with_apple:
     :path: ".symlinks/plugins/sign_in_with_apple/ios"
   speech_to_text:
-    :path: ".symlinks/plugins/speech_to_text/ios"
+    :path: ".symlinks/plugins/speech_to_text/darwin"
   sqflite_darwin:
     :path: ".symlinks/plugins/sqflite_darwin/darwin"
   stripe_ios:
@@ -1652,7 +1653,7 @@ SPEC CHECKSUMS:
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
   sign_in_with_apple: c5dcc141574c8c54d5ac99dd2163c0c72ad22418
-  speech_to_text: ae2abc312e619ff1c53e675a9fc4d785a15c03bb
+  speech_to_text: 9dc43a5df3cbc2813f8c7cc9bd0fbf94268ed7ac
   sqflite_darwin: 20b2a3a3b70e43edae938624ce550a3cbf66a3d0
   Stripe: 9757efc154de1d9615cbea4836d590bc4034d3a4
   stripe_ios: dac1a46e2d467becea447f482750b545b68cb48b

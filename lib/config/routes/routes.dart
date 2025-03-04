@@ -294,6 +294,25 @@ final router = GoRouter(
       ),
     ),
 
+    // Address Section
+    GoRoute(
+      path: AddressScreen.routeName,
+      name: 'Address',
+      pageBuilder: (context, state) => const CupertinoPage(
+        child: AddressScreen(),
+      ),
+      routes: [
+        // Add Address
+        GoRoute(
+          path: AddNewAddressScreen.routeName,
+          name: 'Add Address',
+          pageBuilder: (context, state) => const CupertinoPage(
+            child: AddNewAddressScreen(),
+          ),
+        ),
+      ],
+    ),
+
     // Checkout Section
     GoRoute(
       path: CheckoutScreen.routeName,

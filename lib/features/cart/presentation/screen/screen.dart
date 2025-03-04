@@ -46,6 +46,7 @@ class _CartScreenState extends State<CartScreen> {
                     padding: const EdgeInsets.all(TPadding.p20),
                     child: ElevatedButton(
                       onPressed: () {
+                        // context.push(PaymentScreen.routeName);
                         context.push(CheckoutScreen.routeName);
                       },
                       child: const TextWidget('Go to Checkout'),

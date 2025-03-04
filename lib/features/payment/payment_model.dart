@@ -46,7 +46,7 @@ class PaymentModel extends Equatable {
 
   final String? id;
   final String? object;
-  final num? amount;
+  final String? amount;
   final num? amountCapturable;
   final AmountDetails? amountDetails;
   final num? amountReceived;
@@ -88,7 +88,7 @@ class PaymentModel extends Equatable {
   PaymentModel copyWith({
     String? id,
     String? object,
-    num? amount,
+    String? amount,
     num? amountCapturable,
     AmountDetails? amountDetails,
     num? amountReceived,

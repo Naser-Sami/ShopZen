@@ -6,6 +6,7 @@ export 'search/_search.dart';
 export 'orders/_orders.dart';
 export 'payment/_payment.dart';
 export 'account/_account.dart';
+export 'address/_address.dart';
 export '_copy_me/_copy_me.dart';
 export 'checkout/_checkout.dart';
 export 'splash/splash_screen.dart';

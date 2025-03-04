@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:shop_zen/config/common/_common.dart';
+import 'package:go_router/go_router.dart';
 
+import '/config/common/_common.dart';
+import '/features/_features.dart' show AddressScreen;
 import '/config/_config.dart' show NotificationsIconWidget, TPadding, TextWidget, TSize;
 
 class CheckoutScreen extends StatelessWidget {
@@ -57,7 +59,9 @@ class CheckoutScreen extends StatelessWidget {
               // if address is empty
               if (true) ...[
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.push(AddressScreen.routeName);
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.transparent,
                     foregroundColor: theme.colorScheme.onSurface,
