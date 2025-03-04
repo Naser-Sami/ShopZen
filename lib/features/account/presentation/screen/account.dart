@@ -58,6 +58,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       case 'Your Profile':
                         context.push(ProfileScreen.routeName);
                         break;
+
                       case 'Help Center':
                         context.push(
                             "${AccountScreen.routeName}/${HelpCenterScreen.routeName}");
@@ -65,6 +66,10 @@ class _AccountScreenState extends State<AccountScreen> {
 
                       case 'Notifications':
                         context.push(NotificationsSettingsScreen.routeName);
+                        break;
+
+                      case 'My Orders':
+                        context.push(MyOrdersScreen.routeName);
                         break;
                       default:
                     }

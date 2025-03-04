@@ -29,6 +29,8 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
+    // return SearchAnchor.bar(suggestionsBuilder: suggestionsBuilder);
+
     return SearchBar(
       focusNode: focusNode,
       autoFocus: widget.autofocus,

@@ -285,6 +285,24 @@ final router = GoRouter(
       ),
     ),
 
+    // My Orders Section
+    GoRoute(
+      path: MyOrdersScreen.routeName,
+      name: 'My Orders',
+      pageBuilder: (context, state) => const CupertinoPage(
+        child: MyOrdersScreen(),
+      ),
+    ),
+
+    // Checkout Section
+    GoRoute(
+      path: CheckoutScreen.routeName,
+      name: 'Checkout',
+      pageBuilder: (context, state) => const CupertinoPage(
+        child: CheckoutScreen(),
+      ),
+    ),
+
     // Payment Method Section
     GoRoute(
       path: PaymentScreen.routeName,

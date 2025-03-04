@@ -1,5 +1,6 @@
-import Flutter
 import UIKit
+import Flutter
+import GoogleMaps
 
 // This is required for calling FlutterLocalNotificationsPlugin.setPluginRegistrantCallback method.
 import flutter_local_notifications
@@ -19,6 +20,7 @@ import flutter_local_notifications
       UNUserNotificationCenter.current().delegate = self as? UNUserNotificationCenterDelegate
     }
 
+    GMSServices.provideAPIKey("AIzaSyDHHc9azYoOJWCgw7t-EkbrhOlRuLOiW2M")
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
