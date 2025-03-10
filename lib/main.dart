@@ -1,9 +1,12 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -17,6 +20,13 @@ import '_app/_app.dart';
 Future<void> main() async {
   // -- Add Widgets Binding
   WidgetsFlutterBinding.ensureInitialized();
+
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory:
+        kIsWeb ? HydratedStorage.webStorageDirectory : await getTemporaryDirectory(),
+    // ? HydratedStorageDirectory.web
+    // : HydratedStorageDirectory((await getTemporaryDirectory()).path),
+  );
 
   await Hive.initFlutter();
   await Firebase.initializeApp(

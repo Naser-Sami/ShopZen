@@ -306,9 +306,21 @@ final router = GoRouter(
         GoRoute(
           path: AddNewAddressScreen.routeName,
           name: 'Add Address',
-          pageBuilder: (context, state) => const CupertinoPage(
-            child: AddNewAddressScreen(),
-          ),
+          pageBuilder: (context, state) {
+            AddressEntity? address = state.extra as AddressEntity?;
+
+            if (address == null) {
+              return const CupertinoPage(
+                child: AddNewAddressScreen(),
+              );
+            } else {
+              return CupertinoPage(
+                child: AddNewAddressScreen(
+                  address: address,
+                ),
+              );
+            }
+          },
         ),
       ],
     ),

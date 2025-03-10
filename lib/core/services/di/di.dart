@@ -107,6 +107,10 @@ class DI {
       () => SearchLocationCubit(),
     );
 
+    sl.registerFactory<AddressCubit>(
+      () => AddressCubit(),
+    );
+
     // Location Services
     sl.registerLazySingleton<IGeolocatorService>(
       () => GeolocatorServiceImpl(),

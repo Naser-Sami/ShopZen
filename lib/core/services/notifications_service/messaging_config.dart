@@ -34,9 +34,7 @@ class MessagingConfig {
 
     FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-    NotificationSettings settings = await messaging.requestPermission(
-      
-    );
+    NotificationSettings settings = await messaging.requestPermission();
 
     messaging.setForegroundNotificationPresentationOptions(
       alert: true,

@@ -25,8 +25,10 @@ class GeolocatorServiceImpl implements IGeolocatorService {
   );
 
   @override
-  Future<Position> getCurrentPosition() async =>
-      await Geolocator.getCurrentPosition(locationSettings: locationSettings);
+  Future<Position> getCurrentPosition() async {
+    await Geolocator.requestPermission();
+    return await Geolocator.getCurrentPosition(locationSettings: locationSettings);
+  }
 
   @override
   Future<Position?> getLastKnownPosition() async =>

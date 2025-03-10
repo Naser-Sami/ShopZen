@@ -22,4 +22,7 @@ final providers = [
   BlocProvider<CartBloc>(
     create: (context) => sl<CartBloc>(),
   ),
+  BlocProvider<AddressCubit>(
+    create: (context) => sl<AddressCubit>(),
+  ),
 ];
