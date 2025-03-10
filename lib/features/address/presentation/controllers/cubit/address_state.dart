@@ -9,13 +9,13 @@ class AddressState extends Equatable {
 
   final List<AddressEntity> address;
   final bool defaultAddress;
-  final int selectedAddress;
+  final String selectedAddress;
 
   // copyWith
   AddressState copyWith({
     List<AddressEntity>? address,
     bool? defaultAddress,
-    int? selectedAddress,
+    String? selectedAddress,
   }) {
     return AddressState(
       address: address ?? this.address,
@@ -31,7 +31,7 @@ class AddressState extends Equatable {
           .map((e) => AddressEntity.fromJson(e))
           .toList(),
       defaultAddress: json['defaultAddress'] as bool,
-      selectedAddress: json['selectedAddress'] as int,
+      selectedAddress: json['selectedAddress'] as String,
     );
   }
 

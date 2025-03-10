@@ -48,6 +48,7 @@ class _CartScreenState extends State<CartScreen> {
                       onPressed: () {
                         // context.push(PaymentScreen.routeName);
                         context.push(CheckoutScreen.routeName);
+                        // context.read<AddressCubit>().deleteAllAddress();
                       },
                       child: const TextWidget('Go to Checkout'),
                     ),

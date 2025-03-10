@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '/config/common/_common.dart';
-import '/features/_features.dart' show AddressScreen;
+import '/features/_features.dart'
+    show AddressScreen, AddressCubit, AddressState, AddressEntity;
 import '/config/_config.dart' show NotificationsIconWidget, TPadding, TextWidget, TSize;
 
 class CheckoutScreen extends StatelessWidget {
@@ -42,71 +44,67 @@ class CheckoutScreen extends StatelessWidget {
                   ),
 
                   // show if there's an address
-                  if (false)
-                    TextButton(
-                      onPressed: () {},
-                      child: TextWidget(
-                        'Change',
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          decoration: TextDecoration.underline,
+                  BlocSelector<AddressCubit, AddressState, List<AddressEntity>>(
+                    selector: (state) => state.address,
+                    builder: (context, address) {
+                      if (address.isEmpty) {
+                        return IconButton(
+                            onPressed: () {
+                              context.push(AddressScreen.routeName);
+                            },
+                            icon: const Icon(Icons.add));
+                      }
+                      return TextButton(
+                        onPressed: () {
+                          context.push(AddressScreen.routeName);
+                        },
+                        child: TextWidget(
+                          'Change',
+                          style: theme.textTheme.titleSmall?.copyWith(
+                            decoration: TextDecoration.underline,
+                          ),
                         ),
-                      ),
-                    ),
+                      );
+                    },
+                  ),
                 ],
               ),
               const SizedBox(height: TSize.s16),
-
-              // if address is empty
-              if (true) ...[
-                ElevatedButton(
-                  onPressed: () {
-                    context.push(AddressScreen.routeName);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.transparent,
-                    foregroundColor: theme.colorScheme.onSurface,
-                    shadowColor: Colors.transparent,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(TSize.s08),
-                      side: BorderSide(
-                        color: theme.colorScheme.outline,
-                      ),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.add,
-                        color: theme.colorScheme.onSurface,
-                        size: 30,
-                      ),
-                      const SizedBox(width: TSize.s10),
-                      TextWidget(
-                        'Add New Address',
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
+              BlocBuilder<AddressCubit, AddressState>(
+                builder: (context, state) {
+                  if (state.address.isEmpty) {
+                    return SizedBox(
+                      height: 50,
+                      child: Center(
+                        child: Text(
+                          'No address found',
+                          style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       ),
-                    ],
-                  ),
-                ),
-              ] else ...[
-                ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  leading: IconWidget(
-                    name: 'location',
-                    height: 30,
-                    color: theme.colorScheme.outline,
-                  ),
-                  title: TextWidget(
-                    'Home',
-                    style: theme.textTheme.titleMedium,
-                  ),
-                  subtitle: const TextWidget('123 Main Street, New York, NY 10001'),
-                ),
-              ],
+                    );
+                  }
 
+                  final selectedIndex = state.address
+                      .indexWhere((address) => state.selectedAddress == address.id);
+                  final addr = selectedIndex != -1
+                      ? state.address[selectedIndex]
+                      : state.address.first;
+
+                  return ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    leading: IconWidget(
+                      name: 'location',
+                      height: 30,
+                      color: theme.colorScheme.outline,
+                    ),
+                    title: TextWidget(
+                      addr.addressNickname,
+                      style: theme.textTheme.titleMedium,
+                    ),
+                    subtitle: TextWidget(addr.fullAddress),
+                  );
+                },
+              ),
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: TPadding.p16),
                 child: Divider(),

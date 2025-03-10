@@ -28,6 +28,7 @@ class AddNewAddressScreen extends StatefulWidget {
 class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
   LatLng latLng = const LatLng(0, 0);
   String apiKey = 'API_SECRET_KEY';
+  // AIzaSyDHHc9azYoOJWCgw7t-EkbrhOlRuLOiW2M
 
   String? mapStyle;
 
@@ -286,7 +287,8 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                       );
                     }
 
-                    context.push(AddressScreen.routeName);
+                    context.pop();
+                    context.pop();
                   },
                   child: widget.address != null
                       ? const TextWidget('Update')

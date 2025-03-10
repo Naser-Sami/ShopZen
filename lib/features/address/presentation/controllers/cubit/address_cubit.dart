@@ -6,13 +6,14 @@ part 'address_state.dart';
 
 class AddressCubit extends HydratedCubit<AddressState> {
   AddressCubit()
-      : super(const AddressState(address: [], defaultAddress: false, selectedAddress: 0));
+      : super(
+            const AddressState(address: [], defaultAddress: false, selectedAddress: ''));
 
   void addAddress(AddressEntity address) =>
       emit(state.copyWith(address: [...state.address, address]));
 
-  void selectAddress(int? index) {
-    emit(state.copyWith(selectedAddress: index));
+  void selectAddress(String id) {
+    emit(state.copyWith(selectedAddress: id));
   }
 
   void checkDefaultAddress(AddressEntity? address) {
@@ -60,6 +61,10 @@ class AddressCubit extends HydratedCubit<AddressState> {
   void deleteAddress(AddressEntity address) {
     emit(state.copyWith(
         address: state.address.where((element) => element.id != address.id).toList()));
+  }
+
+  void deleteAllAddress() {
+    emit(state.copyWith(address: []));
   }
 
   @override

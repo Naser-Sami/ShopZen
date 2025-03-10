@@ -104,12 +104,13 @@ class AddressScreen extends StatelessWidget {
                                   name: 'location',
                                   color: theme.colorScheme.outline,
                                 ),
-                                trailing: Radio(
-                                  value: index,
+                                trailing: Radio<String>(
+                                  value: state.address[index].id,
                                   groupValue: state.selectedAddress,
-                                  onChanged: (int? value) {
-                                    context.read<AddressCubit>().selectAddress(value);
+                                  onChanged: (String? value) {
+                                    context.read<AddressCubit>().selectAddress(value!);
                                   },
+                                  activeColor: theme.colorScheme.onSurface,
                                 ),
                                 contentPadding: EdgeInsets.zero,
                               ),
