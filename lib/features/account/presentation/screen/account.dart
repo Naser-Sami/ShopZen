@@ -64,7 +64,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         break;
 
                       case 'Payments Methods':
-                        context.push(PaymentScreen.routeName);
+                        context.push(PaymentMethodsScreen.routeName);
                         break;
 
                       case 'Notifications':

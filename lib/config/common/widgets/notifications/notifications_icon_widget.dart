@@ -62,12 +62,15 @@ class _NotificationsIconWidgetState extends State<NotificationsIconWidget> {
 
             return Text(
               notificationsCount ?? '0',
-              style: theme.textTheme.bodyMedium,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.surface,
+                fontWeight: FontWeight.w500,
+              ),
             );
           },
         ),
         badgeStyle: badges.BadgeStyle(
-          badgeColor: theme.colorScheme.primaryContainer,
+          badgeColor: theme.colorScheme.onSurface,
         ),
         child: IconWidget(
           name: 'notification',

@@ -25,4 +25,7 @@ final providers = [
   BlocProvider<AddressCubit>(
     create: (context) => sl<AddressCubit>(),
   ),
+  BlocProvider<PaymentCubitCubit>(
+    create: (context) => sl<PaymentCubitCubit>(),
+  ),
 ];

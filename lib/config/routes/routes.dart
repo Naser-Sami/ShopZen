@@ -336,11 +336,20 @@ final router = GoRouter(
 
     // Payment Method Section
     GoRoute(
-      path: PaymentScreen.routeName,
-      name: 'Payment',
+      path: PaymentMethodsScreen.routeName,
+      name: 'Payment Methods',
       pageBuilder: (context, state) => const CupertinoPage(
-        child: PaymentScreen(),
+        child: PaymentMethodsScreen(),
       ),
+      routes: [
+        GoRoute(
+          path: AddNewCardScreen.routeName,
+          name: 'Add New Card',
+          pageBuilder: (context, state) => const CupertinoPage(
+            child: AddNewCardScreen(),
+          ),
+        ),
+      ],
     ),
   ],
 );
