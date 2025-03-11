@@ -10,9 +10,17 @@ class PaymentCard extends Equatable {
   final int? month;
   final int? year;
   final int? cvv;
+  final bool? isDefault;
 
   const PaymentCard(
-      {this.id, this.type, this.number, this.name, this.month, this.year, this.cvv});
+      {this.id,
+      this.type,
+      this.number,
+      this.name,
+      this.month,
+      this.year,
+      this.cvv,
+      this.isDefault});
 
   // copy with
   PaymentCard copyWith({
@@ -23,6 +31,7 @@ class PaymentCard extends Equatable {
     int? month,
     int? year,
     int? cvv,
+    bool? isDefault,
   }) {
     return PaymentCard(
       id: id ?? this.id,
@@ -32,6 +41,7 @@ class PaymentCard extends Equatable {
       month: month ?? this.month,
       year: year ?? this.year,
       cvv: cvv ?? this.cvv,
+      isDefault: isDefault ?? this.isDefault,
     );
   }
 
@@ -46,6 +56,7 @@ class PaymentCard extends Equatable {
       month: json['month'] as int?,
       year: json['year'] as int?,
       cvv: json['cvv'] as int?,
+      isDefault: json['isDefault'] as bool?,
     );
   }
 
@@ -58,14 +69,15 @@ class PaymentCard extends Equatable {
       'month': month,
       'year': year,
       'cvv': cvv,
+      'isDefault': isDefault,
     };
   }
 
   @override
   String toString() {
-    return '[ Id: $id Type: $type, Number: $number, Name: $name, Month: $month, Year: $year, CVV: $cvv ]';
+    return '[ Id: $id Type: $type, Number: $number, Name: $name, Month: $month, Year: $year, CVV: $cvv, IsDefault: $isDefault ]';
   }
 
   @override
-  List<Object?> get props => [id, type, number, name, month, year, cvv];
+  List<Object?> get props => [id, type, number, name, month, year, cvv, isDefault];
 }

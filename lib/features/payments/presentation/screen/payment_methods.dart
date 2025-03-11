@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '/core/_core.dart' show CardNumberFormatter, CardUtils;
+import '/core/_core.dart' show CardNumberFormatter, CardUtils, PaymentCard;
 import '/config/_config.dart' show TextWidget, TSize;
 import '/features/payments/_payment.dart'
     show AddNewCardScreen, PaymentCubit, PaymentState, paymentAppBar;
@@ -46,8 +46,8 @@ class PaymentMethodsScreen extends StatelessWidget {
                               onDismissed: (direction) {
                                 context.read<PaymentCubit>().deleteCard(card.id ?? "");
                               },
-                              child: ListTile(
-                                leading: Padding(
+                              child: RadioListTile(
+                                secondary: Padding(
                                   padding: const EdgeInsetsDirectional.all(8.0)
                                       .copyWith(start: 20, end: 0),
                                   child: CardUtils.getCardIcon(card.type),
@@ -61,31 +61,42 @@ class PaymentMethodsScreen extends StatelessWidget {
                                       ),
                                     ),
                                     const SizedBox(width: 3),
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(6),
-                                      child: ColoredBox(
-                                        color: theme.colorScheme.outline
-                                            .withValues(alpha: 0.20),
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 9, vertical: 3),
-                                          child: TextWidget(
-                                            'Default',
-                                            style: theme.textTheme.titleSmall?.copyWith(
-                                              fontWeight: FontWeight.w500,
+                                    if (card.isDefault ?? false)
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(6),
+                                        child: ColoredBox(
+                                          color: theme.colorScheme.outline
+                                              .withValues(alpha: 0.20),
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 9, vertical: 3),
+                                            child: TextWidget(
+                                              'Default',
+                                              style: theme.textTheme.titleSmall?.copyWith(
+                                                fontWeight: FontWeight.w500,
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
-                                    ),
                                   ],
                                 ),
-                                trailing: Radio(
-                                  value: false,
-                                  groupValue: false,
-                                  onChanged: (bool? value) {},
-                                  activeColor: theme.colorScheme.onSurface,
-                                ),
+                                controlAffinity: ListTileControlAffinity.trailing,
+                                value: card.id ?? "",
+                                groupValue: state.cards
+                                        .firstWhere(
+                                          (c) => c.isDefault == true,
+                                          orElse: () => const PaymentCard(
+                                              id: ""), // Fallback if no default card
+                                        )
+                                        .id ??
+                                    "",
+                                onChanged: (String? value) {
+                                  context
+                                      .read<PaymentCubit>()
+                                      .setAsDefault(card.id ?? "");
+                                },
+                                activeColor: theme.colorScheme.onSurface,
                                 contentPadding: EdgeInsets.zero,
                                 tileColor:
                                     theme.colorScheme.onSurface.withValues(alpha: 0.03),

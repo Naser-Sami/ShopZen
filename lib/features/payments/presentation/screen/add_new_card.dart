@@ -90,6 +90,7 @@ class _AddNewCardScreenState extends State<AddNewCardScreen> {
         year: updatedCard.year ?? _paymentCard.year,
         cvv: updatedCard.cvv ?? _paymentCard.cvv,
         name: updatedCard.name ?? _paymentCard.name,
+        isDefault: updatedCard.isDefault ?? _paymentCard.isDefault,
       );
     });
   }

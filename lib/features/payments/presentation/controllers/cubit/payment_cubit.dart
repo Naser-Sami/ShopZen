@@ -20,6 +20,15 @@ class PaymentCubit extends HydratedCubit<PaymentState> {
     emit(state.copyWith(cards: updatedCards));
   }
 
+  // set as default
+  void setAsDefault(String id) {
+    final updatedCards = state.cards.map((card) {
+      return card.copyWith(isDefault: card.id == id);
+    }).toList();
+
+    emit(state.copyWith(cards: updatedCards));
+  }
+
   @override
   PaymentState? fromJson(Map<String, dynamic> json) {
     return PaymentState.fromJson(json);
