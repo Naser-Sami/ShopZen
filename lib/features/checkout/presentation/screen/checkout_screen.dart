@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shop_zen/core/utils/_utils.dart';
+import 'package:shop_zen/features/payment_ss/_payment.dart' show StripePaymentHandle;
 
-import '/config/common/_common.dart';
+import '/core/_core.dart' show PaymentCard;
+import '/config/_config.dart'
+    show NotificationsIconWidget, TPadding, TextWidget, TSize, IconWidget;
 import '/features/_features.dart'
-    show AddressScreen, AddressCubit, AddressState, AddressEntity;
-import '/config/_config.dart' show NotificationsIconWidget, TPadding, TextWidget, TSize;
+    show
+        AddressScreen,
+        AddressCubit,
+        AddressState,
+        AddressEntity,
+        PaymentCubit,
+        PaymentState;
 
 class CheckoutScreen extends StatelessWidget {
   static const routeName = '/checkout';
@@ -115,9 +124,113 @@ class CheckoutScreen extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                 ),
               ),
+              const SizedBox(height: TSize.s16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ActionChip(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: TPadding.p12, vertical: TPadding.p08),
+                    avatar: const Icon(
+                      Icons.credit_card,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                    label: TextWidget(
+                      'Card',
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    backgroundColor: theme.colorScheme.primary,
+                    onPressed: () {},
+                  ),
+                  ActionChip(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: TPadding.p12, vertical: TPadding.p08),
+                    avatar: Icon(
+                      Icons.money,
+                      color: theme.colorScheme.onSurface,
+                      size: 20,
+                    ),
+                    label: TextWidget(
+                      'Cash',
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: theme.colorScheme.onSurface,
+                      ),
+                    ),
+                    backgroundColor: theme.colorScheme.surface,
+                    onPressed: () {},
+                  ),
+                  ActionChip(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: TPadding.p12, vertical: TPadding.p08),
+                    avatar: Icon(
+                      Icons.apple,
+                      color: theme.colorScheme.onSurface,
+                      size: 20,
+                    ),
+                    label: TextWidget(
+                      'Pay',
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: theme.colorScheme.onSurface,
+                      ),
+                    ),
+                    backgroundColor: theme.colorScheme.surface,
+                    onPressed: () {},
+                  ),
+                ],
+              ),
+              const SizedBox(height: TSize.s16),
+              BlocSelector<PaymentCubit, PaymentState, List<PaymentCard>>(
+                selector: (state) => state.cards,
+                builder: (context, cards) {
+                  final card = cards.firstWhere(
+                    (card) => card.isDefault == true,
+                  );
+
+                  return ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    shape: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(
+                        color: theme.colorScheme.onSurface.withValues(alpha: 0.2),
+                        width: 1.5,
+                      ),
+                    ),
+                    leading: Padding(
+                      padding: const EdgeInsetsDirectional.all(8.0)
+                          .copyWith(start: 20, end: 0),
+                      child: CardUtils.getCardIcon(card.type),
+                    ),
+                    title: TextWidget(
+                      card.number?.formattedCardNumber ?? '',
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    trailing: IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.edit_outlined,
+                      ),
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: TSize.s16),
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: TPadding.p16),
                 child: Divider(),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  StripePaymentHandle().stripeMakePayment();
+                },
+                child: const TextWidget('Place Order'),
               ),
             ],
           ),

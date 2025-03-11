@@ -61,12 +61,6 @@ class StripePaymentHandle {
       }
     }
   }
-
-//calculate Amount
-  calculateAmount(String amount) {
-    final calculatedAmount = (int.parse(amount)) * 100;
-    return calculatedAmount.toString();
-  }
 }
 
 createPaymentIntent(String amount, String currency) async {
