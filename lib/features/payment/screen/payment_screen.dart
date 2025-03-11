@@ -96,9 +96,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
       // displayPaymentSheet();
       // display the payment status as dialog or bottom sheet
 
-      ToastNotification.showSuccessNotification(context, message: 'Payment Successful');
+      if (mounted) {
+        ToastNotification.showSuccessNotification(context, message: 'Payment Successful');
+      }
     } catch (err) {
-      ToastNotification.showErrorNotification(context, message: 'Payment Failed');
+      if (mounted) {
+        ToastNotification.showErrorNotification(context, message: 'Payment Failed');
+      }
       throw Exception(err);
     }
   }
@@ -216,8 +220,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
       form.save();
       await makePayment();
       // Encrypt and send send payment details to payment gateway
-      ToastNotification.showSuccessNotification(context,
-          message: 'Payment card is valid');
+      if (mounted) {
+        ToastNotification.showSuccessNotification(context,
+            message: 'Payment card is valid');
+      }
     }
   }
 

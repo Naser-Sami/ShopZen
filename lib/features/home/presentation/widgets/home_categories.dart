@@ -67,14 +67,10 @@ class _HomeCategoriesState extends State<HomeCategories> {
                                 borderRadius: BorderRadius.circular(TRadius.r08),
                                 color: theme.colorScheme.primary.withValues(alpha: 0.05),
                               ),
-                              // child: IconWidget(
-                              //   name: categories[index],
-                              //   color: categories[index] == 'beauty'
-                              //       ? null
-                              //       : TFunctions.isDarkMode(context)
-                              //           ? Colors.grey.shade200
-                              //           : null,
-                              // ),
+                              child: IconWidget(
+                                name: categories[index],
+                                color: theme.colorScheme.outline,
+                              ),
                             ),
                             TSize.s04.toHeight,
                             TextWidget(

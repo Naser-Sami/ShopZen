@@ -27,8 +27,7 @@ class AddNewAddressScreen extends StatefulWidget {
 
 class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
   LatLng latLng = const LatLng(0, 0);
-  String apiKey = 'API_SECRET_KEY';
-  // AIzaSyDHHc9azYoOJWCgw7t-EkbrhOlRuLOiW2M
+  String apiKey = 'AIzaSyDHHc9azYoOJWCgw7t-EkbrhOlRuLOiW2M';
 
   String? mapStyle;
 
@@ -140,10 +139,6 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
             onMapCreated: (controller) {
               controller.setMapStyle(mapStyle);
             },
-            // onPlacePicked: (LocationResult result) {
-            //   context.pop<LocationResult>(result);
-            //   log("Place picked: ${result.formattedAddress}");
-            // },
             myLocationFABConfig: const MyLocationFABConfig(bottom: 24, right: 24),
             initialLocation: LatLng(position?.latitude ?? 0, position?.longitude ?? 0),
             usePinPointingSearch: true,

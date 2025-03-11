@@ -59,18 +59,29 @@ class _AccountScreenState extends State<AccountScreen> {
                         context.push(ProfileScreen.routeName);
                         break;
 
-                      case 'Help Center':
-                        context.push(
-                            "${AccountScreen.routeName}/${HelpCenterScreen.routeName}");
+                      case 'My Orders':
+                        context.push(MyOrdersScreen.routeName);
+                        break;
+
+                      case 'Payments Methods':
+                        context.push(PaymentScreen.routeName);
                         break;
 
                       case 'Notifications':
                         context.push(NotificationsSettingsScreen.routeName);
                         break;
 
-                      case 'My Orders':
-                        context.push(MyOrdersScreen.routeName);
+                      case 'Privacy Policy':
                         break;
+
+                      case 'Help Center':
+                        context.push(
+                            "${AccountScreen.routeName}/${HelpCenterScreen.routeName}");
+                        break;
+
+                      case 'Invite Friends':
+                        break;
+
                       default:
                     }
                   },

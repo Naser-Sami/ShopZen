@@ -27,15 +27,15 @@ Future<void> createOrUpdateUserCollection(UserCredential credential) async {
       log('FCM token updated securely for existing user');
 
       // TODO:: remove this later
-      if (credential.user?.uid != null) {
-        createOrSendNotification(
-          uid: credential.user!.uid,
-          fcmToken: fcmToken,
-          title: "Welcome to ${AppConfig.appName}",
-          body: "Welcome to ${AppConfig.appName}, we hope you enjoy your stay.",
-          senderId: AppConfig.adminID,
-        );
-      }
+      // if (credential.user?.uid != null) {
+      //   createOrSendNotification(
+      //     uid: credential.user!.uid,
+      //     fcmToken: fcmToken,
+      //     title: "Welcome to ${AppConfig.appName}",
+      //     body: "Welcome to ${AppConfig.appName}, we hope you enjoy your stay.",
+      //     senderId: AppConfig.adminID,
+      //   );
+      // }
     },
 
     // if user doesn't exist, create a new user document

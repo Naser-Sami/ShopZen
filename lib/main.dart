@@ -24,8 +24,6 @@ Future<void> main() async {
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory:
         kIsWeb ? HydratedStorage.webStorageDirectory : await getTemporaryDirectory(),
-    // ? HydratedStorageDirectory.web
-    // : HydratedStorageDirectory((await getTemporaryDirectory()).path),
   );
 
   await Hive.initFlutter();
