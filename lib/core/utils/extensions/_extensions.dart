@@ -9,3 +9,4 @@ export 'extensions_on_date_time.dart';
 export 'extensions_on_future_and_stream.dart';
 export 'custom_box_decoration_theme_extension.dart';
 export 'extension_on_result.dart';
+export 'card_number_formatter_extension.dart';

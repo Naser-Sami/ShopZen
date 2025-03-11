@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 import '/config/_config.dart' show IconWidget, TSize, TextWidget;
 
-successDialog(BuildContext context, {required String message}) {
+successDialog(BuildContext context,
+    {required String message, required void Function()? onPressed}) {
   final theme = Theme.of(context);
 
   return showDialog(
@@ -42,10 +43,8 @@ successDialog(BuildContext context, {required String message}) {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: ElevatedButton(
+              onPressed: onPressed,
               child: const TextWidget('Thanks'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
             ),
           ),
         ],

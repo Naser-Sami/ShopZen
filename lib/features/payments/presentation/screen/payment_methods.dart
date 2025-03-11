@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '/core/_core.dart' show CardNumberFormatter, CardUtils;
 import '/config/_config.dart' show TextWidget, TSize;
-import '/features/payments/_payment.dart' show AddNewCardScreen, paymentAppBar;
+import '/features/payments/_payment.dart'
+    show AddNewCardScreen, PaymentCubit, PaymentState, paymentAppBar;
 
 class PaymentMethodsScreen extends StatelessWidget {
   static const routeName = '/payment-methods';
@@ -26,6 +29,80 @@ class PaymentMethodsScreen extends StatelessWidget {
                       style: theme.textTheme.titleLarge,
                     ),
                     const SizedBox(height: TSize.s16),
+                    BlocBuilder<PaymentCubit, PaymentState>(
+                      builder: (context, state) {
+                        return ListView.separated(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: state.cards.length,
+                          separatorBuilder: (context, index) =>
+                              const SizedBox(height: TSize.s16),
+                          itemBuilder: (context, index) {
+                            final card = state.cards[index];
+
+                            return Dismissible(
+                              key: ValueKey(card.id),
+                              background: _swipeToDelete(),
+                              onDismissed: (direction) {
+                                context.read<PaymentCubit>().deleteCard(card.id ?? "");
+                              },
+                              child: ListTile(
+                                leading: Padding(
+                                  padding: const EdgeInsetsDirectional.all(8.0)
+                                      .copyWith(start: 20, end: 0),
+                                  child: CardUtils.getCardIcon(card.type),
+                                ),
+                                title: Row(
+                                  children: [
+                                    TextWidget(
+                                      card.number?.formattedCardNumber ?? '',
+                                      style: theme.textTheme.titleMedium?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 3),
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(6),
+                                      child: ColoredBox(
+                                        color: theme.colorScheme.outline
+                                            .withValues(alpha: 0.20),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 9, vertical: 3),
+                                          child: TextWidget(
+                                            'Default',
+                                            style: theme.textTheme.titleSmall?.copyWith(
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                trailing: Radio(
+                                  value: false,
+                                  groupValue: false,
+                                  onChanged: (bool? value) {},
+                                  activeColor: theme.colorScheme.onSurface,
+                                ),
+                                contentPadding: EdgeInsets.zero,
+                                tileColor:
+                                    theme.colorScheme.onSurface.withValues(alpha: 0.03),
+                                shape: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: BorderSide(
+                                    color: theme.colorScheme.onSurface
+                                        .withValues(alpha: 0.2),
+                                    width: 1.5,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -69,4 +146,23 @@ class PaymentMethodsScreen extends StatelessWidget {
       ),
     );
   }
+
+  Widget? _swipeToDelete() => const Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.delete_outline,
+            color: Colors.grey,
+          ),
+          SizedBox(
+            width: 8,
+          ),
+          Text(
+            "Delete Card",
+            style: TextStyle(
+              color: Colors.grey,
+            ),
+          ),
+        ],
+      );
 }

@@ -14,11 +14,12 @@ class PaymentState extends Equatable {
     );
   }
 
-  // fromJson
   factory PaymentState.fromJson(Map<String, dynamic> json) {
     return PaymentState(
-      cards:
-          (json['cards'] as List<dynamic>).map((e) => PaymentCard.fromJson(e)).toList(),
+      cards: (json['cards'] as List<dynamic>?)
+              ?.map((e) => PaymentCard.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
     );
   }
 

@@ -2,8 +2,11 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:uuid/uuid.dart';
 
-import '/core/_core.dart' show CardType, CardUtils, PaymentCard, successDialog;
+import '/core/_core.dart'
+    show CardType, CardUtils, PaymentCard, ToastNotification, successDialog;
 import '/config/_config.dart' show TextWidget, TSize, TPadding;
 import '/features/payments/_payment.dart'
     show
@@ -27,14 +30,15 @@ class _AddNewCardScreenState extends State<AddNewCardScreen> {
   final _expiryDateController = TextEditingController();
   final _cvcController = TextEditingController();
 
-  final _paymentCard = PaymentCard();
+  // Use it from Cubit !!
+  PaymentCard _paymentCard = const PaymentCard();
   AutovalidateMode _autoValidateMode = AutovalidateMode.disabled;
 
   void _getCardTypeFrmNumber() {
     String input = CardUtils.getCleanedNumber(_cartNumberController.text);
     CardType cardType = CardUtils.getCardTypeFrmNumber(input);
     setState(() {
-      _paymentCard.type = cardType;
+      _paymentCard = _paymentCard.copyWith(type: cardType);
     });
   }
 
@@ -54,25 +58,46 @@ class _AddNewCardScreenState extends State<AddNewCardScreen> {
     final FormState form = _formKey.currentState!;
     if (!form.validate()) {
       setState(() {
-        _autoValidateMode = AutovalidateMode.always; // Start validating on every change.
+        _autoValidateMode = AutovalidateMode.always;
       });
     } else {
-      form.save();
-      // Encrypt and send send payment details to payment gateway
+      form.save(); // This ensures all onSaved() methods are called
 
-      // Add new card to the list
-      log('_paymentCard => $_paymentCard');
+      log('_paymentCard => $_paymentCard'); // Debugging output
+
+      final cards = context.read<PaymentCubit>().state.cards;
+      if (cards.any((element) => element.number == _paymentCard.number)) {
+        ToastNotification.showWarningNotification(context,
+            message: 'Card already exists.');
+        return;
+      }
       context.read<PaymentCubit>().addCard(_paymentCard);
 
-      // show success dialog
-      successDialog(context, message: 'Your new card has been added.');
+      successDialog(context, message: 'Your new card has been added.', onPressed: () {
+        context.pop();
+        context.pop();
+      });
     }
+  }
+
+  void updatePaymentCard(PaymentCard updatedCard) {
+    setState(() {
+      _paymentCard = _paymentCard.copyWith(
+        id: const Uuid().v4(),
+        number: updatedCard.number ?? _paymentCard.number,
+        type: updatedCard.type ?? _paymentCard.type,
+        month: updatedCard.month ?? _paymentCard.month,
+        year: updatedCard.year ?? _paymentCard.year,
+        cvv: updatedCard.cvv ?? _paymentCard.cvv,
+        name: updatedCard.name ?? _paymentCard.name,
+      );
+    });
   }
 
   @override
   void initState() {
     super.initState();
-    _paymentCard.type = CardType.others;
+    _paymentCard = _paymentCard.copyWith(type: CardType.others);
     _cartNumberController.addListener(_getCardTypeFrmNumber);
   }
 
@@ -100,6 +125,7 @@ class _AddNewCardScreenState extends State<AddNewCardScreen> {
               CardNumberWidget(
                 controller: _cartNumberController,
                 paymentCard: _paymentCard,
+                onCardUpdated: updatePaymentCard, // Pass callback function
               ),
               const SizedBox(height: TSize.s16),
 
@@ -111,6 +137,7 @@ class _AddNewCardScreenState extends State<AddNewCardScreen> {
                     child: CardExpiryDateWidget(
                       controller: _expiryDateController,
                       paymentCard: _paymentCard,
+                      onCardUpdated: updatePaymentCard, // Pass callback function
                     ),
                   ),
                   const SizedBox(width: TSize.s16),
@@ -120,6 +147,7 @@ class _AddNewCardScreenState extends State<AddNewCardScreen> {
                     child: CardCvcWidget(
                       controller: _cvcController,
                       paymentCard: _paymentCard,
+                      onCardUpdated: updatePaymentCard, // Pass callback function
                     ),
                   ),
                 ],

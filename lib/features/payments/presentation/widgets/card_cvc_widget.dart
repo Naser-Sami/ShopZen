@@ -5,10 +5,11 @@ import '/core/_core.dart';
 import '/config/_config.dart';
 
 class CardCvcWidget extends StatelessWidget {
-  const CardCvcWidget({super.key, this.controller, this.paymentCard});
+  const CardCvcWidget({super.key, this.controller, this.paymentCard, this.onCardUpdated});
 
   final TextEditingController? controller;
   final PaymentCard? paymentCard;
+  final Function(PaymentCard)? onCardUpdated; // This notifies the parent
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,12 @@ class CardCvcWidget extends StatelessWidget {
       validator: CardUtils.validateCVV,
       keyboardType: TextInputType.number,
       onSaved: (value) {
-        paymentCard?.cvv = int.parse(value!);
+        if (value != null && value.isNotEmpty) {
+          PaymentCard updatedCard = paymentCard!.copyWith(
+            cvv: int.parse(value),
+          );
+          onCardUpdated?.call(updatedCard);
+        }
       },
       inputFormatters: [
         FilteringTextInputFormatter.digitsOnly,

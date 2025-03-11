@@ -5,11 +5,16 @@ import '/core/_core.dart';
 import '/config/_config.dart';
 
 class CardExpiryDateWidget extends StatelessWidget {
-  const CardExpiryDateWidget({super.key, this.controller, this.paymentCard});
+  const CardExpiryDateWidget({
+    super.key,
+    this.controller,
+    this.paymentCard,
+    this.onCardUpdated,
+  });
 
   final TextEditingController? controller;
   final PaymentCard? paymentCard;
-
+  final Function(PaymentCard)? onCardUpdated; // This notifies the parent
   @override
   Widget build(BuildContext context) {
     return TextFormFieldComponent(
@@ -20,9 +25,14 @@ class CardExpiryDateWidget extends StatelessWidget {
       validator: CardUtils.validateDate,
       keyboardType: TextInputType.number,
       onSaved: (value) {
-        List<int> expiryDate = CardUtils.getExpiryDate(value!);
-        paymentCard?.month = expiryDate[0];
-        paymentCard?.year = expiryDate[1];
+        if (value != null && value.isNotEmpty) {
+          List<int> expiryDate = CardUtils.getExpiryDate(value);
+          PaymentCard updatedCard = paymentCard!.copyWith(
+            month: expiryDate[0],
+            year: expiryDate[1],
+          );
+          onCardUpdated?.call(updatedCard);
+        }
       },
       inputFormatters: [
         FilteringTextInputFormatter.digitsOnly,
