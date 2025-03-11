@@ -1,12 +1,17 @@
-import 'package:flutter/material.dart';
-import 'package:shop_zen/config/common/_common.dart';
-import 'package:shop_zen/config/theme/_theme.dart';
+import 'dart:developer';
 
-import '/core/_core.dart'
-    show CardType, CardUtils, PaymentCard, ToastNotification, successDialog;
-import '/config/_config.dart' show TextWidget, TSize;
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '/core/_core.dart' show CardType, CardUtils, PaymentCard, successDialog;
+import '/config/_config.dart' show TextWidget, TSize, TPadding;
 import '/features/payments/_payment.dart'
-    show CardNumberWidget, CardExpiryDateWidget, CardCvcWidget, paymentAppBar;
+    show
+        CardNumberWidget,
+        CardExpiryDateWidget,
+        CardCvcWidget,
+        PaymentCubit,
+        paymentAppBar;
 
 class AddNewCardScreen extends StatefulWidget {
   static const routeName = 'add-new-card';
@@ -54,6 +59,10 @@ class _AddNewCardScreenState extends State<AddNewCardScreen> {
     } else {
       form.save();
       // Encrypt and send send payment details to payment gateway
+
+      // Add new card to the list
+      log('_paymentCard => $_paymentCard');
+      context.read<PaymentCubit>().addCard(_paymentCard);
 
       // show success dialog
       successDialog(context, message: 'Your new card has been added.');
@@ -117,7 +126,7 @@ class _AddNewCardScreenState extends State<AddNewCardScreen> {
               ),
               const SizedBox(height: TSize.s48),
               ElevatedButton(
-                onPressed: _validateInputs,
+                onPressed: _isAllFieldsFilled() ? _validateInputs : null,
                 child: const TextWidget('Add Card'),
               ),
             ],

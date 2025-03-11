@@ -1,1 +1,1 @@
-export 'cubit/payment_cubit_cubit.dart';
+export 'cubit/payment_cubit.dart';

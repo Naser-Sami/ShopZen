@@ -111,8 +111,8 @@ class DI {
       () => AddressCubit(),
     );
 
-    sl.registerFactory<PaymentCubitCubit>(
-      () => PaymentCubitCubit(),
+    sl.registerFactory<PaymentCubit>(
+      () => PaymentCubit(),
     );
 
     // Location Services
