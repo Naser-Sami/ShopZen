@@ -27,7 +27,7 @@ class AddNewAddressScreen extends StatefulWidget {
 
 class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
   LatLng latLng = const LatLng(0, 0);
-  String apiKey = 'AIzaSyDHHc9azYoOJWCgw7t-EkbrhOlRuLOiW2M';
+  String apiKey = 'API_SECRET_KEY';
 
   String? mapStyle;
 
