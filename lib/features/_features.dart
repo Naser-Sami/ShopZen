@@ -9,7 +9,6 @@ export 'address/_address.dart';
 export 'payments/_payment.dart';
 export '_copy_me/_copy_me.dart';
 export 'checkout/_checkout.dart';
-export 'payment_ss/_payment.dart';
 export 'splash/splash_screen.dart';
 export 'your_location/_locations.dart';
 export 'notifications/_notifications.dart';

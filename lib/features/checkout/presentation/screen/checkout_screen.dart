@@ -1,9 +1,11 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pay/pay.dart' show PaymentItem, PaymentItemStatus;
+import 'package:shop_zen/config/theme/dimension/_dimension.dart';
 
 import '/core/_core.dart' show PaymentCard, StripeService, CardUtils, CardNumberFormatter;
 import '/config/_config.dart'
@@ -142,7 +144,7 @@ class CheckoutScreen extends StatelessWidget {
                 },
               ),
               const Padding(
-                padding: EdgeInsets.symmetric(vertical: TPadding.p16),
+                padding: EdgeInsets.symmetric(vertical: TRadius.r08),
                 child: Divider(),
               ),
               TextWidget(
@@ -155,48 +157,86 @@ class CheckoutScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  ActionChip(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: TPadding.p12, vertical: TPadding.p08),
-                    avatar: const Icon(
-                      Icons.credit_card,
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                    label: TextWidget(
-                      'Card',
-                      style: theme.textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                  Expanded(
+                    child: Container(
+                      height: 36,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(TRadius.r08),
+                          border: Border.all(
+                            color: theme.colorScheme.outline,
+                          ),
+                          color: theme.colorScheme.primary),
+                      child: Row(
+                        children: [
+                          IconButton(
+                            onPressed: () {},
+                            icon: const Icon(
+                              Icons.credit_card,
+                              color: Colors.white,
+                              size: 20,
+                            ),
+                          ),
+                          TextWidget(
+                            'Card',
+                            style: theme.textTheme.titleSmall?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    backgroundColor: theme.colorScheme.primary,
-                    onPressed: () {},
                   ),
-                  ActionChip(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: TPadding.p12, vertical: TPadding.p08),
-                    avatar: Icon(
-                      Icons.money,
-                      color: theme.colorScheme.onSurface,
-                      size: 20,
-                    ),
-                    label: TextWidget(
-                      'Cash',
-                      style: theme.textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: theme.colorScheme.onSurface,
+                  const SizedBox(width: TSize.s16),
+                  Expanded(
+                    child: Container(
+                      height: 36,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(TPadding.p06),
+                          border: Border.all(
+                            color: theme.colorScheme.outline,
+                          ),
+                          color: theme.colorScheme.surface),
+                      child: Row(
+                        children: [
+                          IconButton(
+                            onPressed: () {},
+                            icon: Icon(
+                              Icons.money_sharp,
+                              color: theme.colorScheme.onSurface,
+                              size: 20,
+                            ),
+                          ),
+                          TextWidget(
+                            'Cash',
+                            style: theme.textTheme.titleSmall?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: theme.colorScheme.onSurface,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    backgroundColor: theme.colorScheme.surface,
-                    onPressed: () {},
                   ),
-                  ApplePayButtonWidget(
-                    paymentItems: paymentItems,
-                  ),
-                  GooglePayButtonWidget(
-                    paymentItems: paymentItems,
-                  ),
+                  const SizedBox(width: TSize.s16),
+                  if (Platform.isIOS)
+                    Expanded(
+                      child: SizedBox(
+                        height: 36,
+                        child: ApplePayButtonWidget(
+                          paymentItems: paymentItems,
+                        ),
+                      ),
+                    ),
+                  if (Platform.isAndroid)
+                    Expanded(
+                      child: SizedBox(
+                        height: 36,
+                        child: GooglePayButtonWidget(
+                          paymentItems: paymentItems,
+                        ),
+                      ),
+                    ),
                 ],
               ),
               const SizedBox(height: TSize.s16),

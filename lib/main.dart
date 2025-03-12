@@ -34,8 +34,6 @@ Future<void> main() async {
   // set the publishable key for Stripe - this is mandatory
   StripeService.init();
 
-  // this is old service i should delete later
-  Stripe.publishableKey = stripePublishableKey;
   //Load our .env file that contains our Stripe Secret key
   await dotenv.load(fileName: "assets/.env");
   // Stripe.merchantIdentifier = 'YOUR-APPLE-MERCHANT-IDENTIFIER';
