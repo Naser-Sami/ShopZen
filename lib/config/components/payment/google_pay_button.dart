@@ -5,10 +5,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:pay/pay.dart';
+import 'package:shop_zen/core/utils/_utils.dart';
 
-import '../payment_service.dart';
-import '/config/_config.dart';
-import '../payment_configurations.dart';
+import '/core/_core.dart' show defaultGooglePay;
+import '../../../features/payment_ss/payment_service.dart';
 
 class GooglePayButtonWidget extends StatefulWidget {
   const GooglePayButtonWidget({super.key, required this.paymentItems});
@@ -20,11 +20,25 @@ class GooglePayButtonWidget extends StatefulWidget {
 }
 
 class _GooglePayButtonWidgetState extends State<GooglePayButtonWidget> {
-  // void onGooglePayResult(paymentResult) {
-  //   // Send the resulting Google Pay token to your server / PSP
-  //   log('Google Pay Result: $paymentResult');
+  @override
+  Widget build(BuildContext context) {
+    if (Platform.isAndroid) {
+      return GooglePayButton(
+        paymentConfiguration: PaymentConfiguration.fromJsonString(defaultGooglePay),
+        paymentItems: widget.paymentItems,
+        onPressed: () {},
+        onPaymentResult: onGooglePayResult,
+        theme: TFunctions.isDarkMode(context)
+            ? GooglePayButtonTheme.dark
+            : GooglePayButtonTheme.light,
+        loadingIndicator: const Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
 
-  // }
+    return const SizedBox();
+  }
 
   Future<void> onGooglePayResult(paymentResult) async {
     final response = await createPaymentIntent('150', 'USD');
@@ -45,27 +59,5 @@ class _GooglePayButtonWidgetState extends State<GooglePayButtonWidget> {
       paymentIntentClientSecret: clientSecret,
       data: params,
     );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (Platform.isAndroid) {
-      final size = MediaQuery.of(context).size;
-
-      return SizedBox(
-        height: TSize.s40,
-        width: size.width,
-        child: GooglePayButton(
-          paymentConfiguration: defaultGooglePayConfig,
-          paymentItems: widget.paymentItems,
-          onPaymentResult: onGooglePayResult,
-          loadingIndicator: const Center(
-            child: CircularProgressIndicator(),
-          ),
-        ),
-      );
-    } else {
-      return const SizedBox();
-    }
   }
 }

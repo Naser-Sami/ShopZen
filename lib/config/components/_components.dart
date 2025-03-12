@@ -4,3 +4,4 @@ export 'layouts/_layouts.dart';
 export 'cards/_cards.dart';
 export 'popup_menu/_popup_menu.dart';
 export 'text_form_field/text_form_field.dart';
+export 'payment/_payment.dart';

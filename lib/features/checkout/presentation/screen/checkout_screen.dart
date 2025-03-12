@@ -1,12 +1,20 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shop_zen/core/utils/_utils.dart';
-import 'package:shop_zen/features/payment_ss/_payment.dart' show StripePaymentHandle;
+import 'package:pay/pay.dart' show PaymentItem, PaymentItemStatus;
 
-import '/core/_core.dart' show PaymentCard;
+import '/core/_core.dart' show PaymentCard, StripeService, CardUtils, CardNumberFormatter;
 import '/config/_config.dart'
-    show NotificationsIconWidget, TPadding, TextWidget, TSize, IconWidget;
+    show
+        NotificationsIconWidget,
+        TPadding,
+        TextWidget,
+        TSize,
+        IconWidget,
+        ApplePayButtonWidget,
+        GooglePayButtonWidget;
 import '/features/_features.dart'
     show
         AddressScreen,
@@ -23,6 +31,25 @@ class CheckoutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
+    // example list
+    List<PaymentItem> paymentItems = const [
+      PaymentItem(
+        label: 'Item A',
+        amount: '0.01',
+        status: PaymentItemStatus.final_price,
+      ),
+      PaymentItem(
+        label: 'Item B',
+        amount: '0.01',
+        status: PaymentItemStatus.final_price,
+      ),
+      PaymentItem(
+        label: 'Total',
+        amount: '0.02',
+        status: PaymentItemStatus.final_price,
+      ),
+    ];
 
     return Scaffold(
       appBar: AppBar(
@@ -164,23 +191,11 @@ class CheckoutScreen extends StatelessWidget {
                     backgroundColor: theme.colorScheme.surface,
                     onPressed: () {},
                   ),
-                  ActionChip(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: TPadding.p12, vertical: TPadding.p08),
-                    avatar: Icon(
-                      Icons.apple,
-                      color: theme.colorScheme.onSurface,
-                      size: 20,
-                    ),
-                    label: TextWidget(
-                      'Pay',
-                      style: theme.textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: theme.colorScheme.onSurface,
-                      ),
-                    ),
-                    backgroundColor: theme.colorScheme.surface,
-                    onPressed: () {},
+                  ApplePayButtonWidget(
+                    paymentItems: paymentItems,
+                  ),
+                  GooglePayButtonWidget(
+                    paymentItems: paymentItems,
                   ),
                 ],
               ),
@@ -188,6 +203,9 @@ class CheckoutScreen extends StatelessWidget {
               BlocSelector<PaymentCubit, PaymentState, List<PaymentCard>>(
                 selector: (state) => state.cards,
                 builder: (context, cards) {
+                  if (cards.isEmpty) {
+                    return const SizedBox.shrink();
+                  }
                   final card = cards.firstWhere(
                     (card) => card.isDefault == true,
                   );
@@ -228,7 +246,8 @@ class CheckoutScreen extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
-                  StripePaymentHandle().stripeMakePayment();
+                  // StripePaymentHandle().stripeMakePayment();
+                  makePayment();
                 },
                 child: const TextWidget('Place Order'),
               ),
@@ -237,5 +256,14 @@ class CheckoutScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void makePayment() async {
+    try {
+      await StripeService.processPayment(amount: 19.99, currency: 'usd');
+      log('Payment Successful');
+    } catch (e) {
+      log('Payment Failed: $e');
+    }
   }
 }
