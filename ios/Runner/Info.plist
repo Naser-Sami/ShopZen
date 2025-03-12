@@ -47,7 +47,6 @@
 		<true/>
 		<key>UIStatusBarHidden</key>
 		<false/>
-
 		<!-- FOR GOOGLE AUTHENTICATION -->
 		<key>GIDClientID</key>
 		<!-- TODO Replace this value: -->
@@ -65,41 +64,34 @@
 					<!-- TODO Replace this value: -->
 					<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
 					<string>com.googleusercontent.apps.609299836964-oiu82rgsdb7te5s7v1p0sol0f4cof7p2</string>
-
 					<string>app-1-609299836964-ios-55e3e78cb3e4d4e53068b1</string>
 				</array>
 			</dict>
 		</array>
 		<!-- End of the Google Sign-in Section -->
-
 		<key>FirebaseAppDelegateProxyEnabled</key>
 		<false/>
 		<key>UIBackgroundModes</key>
 		<array>
 			<string>remote-notification</string>
 		</array>
-
 		<!-- ACCESS FOR LOCATION -->
 		<key>NSLocationWhenInUseUsageDescription</key>
 		<string>ShopZen needs access to location when open.</string>
 		<key>NSLocationTemporaryUsageDescriptionDictionary</key>
 		<dict>
 			<key>YourPurposeKey</key>
-			<string>The example App requires temporary access to the device&apos;s precise location.</string>
+			<string>The example App requires temporary access to the device's precise location.</string>
 		</dict>
-
 		<!-- ACCESS FOR  VOICE -->
 		<key>NSSpeechRecognitionUsageDescription</key>
 		<string>ShopZen needs access to microphone.</string>
 		<key>NSMicrophoneUsageDescription</key>
 		<string>ShopZen needs access to microphone.</string>
-
 		<!-- ACCESS FOR CARD SCANNER - STRIPE -->
 		<key>NSCameraUsageDescription</key>
 		<string>Scan your card to add it automatically</string>
 		<key>NSCameraUsageDescription</key>
 		<string>To scan cards</string>
-
-
 	</dict>
 </plist>

@@ -125,6 +125,8 @@ dependencies:
   google_maps_flutter: ^2.10.1
   place_picker_google: ^0.0.14
   path_provider: ^2.1.5
+  
+  flutter_native_splash: ^2.4.5
 
 dev_dependencies:
   flutter_test:

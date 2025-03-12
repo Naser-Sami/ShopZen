@@ -159,7 +159,7 @@ class CheckoutScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Container(
-                      height: 36,
+                      height: 44,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(TRadius.r08),
                           border: Border.all(
@@ -167,6 +167,7 @@ class CheckoutScreen extends StatelessWidget {
                           ),
                           color: theme.colorScheme.primary),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           IconButton(
                             onPressed: () {},
@@ -190,7 +191,7 @@ class CheckoutScreen extends StatelessWidget {
                   const SizedBox(width: TSize.s16),
                   Expanded(
                     child: Container(
-                      height: 36,
+                      height: 44,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(TPadding.p06),
                           border: Border.all(
@@ -198,6 +199,7 @@ class CheckoutScreen extends StatelessWidget {
                           ),
                           color: theme.colorScheme.surface),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           IconButton(
                             onPressed: () {},
@@ -218,27 +220,25 @@ class CheckoutScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(width: TSize.s16),
-                  if (Platform.isIOS)
-                    Expanded(
-                      child: SizedBox(
-                        height: 36,
-                        child: ApplePayButtonWidget(
-                          paymentItems: paymentItems,
-                        ),
-                      ),
-                    ),
-                  if (Platform.isAndroid)
-                    Expanded(
-                      child: SizedBox(
-                        height: 36,
-                        child: GooglePayButtonWidget(
-                          paymentItems: paymentItems,
-                        ),
-                      ),
-                    ),
                 ],
               ),
+              const SizedBox(height: TSize.s16),
+              if (Platform.isIOS)
+                SizedBox(
+                  height: 44,
+                  width: double.infinity,
+                  child: ApplePayButtonWidget(
+                    paymentItems: paymentItems,
+                  ),
+                ),
+              if (Platform.isAndroid)
+                SizedBox(
+                  height: 44,
+                  width: double.infinity,
+                  child: GooglePayButtonWidget(
+                    paymentItems: paymentItems,
+                  ),
+                ),
               const SizedBox(height: TSize.s16),
               BlocSelector<PaymentCubit, PaymentState, List<PaymentCard>>(
                 selector: (state) => state.cards,
