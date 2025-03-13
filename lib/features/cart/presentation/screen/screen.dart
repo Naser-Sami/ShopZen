@@ -17,7 +17,7 @@ class _CartScreenState extends State<CartScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<CartBloc>().add(const GetCartsEvent(id: '8'));
+    context.read<CartBloc>().add(const GetCartsEvent(id: '2'));
   }
 
   @override
