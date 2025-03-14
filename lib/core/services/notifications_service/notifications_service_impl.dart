@@ -9,7 +9,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import '/core/_core.dart';
 
 class NotificationsServiceImpl implements INotificationsService {
-  final DioHelper dioHelper = DioHelper();
+  final DioService dioService = DioService();
   final FirebaseMessaging messaging = FirebaseMessaging.instance;
 
   /// Saves the FCM token to Firestore for a given user
@@ -102,7 +102,7 @@ class NotificationsServiceImpl implements INotificationsService {
         }
       };
 
-      final response = await dioHelper.post(
+      final response = await dioService.post(
         path: fcmUrl,
         headers: headers,
         data: notificationPayload,

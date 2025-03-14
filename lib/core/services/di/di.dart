@@ -13,8 +13,8 @@ final sl = GetIt.I;
 
 class DI {
   void initDio() {
-    sl.registerLazySingleton<DioHelper>(
-      () => DioHelper(),
+    sl.registerLazySingleton<DioService>(
+      () => DioService(),
     );
   }
 

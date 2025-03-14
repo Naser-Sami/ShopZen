@@ -9,7 +9,7 @@ class EmailService {
     const String templateId = 'template_vwq65z8';
     const String userId = 'nmrVSY1og9QZvwbll';
 
-    final response = await sl<DioHelper>().post(
+    final response = await sl<DioService>().post(
       path: emailJsUrl,
       headers: {
         'Content-Type': 'application/json',

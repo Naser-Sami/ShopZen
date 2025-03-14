@@ -2,9 +2,9 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
-import '_apis_helper.dart';
+import '_apis_service.dart';
 
-class DioHelper {
+class DioService {
   // Dio instance
   final Dio dio = Dio(
     BaseOptions(
@@ -16,7 +16,7 @@ class DioHelper {
   );
 
   // Constructor to add interceptors
-  DioHelper() {
+  DioService() {
     dio.interceptors.add(
       PrettyDioLogger(
         responseHeader: true,

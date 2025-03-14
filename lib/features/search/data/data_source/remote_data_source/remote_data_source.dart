@@ -6,12 +6,12 @@ abstract class ISearchProductRemoteDataSource {
 }
 
 class SearchProductRemoteDataSourceImpl implements ISearchProductRemoteDataSource {
-  final DioHelper dioHelper = DioHelper();
+  final DioService dioService = DioService();
 
   @override
   Future<ProductsModel?> searchProduct(String query) async {
     try {
-      final data = await dioHelper.get<ProductsModel>(
+      final data = await dioService.get<ProductsModel>(
         path: ApiEndpoints.search,
         parser: (data) => ProductsModel.fromJson(data),
         queryParameters: {'q': query},

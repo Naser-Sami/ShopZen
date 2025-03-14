@@ -3,10 +3,10 @@ import 'dart:developer';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
-import '/core/_core.dart' show DioHelper;
+import '/core/_core.dart' show DioService;
 
 class StripeService {
-  static final DioHelper dioHelper = DioHelper();
+  static final DioService dioService = DioService();
   static final String _secretKey = dotenv.env['STRIPE_SECRET'].toString();
   static const String _baseUrl = 'https://api.stripe.com/v1';
 
@@ -35,7 +35,7 @@ class StripeService {
         'payment_method_types[]': 'card',
       };
 
-      final response = await dioHelper.post<Map<String, dynamic>>(
+      final response = await dioService.post<Map<String, dynamic>>(
         path: "$_baseUrl/payment_intents",
         headers: headers,
         data: body,
@@ -110,7 +110,7 @@ class StripeService {
 
       // Step 2: Send tokenized payment method to your backend for processing
       // You'll send the payment method id and the amount to the backend here
-      final response = await dioHelper.post(
+      final response = await dioService.post(
         path: '/your-backend-endpoint', // Your backend endpoint
         data: {
           'paymentMethodId': paymentMethod.id,

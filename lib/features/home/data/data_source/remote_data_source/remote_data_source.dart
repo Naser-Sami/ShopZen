@@ -11,13 +11,13 @@ abstract class IProductsRemoteDataSource {
 }
 
 class ProductsRemoteDataSourceImpl implements IProductsRemoteDataSource {
-  final DioHelper dioHelper = DioHelper();
+  final DioService dioService = DioService();
 
   @override
   Future<ProductsModel?> getAllProducts(
       {required int limit, int skip = 0, String? select}) async {
     try {
-      final data = await dioHelper.get<ProductsModel>(
+      final data = await dioService.get<ProductsModel>(
         path: ApiEndpoints.products,
         parser: (data) => ProductsModel.fromJson(data),
         queryParameters: {'limit': limit, 'skip': skip, 'select': select},
@@ -32,7 +32,7 @@ class ProductsRemoteDataSourceImpl implements IProductsRemoteDataSource {
   @override
   Future<ProductsModel?> getProductById(int id) async {
     try {
-      return await dioHelper.get<ProductsModel>(
+      return await dioService.get<ProductsModel>(
         path: '${ApiEndpoints.products}/$id',
         parser: (data) => ProductsModel.fromJson(data),
       );
@@ -44,7 +44,7 @@ class ProductsRemoteDataSourceImpl implements IProductsRemoteDataSource {
   @override
   Future<List<String>?> getProductCategoryList() async {
     try {
-      final response = await dioHelper.get<List<dynamic>>(
+      final response = await dioService.get<List<dynamic>>(
         path: '${ApiEndpoints.products}/${ApiEndpoints.categoryList}',
         parser: (data) => data.map((item) => "$item").toList(),
       );
@@ -59,7 +59,7 @@ class ProductsRemoteDataSourceImpl implements IProductsRemoteDataSource {
   @override
   Future<ProductsModel?> getProductsByCategory(String category) async {
     try {
-      return await dioHelper.get<ProductsModel>(
+      return await dioService.get<ProductsModel>(
         path: '${ApiEndpoints.products}/${ApiEndpoints.category}/$category',
         parser: (data) => ProductsModel.fromJson(data),
       );

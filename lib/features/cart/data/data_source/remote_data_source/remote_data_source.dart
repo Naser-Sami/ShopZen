@@ -7,12 +7,12 @@ abstract class ICartRemoteDataSource {
 }
 
 class CartRemoteDataSource extends ICartRemoteDataSource {
-  final DioHelper dioHelper = DioHelper();
+  final DioService dioService = DioService();
 
   @override
   Future<CartModel?> getCartItems(String id) async {
     try {
-      return await dioHelper.get<CartModel>(
+      return await dioService.get<CartModel>(
         path: "${ApiEndpoints.cart}/$id",
         parser: (data) => CartModel.fromJson(data),
       );
