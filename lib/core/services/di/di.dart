@@ -1,7 +1,7 @@
+import 'package:get_it/get_it.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:get_it/get_it.dart';
 
 import '/core/_core.dart';
 import '/config/_config.dart';
@@ -12,24 +12,22 @@ import '/features/_features.dart';
 final sl = GetIt.I;
 
 class DI {
-  Future<void> init() async {
-    // Use registerSingleton when:
-
-    // Use registerLazySingleton when:
-
-    // Dio
+  void initDio() {
     sl.registerLazySingleton<DioHelper>(
       () => DioHelper(),
     );
+  }
 
-    // Services
-    // Local Storage Services
+  void initSecureStorageService() {
     sl.registerLazySingleton<SecureStorageService>(
       () => SecureStorageService(),
     );
+  }
+
+  void initHive() {
     sl.registerLazySingleton<IHiveService<dynamic>>(
       () => HiveService<dynamic>(
-        boxName: 'settings',
+        boxName: 'theme',
       ),
     );
 
@@ -39,15 +37,11 @@ class DI {
         adapter: ProductEntityAdapter(),
       ),
     );
+  }
 
-    // Firebase Service
+  void initFirebase() {
     final firebaseAuth = FirebaseAuth.instance;
-    final fireStore = FirebaseFirestore.instance;
-    final firebaseMessaging = FirebaseMessaging.instance;
-
     sl.registerLazySingleton<FirebaseAuth>(() => firebaseAuth);
-    sl.registerLazySingleton<FirebaseFirestore>(() => fireStore);
-    sl.registerLazySingleton<FirebaseMessaging>(() => firebaseMessaging);
 
     sl.registerLazySingleton<IFirebaseAuthService>(
       () => FirebaseAuthServiceImpl(
@@ -55,25 +49,45 @@ class DI {
       ),
     );
 
-    sl.registerLazySingleton<INotificationsService>(
-      () => NotificationsServiceImpl(),
-    );
-
-    // Firebase Social Sign In
     sl.registerLazySingleton<ISocialSignInService>(
       () => SocialSignInServiceImpl(
         auth: firebaseAuth,
       ),
     );
+  }
 
-    sl.registerSingleton<IFirestoreService<UserModel>>(
-      FirestoreServiceImpl<UserModel>(UserModel.fromJson),
-    );
-    sl.registerSingleton<IFirestoreService<NotificationsModel>>(
-      FirestoreServiceImpl<NotificationsModel>(NotificationsModel.fromMap),
+  void initFirebaseFirestore() {
+    final fireStore = FirebaseFirestore.instance;
+    sl.registerLazySingleton<FirebaseFirestore>(() => fireStore);
+  }
+
+  void initFirebaseMessaging() {
+    final firebaseMessaging = FirebaseMessaging.instance;
+
+    sl.registerLazySingleton<FirebaseMessaging>(() => firebaseMessaging);
+  }
+
+  void initControllers() {
+    sl.registerLazySingleton<ThemeCubit>(
+      () => ThemeCubit(),
     );
 
-    // BLOC's
+    sl.registerLazySingleton<SearchLocationCubit>(
+      () => SearchLocationCubit(),
+    );
+
+    sl.registerLazySingleton<UserCubit>(
+      () => UserCubit(),
+    );
+
+    sl.registerFactory<AddressCubit>(
+      () => AddressCubit(),
+    );
+
+    sl.registerFactory<PaymentCubit>(
+      () => PaymentCubit(),
+    );
+
     sl.registerLazySingleton<ProductsBloc>(
       () => ProductsBloc(
         productRepository: sl<IProductRepository>(),
@@ -93,45 +107,39 @@ class DI {
         sl<ICartRepository>(),
       ),
     );
+  }
 
-    // CUBIT's
-    sl.registerLazySingleton<ThemeCubit>(
-      () => ThemeCubit(),
+  void initServices() {
+    sl.registerLazySingleton<AuthService>(
+      () => AuthService(),
     );
 
-    sl.registerLazySingleton<UserCubit>(
-      () => UserCubit(),
+    sl.registerLazySingleton<INotificationsService>(
+      () => NotificationsServiceImpl(),
     );
 
-    sl.registerLazySingleton<SearchLocationCubit>(
-      () => SearchLocationCubit(),
+    sl.registerSingleton<IFirestoreService<UserModel>>(
+      FirestoreServiceImpl<UserModel>(UserModel.fromJson),
     );
 
-    sl.registerFactory<AddressCubit>(
-      () => AddressCubit(),
+    sl.registerSingleton<IFirestoreService<NotificationsModel>>(
+      FirestoreServiceImpl<NotificationsModel>(NotificationsModel.fromMap),
     );
 
-    sl.registerFactory<PaymentCubit>(
-      () => PaymentCubit(),
-    );
-
-    // Location Services
     sl.registerLazySingleton<IGeolocatorService>(
       () => GeolocatorServiceImpl(),
     );
+
     sl.registerLazySingleton<IGeocodingService>(
       () => GeocodingServiceImpl(),
     );
+
     sl.registerLazySingleton<IGeoCodeService>(
       () => GeoCodeServiceImpl(),
     );
+  }
 
-    // Controllers
-    sl.registerLazySingleton<AuthController>(
-      () => AuthController(),
-    );
-
-    // Data Sources
+  void initDataSources() {
     sl.registerLazySingleton<IProductsRemoteDataSource>(
       () => ProductsRemoteDataSourceImpl(),
     );
@@ -143,8 +151,9 @@ class DI {
     sl.registerLazySingleton<ICartRemoteDataSource>(
       () => CartRemoteDataSource(),
     );
+  }
 
-    // Repositories
+  void initRepositories() {
     sl.registerLazySingleton<IProductRepository>(
       () => ProductRepositoryImpl(
         remoteDataSource: sl<IProductsRemoteDataSource>(),
@@ -156,6 +165,7 @@ class DI {
         remoteDataSource: sl<IProductsRemoteDataSource>(),
       ),
     );
+
     sl.registerLazySingleton<IGetProductsByCategoryRepository>(
       () => GetProductsByCategoryRepositoryImpl(
         remoteDataSource: sl<IProductsRemoteDataSource>(),
@@ -174,18 +184,31 @@ class DI {
       () => ChatRepositoryImpl(),
     );
 
-    // Repositories for Search
     sl.registerLazySingleton<ISearchProductRepository>(
       () => SearchProductRepositoryImpl(
         remoteDataSource: sl<ISearchProductRemoteDataSource>(),
       ),
     );
+
     sl.registerLazySingleton<ICartRepository>(
       () => CartRepositoryImpl(
         sl<ICartRemoteDataSource>(),
       ),
     );
+  }
 
-    // Use cases
+  void initUseCases() {}
+
+  Future<void> init() async {
+    initDio();
+    initSecureStorageService();
+    initHive();
+    initFirebase();
+    initFirebaseFirestore();
+    initFirebaseMessaging();
+    initControllers();
+    initServices();
+    initRepositories();
+    initUseCases();
   }
 }

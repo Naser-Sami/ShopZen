@@ -12,7 +12,7 @@ class SignUpWithSocialScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final loginController = sl<AuthController>();
+    final loginController = sl<AuthService>();
     final size = MediaQuery.of(context).size;
     final theme = Theme.of(context);
 

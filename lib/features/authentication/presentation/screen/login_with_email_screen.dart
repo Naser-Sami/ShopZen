@@ -14,7 +14,7 @@ class LoginWithEmailScreen extends StatefulWidget {
 
 class _LoginWithEmailScreenState extends State<LoginWithEmailScreen> {
   final _formKey = GlobalKey<FormState>();
-  final loginController = sl<AuthController>();
+  final loginController = sl<AuthService>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 

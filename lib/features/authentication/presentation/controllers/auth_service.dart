@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import '/features/_features.dart';
 import '/core/_core.dart';
 
-class AuthController {
+class AuthService {
   List<String> socialMediaLogin = ['google', 'apple', 'x', 'facebook', 'github'];
 
   Future<void> loginWithGoogle(BuildContext context) async {

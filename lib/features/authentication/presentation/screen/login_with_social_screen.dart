@@ -11,7 +11,7 @@ class LoginWithSocialScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final loginController = sl<AuthController>();
+    final loginController = sl<AuthService>();
     final size = MediaQuery.of(context).size;
     final theme = Theme.of(context);
 
@@ -64,16 +64,14 @@ class LoginWithSocialScreen extends StatelessWidget {
                 const OrWidget(),
                 TSize.s48.toHeight,
                 ElevatedButton(
-                  onPressed: () =>
-                      context.push(LoginWithEmailScreen.routeName),
+                  onPressed: () => context.push(LoginWithEmailScreen.routeName),
                   child: const TextWidget('Login with Email'),
                 ),
                 const Spacer(),
                 AuthenticationRichTextWidget(
                   text: "Don't have an account yet? ",
                   hyperlinkText: "Sign up",
-                  navToSignUp: () =>
-                      context.push(SignUpWithSocialScreen.routeName),
+                  navToSignUp: () => context.push(SignUpWithSocialScreen.routeName),
                 ),
                 TSize.s20.toHeight,
               ],

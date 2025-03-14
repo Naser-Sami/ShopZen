@@ -1,4 +1,3 @@
-import 'package:dotted_border/dotted_border.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 
@@ -54,7 +53,8 @@ class CartTotalWidget extends StatelessWidget {
               ),
               // Discount = 100 × (Original price - Discounted price) / Original price .
               Text(
-                (100 * (cart.total! - cart.total! * 0.20) / cart.total!).toStringAsFixed(2),
+                (100 * (cart.total! - cart.total! * 0.20) / cart.total!)
+                    .toStringAsFixed(2),
                 style: theme.textTheme.titleMedium,
               ),
             ],
@@ -77,7 +77,6 @@ class CartTotalWidget extends StatelessWidget {
               ),
             ],
           ),
-
           const SizedBox(height: TSize.s12),
         ],
       ),

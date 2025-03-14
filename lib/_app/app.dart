@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:toastification/toastification.dart';
 
 // Files
-import '../config/_config.dart';
+import '/config/_config.dart';
+import '/core/_core.dart' show AppConfig;
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -22,7 +24,7 @@ class MyApp extends StatelessWidget {
               }
             },
             child: MaterialApp.router(
-              title: 'ShopZen',
+              title: AppConfig.appName,
               debugShowCheckedModeBanner: false,
               themeMode: state,
               theme: lightTheme,

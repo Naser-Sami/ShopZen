@@ -12,7 +12,7 @@ class ThemeCubit extends Cubit<ThemeMode> {
   ThemeStyle? initialValue = ThemeStyle.system;
 
   Future<void> switchTheme(ThemeStyle t) async {
-    final box = Hive.box('settings');
+    final box = Hive.box('theme');
 
     switch (t) {
       case ThemeStyle.system:
@@ -34,7 +34,7 @@ class ThemeCubit extends Cubit<ThemeMode> {
   }
 
   void _loadTheme() {
-    final box = Hive.box('settings');
+    final box = Hive.box('theme');
     String? theme = box.get('theme', defaultValue: 'system');
 
     switch (theme) {
