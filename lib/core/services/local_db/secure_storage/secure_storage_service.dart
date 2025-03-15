@@ -26,14 +26,4 @@ class SecureStorageService {
 
   // Delete all
   Future<void> deleteAll() async => await storage.deleteAll();
-
-  // **  Methods for Token  **
-  // For saving a Token
-  Future<void> saveToken(String token) async => await write('token', token);
-
-  // For getting a Token
-  Future<String?> getToken() async => await read('token');
-
-  // For deleting a Token
-  Future<void> deleteToken() async => await delete('token');
 }
