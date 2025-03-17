@@ -6,10 +6,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pay/pay.dart' show PaymentItem, PaymentItemStatus;
 
-
-import '/core/_core.dart' show CardNumberFormatter, CardUtils, PaymentCard, StripeService, sl;
+import '/core/_core.dart'
+    show CardNumberFormatter, CardUtils, PaymentCard, StripeService, sl;
 import '/config/_config.dart'
-    show NotificationsIconWidget, TPadding, TRadius, TextWidget, TSize, IconWidget, ApplePayButtonWidget, GooglePayButtonWidget;
+    show
+        NotificationsIconWidget,
+        TPadding,
+        TRadius,
+        TextWidget,
+        TSize,
+        IconWidget,
+        ApplePayButtonWidget,
+        GooglePayButtonWidget;
 import '/features/_features.dart'
     show
         AddressCubit,
@@ -120,8 +128,11 @@ class CheckoutScreen extends StatelessWidget {
                     );
                   }
 
-                  final selectedIndex = state.address.indexWhere((address) => state.selectedAddress == address.id);
-                  final addr = selectedIndex != -1 ? state.address[selectedIndex] : state.address.first;
+                  final selectedIndex = state.address
+                      .indexWhere((address) => state.selectedAddress == address.id);
+                  final addr = selectedIndex != -1
+                      ? state.address[selectedIndex]
+                      : state.address.first;
 
                   return ListTile(
                     contentPadding: EdgeInsets.zero,
@@ -255,7 +266,8 @@ class CheckoutScreen extends StatelessWidget {
                       ),
                     ),
                     leading: Padding(
-                      padding: const EdgeInsetsDirectional.all(8.0).copyWith(start: 20, end: 0),
+                      padding: const EdgeInsetsDirectional.all(8.0)
+                          .copyWith(start: 20, end: 0),
                       child: CardUtils.getCardIcon(card.type),
                     ),
                     title: TextWidget(
@@ -278,17 +290,17 @@ class CheckoutScreen extends StatelessWidget {
                 padding: EdgeInsets.symmetric(vertical: TPadding.p16),
                 child: Divider(),
               ),
-                BlocBuilder<CartBloc, CartState>(
-                  builder: (context, state) {
-                    if (state is CartLoaded) {
-                      return CartTotalWidget(
-                        cart: state.cart,
-                      );
-                    }
+              BlocBuilder<CartBloc, CartState>(
+                builder: (context, state) {
+                  if (state is CartLoaded) {
+                    return CartTotalWidget(
+                      cart: state.cart,
+                    );
+                  }
 
-                    return const SizedBox();
-                  },
-                ),
+                  return const SizedBox();
+                },
+              ),
               // CardField(
               //   onCardChanged: (card) {
               //     // Handle card details changes

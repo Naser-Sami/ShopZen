@@ -28,7 +28,7 @@ abstract class IServiceInitializer {
   Future<void> initializeStripe();
   Future<void> initializeFirebase();
   Future<void> initializeFirebaseMessaging();
-  void initializeServiceLocator();
+  Future<void> initializeServiceLocator();
   Future<void> initializeThemeHiveService();
   Future<void> initializeProductHiveService();
   void removeSplashScreen();
@@ -46,7 +46,7 @@ class ServiceInitializer extends IServiceInitializer {
     await initializeStripe();
     await initializeFirebase();
     await initializeFirebaseMessaging();
-    initializeServiceLocator();
+    await initializeServiceLocator();
     await initializeThemeHiveService();
     await initializeProductHiveService();
     removeSplashScreen();
@@ -108,8 +108,8 @@ class ServiceInitializer extends IServiceInitializer {
   }
 
   @override
-  void initializeServiceLocator() {
-    DI().init();
+  Future<void> initializeServiceLocator() async {
+    await DI().init();
   }
 
   @override

@@ -21,23 +21,6 @@ class _NotificationsIconWidgetState extends State<NotificationsIconWidget> {
 
     return IconButton(
       onPressed: () => context.push(NotificationsScreen.routeName),
-      // onPressed: () async {
-      //   // createNotificationCollection(sl<UserCubit>().state!.uid);
-
-      //   final fcmToken = await FirebaseMessaging.instance.getToken();
-      //   await sl<INotificationsService>().sendNotification(
-      //     fcmToken: fcmToken ?? '',
-      //     title: "Test Notification",
-      //     body: "This is a test notification",
-      //     data: {
-      //       "userId": "o9RL7kIghgd6aDFEALfqP1KyudZ2",
-      //       "name": "Naser Sami Ebedo",
-      //       "notificationType": NotificationsType.newMessage.name,
-      //       "user": jsonEncode(
-      //           sl<UserCubit>().state!.toMap()) // encode the map to a JSON string
-      //     },
-      //   );
-      // },
       icon: badges.Badge(
         position: badges.BadgePosition.topEnd(top: -14, end: -8),
         badgeContent: StreamBuilder<List<NotificationsModel>>(

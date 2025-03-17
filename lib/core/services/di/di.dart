@@ -12,19 +12,19 @@ import '/features/_features.dart';
 final sl = GetIt.I;
 
 class DI {
-  void initDio() {
+  Future<void> initDio() async {
     sl.registerLazySingleton<DioService>(
       () => DioService(),
     );
   }
 
-  void initSecureStorageService() {
+  Future<void> initSecureStorageService() async {
     sl.registerLazySingleton<SecureStorageService>(
       () => SecureStorageService(),
     );
   }
 
-  void initHive() {
+  Future<void> initHive() async {
     sl.registerLazySingleton<IHiveService<dynamic>>(
       () => HiveService<dynamic>(
         boxName: 'theme',
@@ -39,7 +39,7 @@ class DI {
     );
   }
 
-  void initFirebase() {
+  Future<void> initFirebase() async {
     final firebaseAuth = FirebaseAuth.instance;
     sl.registerLazySingleton<FirebaseAuth>(() => firebaseAuth);
 
@@ -56,60 +56,18 @@ class DI {
     );
   }
 
-  void initFirebaseFirestore() {
+  Future<void> initFirebaseFirestore() async {
     final fireStore = FirebaseFirestore.instance;
     sl.registerLazySingleton<FirebaseFirestore>(() => fireStore);
   }
 
-  void initFirebaseMessaging() {
+  Future<void> initFirebaseMessaging() async {
     final firebaseMessaging = FirebaseMessaging.instance;
 
     sl.registerLazySingleton<FirebaseMessaging>(() => firebaseMessaging);
   }
 
-  void initControllers() {
-    sl.registerLazySingleton<ThemeCubit>(
-      () => ThemeCubit(),
-    );
-
-    sl.registerLazySingleton<SearchLocationCubit>(
-      () => SearchLocationCubit(),
-    );
-
-    sl.registerLazySingleton<UserCubit>(
-      () => UserCubit(),
-    );
-
-    sl.registerFactory<AddressCubit>(
-      () => AddressCubit(),
-    );
-
-    sl.registerFactory<PaymentCubit>(
-      () => PaymentCubit(),
-    );
-
-    sl.registerLazySingleton<ProductsBloc>(
-      () => ProductsBloc(
-        productRepository: sl<IProductRepository>(),
-        getProductCategoryListRepository: sl<IGetProductCategoryListRepository>(),
-        getProductsByCategoryRepository: sl<IGetProductsByCategoryRepository>(),
-      )..add(
-          LoadFavoriteProductsEvent(),
-        ),
-    );
-    sl.registerLazySingleton<SearchBloc>(
-      () => SearchBloc(
-        searchProductRepository: sl<ISearchProductRepository>(),
-      ),
-    );
-    sl.registerLazySingleton<CartBloc>(
-      () => CartBloc(
-        sl<ICartRepository>(),
-      ),
-    );
-  }
-
-  void initServices() {
+  Future<void> initServices() async {
     sl.registerLazySingleton<AuthService>(
       () => AuthService(),
     );
@@ -139,7 +97,7 @@ class DI {
     );
   }
 
-  void initDataSources() {
+  Future<void> initDataSources() async {
     sl.registerLazySingleton<IProductsRemoteDataSource>(
       () => ProductsRemoteDataSourceImpl(),
     );
@@ -153,7 +111,7 @@ class DI {
     );
   }
 
-  void initRepositories() {
+  Future<void> initRepositories() async {
     sl.registerLazySingleton<IProductRepository>(
       () => ProductRepositoryImpl(
         remoteDataSource: sl<IProductsRemoteDataSource>(),
@@ -197,18 +155,63 @@ class DI {
     );
   }
 
-  void initUseCases() {}
+  Future<void> initUseCases() async {}
+
+  Future<void> initControllers() async {
+    sl.registerLazySingleton<ThemeCubit>(
+      () => ThemeCubit(),
+    );
+
+    sl.registerLazySingleton<SearchLocationCubit>(
+      () => SearchLocationCubit(),
+    );
+
+    sl.registerLazySingleton<UserCubit>(
+      () => UserCubit(),
+    );
+
+    sl.registerFactory<AddressCubit>(
+      () => AddressCubit(),
+    );
+
+    sl.registerFactory<PaymentCubit>(
+      () => PaymentCubit(),
+    );
+
+    sl.registerLazySingleton<ProductsBloc>(
+      () => ProductsBloc(
+        productRepository: sl<IProductRepository>(),
+        getProductCategoryListRepository: sl<IGetProductCategoryListRepository>(),
+        getProductsByCategoryRepository: sl<IGetProductsByCategoryRepository>(),
+      )..add(
+          LoadFavoriteProductsEvent(),
+        ),
+    );
+
+    sl.registerLazySingleton<SearchBloc>(
+      () => SearchBloc(
+        searchProductRepository: sl<ISearchProductRepository>(),
+      ),
+    );
+
+    sl.registerLazySingleton<CartBloc>(
+      () => CartBloc(
+        sl<ICartRepository>(),
+      ),
+    );
+  }
 
   Future<void> init() async {
-    initDio();
-    initSecureStorageService();
-    initHive();
-    initFirebase();
-    initFirebaseFirestore();
-    initFirebaseMessaging();
-    initControllers();
-    initServices();
-    initRepositories();
-    initUseCases();
+    await initServices();
+    await initDataSources();
+    await initRepositories();
+    await initUseCases();
+    await initControllers();
+    await initDio();
+    await initSecureStorageService();
+    await initHive();
+    await initFirebase();
+    await initFirebaseFirestore();
+    await initFirebaseMessaging();
   }
 }

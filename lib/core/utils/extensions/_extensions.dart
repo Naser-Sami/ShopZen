@@ -10,3 +10,4 @@ export 'extensions_on_future_and_stream.dart';
 export 'custom_box_decoration_theme_extension.dart';
 export 'extension_on_result.dart';
 export 'card_number_formatter_extension.dart';
+export 'custom_paint_extensions/_custom_paint.dart';
