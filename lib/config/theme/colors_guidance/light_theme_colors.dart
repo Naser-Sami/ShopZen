@@ -46,4 +46,7 @@ class LightThemeColors {
   static const shadow = Color(0xFF000000);
   static const surfaceTint = Color(0xFF2c1ab9);
   static const scrim = Color(0xFF000000);
+
+  //
+  static const lightSkeleton = Color(0xFFF5F5F5);
 }

@@ -59,4 +59,7 @@ class DarkThemeColors {
   static const shadow = Color(0xFF000000);
   static const surfaceTint = Color(0xFF6750A4);
   static const scrim = Color(0xFF000000);
+
+  // Skeleton Colors
+  static const darkSkeleton = Color(0xFF292929);
 }
