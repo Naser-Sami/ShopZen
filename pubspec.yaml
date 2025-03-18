@@ -125,7 +125,7 @@ dependencies:
   google_maps_flutter: ^2.10.1
   place_picker_google: ^0.0.14
   path_provider: ^2.1.5
-  
+
   flutter_native_splash: ^2.4.5
   dotted_border: ^2.1.0
   dotted_line: ^3.2.3
@@ -141,6 +141,8 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
   build_runner: ^2.4.15
+  sqflite_common_ffi:
+  mockito:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

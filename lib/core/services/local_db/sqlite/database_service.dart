@@ -22,7 +22,7 @@ class DatabaseService<T> {
     });
   }
 
-  static Future<Database> get database async {
+  Future<Database> get database async {
     _database ??= await _initDatabase();
     return _database!;
   }
@@ -42,7 +42,7 @@ class DatabaseService<T> {
     );
   }
 
-  static Future<void> closeDatabase() async {
+  Future<void> closeDatabase() async {
     final db = await database;
     await db.close();
     _database = null;

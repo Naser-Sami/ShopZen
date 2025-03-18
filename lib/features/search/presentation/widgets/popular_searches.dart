@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 import '/core/_core.dart';
@@ -55,18 +57,23 @@ class _PopularSearchesWidgetState extends State<PopularSearchesWidget> {
               itemCount: popularSearches.length,
               separatorBuilder: (context, index) => const Divider(),
               itemBuilder: (context, index) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    TextWidget(
-                      popularSearches[index],
-                      style: theme.textTheme.bodyMedium,
-                    ),
-                    TextButton(
-                      onPressed: () {},
-                      child: const IconWidget(name: 'cancel-circle'),
-                    ),
-                  ],
+                return OnTapScaler(
+                  onTap: () {},
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextWidget(
+                        popularSearches[index],
+                        style: theme.textTheme.bodyMedium,
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          log('on clear');
+                        },
+                        child: const IconWidget(name: 'cancel-circle'),
+                      ),
+                    ],
+                  ),
                 );
               },
             ),
