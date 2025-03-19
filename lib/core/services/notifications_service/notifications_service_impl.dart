@@ -41,9 +41,11 @@ class NotificationsServiceImpl implements INotificationsService {
       final jsonString = await rootBundle.loadString(
         'assets/notifications_key/shopzen-42af3-cf74f9e4396c.json',
       );
-      final accountCredentials = auth.ServiceAccountCredentials.fromJson(jsonString);
+      final accountCredentials =
+          auth.ServiceAccountCredentials.fromJson(jsonString);
       final scopes = ['https://www.googleapis.com/auth/firebase.messaging'];
-      final client = await auth.clientViaServiceAccount(accountCredentials, scopes);
+      final client =
+          await auth.clientViaServiceAccount(accountCredentials, scopes);
 
       String accessToken = client.credentials.accessToken.data;
       log('Access token retrieved successfully $accessToken');

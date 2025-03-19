@@ -15,7 +15,7 @@ class SignUpWithEmailScreen extends StatefulWidget {
 
 class _SignUpWithEmailScreenState extends State<SignUpWithEmailScreen> {
   final _formKey = GlobalKey<FormState>();
-  final loginController = sl<AuthService>();
+  final signUpService = sl<AuthService>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
@@ -40,7 +40,7 @@ class _SignUpWithEmailScreenState extends State<SignUpWithEmailScreen> {
 
   void onSignUp() {
     if (_formKey.currentState!.validate()) {
-      loginController.signUpWithEmail(
+      signUpService.signUpWithEmail(
         context,
         email: emailController.text.trim(),
         password: passwordController.text.trim(),

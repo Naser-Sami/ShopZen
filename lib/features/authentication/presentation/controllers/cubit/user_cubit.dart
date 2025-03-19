@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,7 +14,8 @@ class UserCubit extends Cubit<UserModel?> {
 
   /// Fetch user data and listen for changes
   Future<void> getCurrentUserData(String uid) async {
-    final result = await sl<IFirestoreService<UserModel>>().getDocument('users/$uid');
+    final result =
+        await sl<IFirestoreService<UserModel>>().getDocument('users/$uid');
     result.handle(
       onSuccess: (user) {
         // log('User data: ${user.toString()}');
@@ -36,7 +36,7 @@ class UserCubit extends Cubit<UserModel?> {
 
   // Logout
   Future<void> logout(BuildContext context) async {
-    await sl<FirebaseAuth>().signOut().then((_) {
+    await sl<IFirebaseAuthService>().signOut().then((_) {
       // clear user data
       emit(null);
       if (context.mounted) {
