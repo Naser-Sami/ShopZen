@@ -16,7 +16,8 @@ class NotificationsBody extends StatefulWidget {
 }
 
 class _NotificationsBodyState extends State<NotificationsBody> {
-  Future<void> _onDismissed(DismissDirection direction, String notificationId) async {
+  Future<void> _onDismissed(
+      DismissDirection direction, String notificationId) async {
     await NotificationsController.deleteNotification(notificationId);
 
     widget.notifications.removeWhere((n) => n.id == notificationId);
@@ -24,9 +25,11 @@ class _NotificationsBodyState extends State<NotificationsBody> {
 
   Future<void> _onNotificationTap(NotificationsModel notification) async {
     if (notification.type == NotificationsType.newMessage.name) {
-      final userSnapshot = sl<FirebaseFirestore>().collection('users').snapshots();
-      final userStream = userSnapshot.map((snapshot) =>
-          snapshot.docs.map((doc) => UserModel.fromJson(doc.data(), doc.id)).toList());
+      final userSnapshot =
+          sl<FirebaseFirestore>().collection('users').snapshots();
+      final userStream = userSnapshot.map((snapshot) => snapshot.docs
+          .map((doc) => UserModel.fromJson(doc.data(), doc.id))
+          .toList());
 
       // get user data from firestore
       userStream.listen(
@@ -63,26 +66,32 @@ class _NotificationsBodyState extends State<NotificationsBody> {
           children: [
             if (_isFirstFromDate(widget.notifications, index, dateTime))
               _buildTimestamp(context, dateTime),
-            Dismissible(
-              key: Key(notification.id),
-              onDismissed: (DismissDirection direction) async =>
-                  await _onDismissed(direction, notification.id),
-              background: _swipeToDelete(),
-              child: ListTile(
-                onTap: () => _onNotificationTap(notification),
-                leading: Icon(notification.isRead
-                    ? Icons.notifications_none
-                    : Icons.notifications_active),
-                title: Text(
-                  notification.title,
-                  style: context.textTheme.bodyLarge?.copyWith(
-                    fontWeight: notification.isRead ? FontWeight.normal : FontWeight.bold,
+            OnTapScaler(
+              onTap: () => _onNotificationTap(notification),
+              child: Dismissible(
+                key: Key(notification.id),
+                onDismissed: (DismissDirection direction) async =>
+                    await _onDismissed(direction, notification.id),
+                background: _swipeToDelete(),
+                child: ListTile(
+                  leading: Icon(notification.isRead
+                      ? Icons.notifications_none
+                      : Icons.notifications_active),
+                  title: Text(
+                    notification.title,
+                    style: context.textTheme.bodyLarge?.copyWith(
+                      fontWeight: notification.isRead
+                          ? FontWeight.normal
+                          : FontWeight.bold,
+                    ),
                   ),
-                ),
-                subtitle: Text(
-                  notification.body,
-                  style: context.textTheme.bodySmall?.copyWith(
-                    fontWeight: notification.isRead ? FontWeight.normal : FontWeight.w500,
+                  subtitle: Text(
+                    notification.body,
+                    style: context.textTheme.bodySmall?.copyWith(
+                      fontWeight: notification.isRead
+                          ? FontWeight.normal
+                          : FontWeight.w500,
+                    ),
                   ),
                 ),
               ),

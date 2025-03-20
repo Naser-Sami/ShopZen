@@ -112,6 +112,18 @@ class DI {
   }
 
   Future<void> initRepositories() async {
+    sl.registerLazySingleton<ILoginRepo>(
+      () => LoginRepoImpl(),
+    );
+
+    sl.registerLazySingleton<ISignUpRepo>(
+      () => SignUpRepoImpl(),
+    );
+
+    sl.registerLazySingleton<ISocialAuthRepo>(
+      () => SocialAuthRepoImpl(),
+    );
+
     sl.registerLazySingleton<IProductRepository>(
       () => ProductRepositoryImpl(
         remoteDataSource: sl<IProductsRemoteDataSource>(),
@@ -162,12 +174,21 @@ class DI {
       () => ThemeCubit(),
     );
 
-    sl.registerLazySingleton<SearchLocationCubit>(
-      () => SearchLocationCubit(),
+    sl.registerLazySingleton<AuthBloc>(
+      () => AuthBloc(
+        loginRepo: sl<ILoginRepo>(),
+        signUpRepo: sl<ISignUpRepo>(),
+        socialAuthRepo: sl<ISocialAuthRepo>(),
+        secureStorageService: sl<SecureStorageService>(),
+      )..add(AppStartedEvent()),
     );
 
     sl.registerLazySingleton<UserCubit>(
       () => UserCubit(),
+    );
+
+    sl.registerLazySingleton<SearchLocationCubit>(
+      () => SearchLocationCubit(),
     );
 
     sl.registerFactory<AddressCubit>(
@@ -181,7 +202,8 @@ class DI {
     sl.registerLazySingleton<ProductsBloc>(
       () => ProductsBloc(
         productRepository: sl<IProductRepository>(),
-        getProductCategoryListRepository: sl<IGetProductCategoryListRepository>(),
+        getProductCategoryListRepository:
+            sl<IGetProductCategoryListRepository>(),
         getProductsByCategoryRepository: sl<IGetProductsByCategoryRepository>(),
       )..add(
           LoadFavoriteProductsEvent(),

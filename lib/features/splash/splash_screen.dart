@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
-import '/core/_core.dart';
+import '/core/_core.dart' show SecureStorageService, sl;
 import '/config/_config.dart';
 import '/features/_features.dart';
 
@@ -11,35 +10,27 @@ class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  SplashScreenState createState() => SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _getCurrentUserData();
-    navToNextPage();
+    _isUserLoggedIn();
   }
 
-  Future<void> _getCurrentUserData() async {
-    if (sl<FirebaseAuth>().currentUser?.uid != null) {
-      await sl<UserCubit>().getCurrentUserData(sl<FirebaseAuth>().currentUser!.uid);
+  Future<void> _isUserLoggedIn() async {
+    final token = await sl<SecureStorageService>().read('token');
+
+    if (mounted) {
+      if (token != null) {
+        sl<UserCubit>().getCurrentUserData();
+        context.go(BottomNavigationBarWidget.routeName);
+      } else {
+        context.go(OnboardingScreen.routeName);
+      }
     }
-  }
-
-  navToNextPage() async {
-    await Future.delayed(const Duration(seconds: 1)).then(
-      (value) {
-        if (mounted) {
-          if (sl<FirebaseAuth>().currentUser != null) {
-            context.go(BottomNavigationBarWidget.routeName);
-          } else {
-            context.go(OnboardingScreen.routeName);
-          }
-        }
-      },
-    );
   }
 
   @override

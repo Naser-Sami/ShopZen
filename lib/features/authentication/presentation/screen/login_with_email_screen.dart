@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '/core/_core.dart';
 import '/config/_config.dart';
@@ -14,7 +16,6 @@ class LoginWithEmailScreen extends StatefulWidget {
 
 class _LoginWithEmailScreenState extends State<LoginWithEmailScreen> {
   final _formKey = GlobalKey<FormState>();
-  final loginService = sl<AuthService>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -35,11 +36,12 @@ class _LoginWithEmailScreenState extends State<LoginWithEmailScreen> {
 
   void onLogin() {
     if (_formKey.currentState!.validate()) {
-      loginService.loginWithEmail(
-        context,
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-      );
+      context.read<AuthBloc>().add(
+            LoginEvent(
+              emailController.text.trim(),
+              passwordController.text.trim(),
+            ),
+          );
     }
   }
 
@@ -66,6 +68,38 @@ class _LoginWithEmailScreenState extends State<LoginWithEmailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is Authenticated) {
+          ToastNotification.showSuccessNotification(context,
+              message: 'Login Successful');
+          context.go(BottomNavigationBarWidget.routeName);
+        }
+        if (state is AuthFailure) {
+          ToastNotification.showErrorNotification(context,
+              message: state.message);
+        }
+      },
+      child: Scaffold(
+        appBar: _appBar(),
+        body: _body(),
+      ),
+    );
+  }
+
+  PreferredSizeWidget? _appBar() {
+    return AppBar(
+      toolbarHeight: TSize.s100,
+      automaticallyImplyLeading: false,
+      centerTitle: false,
+      title: TextWidget(
+        'Login with Email',
+        style: Theme.of(context).textTheme.headlineMedium,
+      ),
+    );
+  }
+
+  Widget _body() {
     final size = MediaQuery.of(context).size;
     final theme = Theme.of(context);
 
@@ -73,79 +107,77 @@ class _LoginWithEmailScreenState extends State<LoginWithEmailScreen> {
         ? DarkThemeColors.success
         : LightThemeColors.success;
 
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: TSize.s100,
-        automaticallyImplyLeading: false,
-        centerTitle: false,
-        title: TextWidget(
-          'Login with Email',
-          style: theme.textTheme.headlineMedium,
-        ),
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(TPadding.p20),
-          child: SizedBox(
-            width: size.width,
-            height: size.height,
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  TextFormFieldComponent(
-                    title: 'Email',
-                    textFieldWithTitle: true,
-                    controller: emailController,
-                    hintText: 'Enter your email',
-                    validator: TValidator.validateEmail,
-                    suffixIcon: emailController.text.isNotEmpty
-                        ? isEmailValid()
-                            ? Icon(
-                                Icons.check_circle_outline_outlined,
-                                color: borderSuccessColor,
-                              )
-                            : const Icon(Icons.info_outline)
-                        : null,
-                    onChanged: onFieldChanged,
-                    successColor: isEmailValid() ? borderSuccessColor : null,
-                  ),
-                  TSize.s16.toHeight,
-                  TextFormFieldComponent(
-                    title: 'Password',
-                    textFieldWithTitle: true,
-                    controller: passwordController,
-                    obscureText: !showPassword,
-                    suffixIcon: IconButton(
-                      onPressed: onShowPassword,
-                      icon: Icon(
-                        showPassword
-                            ? Icons.visibility_outlined
-                            : Icons.visibility_off_outlined,
-                      ),
-                    ),
-                    hintText: 'Enter your password',
-                    validator: TValidator.validatePassword,
-                    onChanged: onFieldChanged,
-                  ),
-                  TSize.s08.toHeight,
-                  Align(
-                    alignment: AlignmentDirectional.centerEnd,
-                    child: TextButton(
-                      onPressed: () {},
-                      child: TextWidget(
-                        'Forgot Password?',
-                        style: theme.textTheme.labelLarge,
-                      ),
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(TPadding.p20),
+        child: SizedBox(
+          width: size.width,
+          height: size.height,
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                TextFormFieldComponent(
+                  title: 'Email',
+                  textFieldWithTitle: true,
+                  controller: emailController,
+                  hintText: 'Enter your email',
+                  validator: TValidator.validateEmail,
+                  suffixIcon: emailController.text.isNotEmpty
+                      ? isEmailValid()
+                          ? Icon(
+                              Icons.check_circle_outline_outlined,
+                              color: borderSuccessColor,
+                            )
+                          : const Icon(Icons.info_outline)
+                      : null,
+                  onChanged: onFieldChanged,
+                  successColor: isEmailValid() ? borderSuccessColor : null,
+                ),
+                TSize.s16.toHeight,
+                TextFormFieldComponent(
+                  title: 'Password',
+                  textFieldWithTitle: true,
+                  controller: passwordController,
+                  obscureText: !showPassword,
+                  suffixIcon: IconButton(
+                    onPressed: onShowPassword,
+                    icon: Icon(
+                      showPassword
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined,
                     ),
                   ),
-                  TSize.s48.toHeight,
-                  ElevatedButton(
-                    onPressed: enableButton ? onLogin : null,
-                    child: const TextWidget('Login with Email'),
+                  hintText: 'Enter your password',
+                  validator: TValidator.validatePassword,
+                  onChanged: onFieldChanged,
+                ),
+                TSize.s08.toHeight,
+                Align(
+                  alignment: AlignmentDirectional.centerEnd,
+                  child: TextButton(
+                    onPressed: () {},
+                    child: TextWidget(
+                      'Forgot Password?',
+                      style: theme.textTheme.labelLarge,
+                    ),
                   ),
-                ],
-              ),
+                ),
+                TSize.s48.toHeight,
+                ElevatedButton(
+                  onPressed: enableButton ? onLogin : null,
+                  child: BlocBuilder<AuthBloc, AuthState>(
+                    builder: (context, state) {
+                      if (state is AuthLoading) {
+                        return const CircularProgressIndicator(
+                          color: Colors.white,
+                        );
+                      }
+                      return const TextWidget('Login with Email');
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
         ),

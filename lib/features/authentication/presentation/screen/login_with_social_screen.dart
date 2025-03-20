@@ -71,7 +71,8 @@ class LoginWithSocialScreen extends StatelessWidget {
                 AuthenticationRichTextWidget(
                   text: "Don't have an account yet? ",
                   hyperlinkText: "Sign up",
-                  navToSignUp: () => context.push(SignUpWithSocialScreen.routeName),
+                  navToSignUp: () =>
+                      context.push(SignUpWithSocialScreen.routeName),
                 ),
                 TSize.s20.toHeight,
               ],

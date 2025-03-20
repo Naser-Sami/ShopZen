@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '/core/_core.dart';
 import '/config/_config.dart';
@@ -64,21 +65,37 @@ Future<void> logoutBottomSheet(BuildContext context) async {
                     ),
                     TSize.s16.toWidth,
                     Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // only for test sing out
-                          if (context.mounted) {
-                            context.read<UserCubit>().logout(context);
+                      child: BlocListener<AuthBloc, AuthState>(
+                        listener: (context, state) {
+                          if (state is AuthFailure) {
+                            ToastNotification.showErrorNotification(
+                              context,
+                              message: state.message,
+                            );
+                          }
+                          if (state is Unauthenticated) {
+                            context.go(OnboardingScreen.routeName);
+                            ToastNotification.showWarningNotification(
+                              context,
+                              message: "Logout successful",
+                            );
                           }
                         },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: theme.colorScheme.error,
-                        ),
-                        child: TextWidget(
-                          'Yes, Logout',
-                          style: textTheme.bodyLarge?.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (context.mounted) {
+                              context.read<AuthBloc>().add(LogoutEvent());
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: theme.colorScheme.error,
+                          ),
+                          child: TextWidget(
+                            'Yes, Logout',
+                            style: textTheme.bodyLarge?.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
                       ),

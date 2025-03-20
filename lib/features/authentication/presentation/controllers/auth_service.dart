@@ -6,7 +6,13 @@ import '/features/_features.dart';
 import '/core/_core.dart';
 
 class AuthService {
-  List<String> socialMediaLogin = ['google', 'apple', 'x', 'facebook', 'github'];
+  List<String> socialMediaLogin = [
+    'google',
+    'apple',
+    'x',
+    'facebook',
+    'github'
+  ];
 
   Future<void> loginWithGoogle(BuildContext context) async {
     try {
@@ -121,7 +127,7 @@ class AuthService {
   }
 
   Future<void> _getCurrentUserData() async {
-    await sl<UserCubit>().getCurrentUserData(sl<FirebaseAuth>().currentUser!.uid);
+    await sl<UserCubit>().getCurrentUserData();
   }
 
   void _navToHomeScreen(BuildContext context, String msg) {

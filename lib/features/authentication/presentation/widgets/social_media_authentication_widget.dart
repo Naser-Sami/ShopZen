@@ -4,7 +4,10 @@ import '/config/_config.dart';
 
 class SocialMediaAuthenticationWidget extends StatelessWidget {
   const SocialMediaAuthenticationWidget(
-      {super.key, required this.icon, required this.text, required this.onPressed});
+      {super.key,
+      required this.icon,
+      required this.text,
+      required this.onPressed});
 
   final String icon;
   final String text;
@@ -36,7 +39,7 @@ class SocialMediaAuthenticationWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              width: 200,
+              width: 211,
               child: Row(
                 children: [
                   IconWidget(

@@ -112,7 +112,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       );
 
       result.handle(
-        onSuccess: (_) => _handleSuccess(userId),
+        onSuccess: (_) => _handleSuccess(),
         onError: (error) => _handleError(error),
       );
     } on FirebaseAuthException catch (e) {
@@ -159,25 +159,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Map<String, dynamic> _createUserUpdateData() {
     final date = _selectedDate?.toIso8601String();
-    return UserModel(
-            uid: _userCubit.state!.uid,
-            name: _nameController.text.trim(),
-            email: _emailController.text.trim(),
-            createdAt: _userCubit.state?.createdAt ?? DateTime.now(),
-            dateOfBirth: date ?? '',
-            gender: _gender.name,
-            phone: _phoneNumber.phoneNumber ?? '',
-            token: _userCubit.state?.token ?? '',
-            fcmToken: _userCubit.state?.fcmToken ?? '',
-            profilePic: _userCubit.state?.profilePic ?? '',
-            address: '',
-            userType: UserType.user)
-        .toMap();
+
+    final updatedUser = _userCubit.state!.copyWith(
+      name: _nameController.text.trim(),
+      email: _emailController.text.trim(),
+      dateOfBirth: date ?? '',
+      gender: _gender.name,
+      phone: _phoneNumber.phoneNumber ?? '',
+    );
+
+    return updatedUser.toMap();
   }
 
-  void _handleSuccess(String userId) {
-    ToastNotification.showSuccessNotification(context, message: 'Profile updated');
-    _userCubit.getCurrentUserData(userId);
+  void _handleSuccess() {
+    ToastNotification.showSuccessNotification(context,
+        message: 'Profile updated');
+    _userCubit.getCurrentUserData();
     if (mounted) context.pop();
   }
 
@@ -286,7 +283,8 @@ class _ProfileForm extends StatelessWidget {
               onPhoneChanged: onPhoneChanged,
             ),
             const SizedBox(height: TSize.s48),
-            ElevatedButton(onPressed: onSubmit, child: const TextWidget('Save')),
+            ElevatedButton(
+                onPressed: onSubmit, child: const TextWidget('Save')),
           ],
         ),
       ),
@@ -346,8 +344,10 @@ class _DatePickerField extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: TPadding.p20),
           decoration: BoxDecoration(
             border: Border.all(
-              color:
-                  Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.40),
+              color: Theme.of(context)
+                  .colorScheme
+                  .onSurfaceVariant
+                  .withValues(alpha: 0.40),
             ),
             borderRadius: BorderRadius.circular(TSize.s10),
           ),
@@ -417,7 +417,8 @@ class _GenderSelector extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: TPadding.p20),
         decoration: BoxDecoration(
           border: Border.all(
-            color: context.theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.40),
+            color: context.theme.colorScheme.onSurfaceVariant
+                .withValues(alpha: 0.40),
           ),
           borderRadius: BorderRadius.circular(TSize.s10),
         ),
@@ -458,7 +459,8 @@ class _PhoneNumberField extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: TPadding.p20),
         decoration: BoxDecoration(
           border: Border.all(
-            color: context.theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.40),
+            color: context.theme.colorScheme.onSurfaceVariant
+                .withValues(alpha: 0.40),
           ),
           borderRadius: BorderRadius.circular(TSize.s10),
         ),
