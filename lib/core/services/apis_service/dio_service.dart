@@ -19,7 +19,6 @@ class DioService {
   DioService() {
     dio.interceptors.add(
       PrettyDioLogger(
-        responseHeader: true,
         requestHeader: true,
       ),
     );

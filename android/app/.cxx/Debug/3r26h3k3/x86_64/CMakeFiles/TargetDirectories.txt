@@ -1,0 +1,2 @@
+/Users/naserebedo/Developer/__Mobile__/_shop_zen_/shop_zen/android/app/.cxx/Debug/3r26h3k3/x86_64/CMakeFiles/edit_cache.dir
+/Users/naserebedo/Developer/__Mobile__/_shop_zen_/shop_zen/android/app/.cxx/Debug/3r26h3k3/x86_64/CMakeFiles/rebuild_cache.dir

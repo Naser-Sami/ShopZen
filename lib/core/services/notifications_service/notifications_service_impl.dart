@@ -123,7 +123,7 @@ class NotificationsServiceImpl implements INotificationsService {
     try {
       String? route = data['route'];
       if (route != null) {
-        context.push(route);
+        context.go(route);
       }
     } catch (e) {
       log('Error handling notification: $e');
