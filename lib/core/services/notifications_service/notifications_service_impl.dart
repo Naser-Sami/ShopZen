@@ -1,11 +1,10 @@
 import 'dart:developer';
 
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
-import 'package:googleapis_auth/auth_io.dart' as auth;
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/services.dart';
+import 'package:googleapis_auth/auth_io.dart' as auth;
 
+import '/config/routes/routes.dart';
 import '/core/_core.dart';
 
 class NotificationsServiceImpl implements INotificationsService {
@@ -119,11 +118,11 @@ class NotificationsServiceImpl implements INotificationsService {
 
   /// Handles notification tap to navigate within the app
   @override
-  void handleNotification(BuildContext context, Map<String, dynamic> data) {
+  void handleNotification(Map<String, dynamic> data) {
     try {
       String? route = data['route'];
       if (route != null) {
-        context.go(route);
+        router.go(route);
       }
     } catch (e) {
       log('Error handling notification: $e');

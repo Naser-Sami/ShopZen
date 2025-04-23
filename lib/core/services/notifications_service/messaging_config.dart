@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:firebase_core/firebase_core.dart';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-import '/features/_features.dart';
 import '/core/_core.dart';
+import '/features/_features.dart';
 
 class MessagingConfig {
   static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -13,7 +13,8 @@ class MessagingConfig {
 
   static Future<void> createNotificationChannel() async {
     flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
         ?.requestNotificationsPermission();
 
     const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -25,7 +26,8 @@ class MessagingConfig {
     );
 
     await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
   }
 
@@ -52,7 +54,8 @@ class MessagingConfig {
       requestAlertPermission: false,
     );
 
-    const InitializationSettings initializationSettings = InitializationSettings(
+    const InitializationSettings initializationSettings =
+        InitializationSettings(
       android: initializationSettingsAndroid,
       iOS: initializationSettingsIOS,
     );
@@ -70,7 +73,8 @@ class MessagingConfig {
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       log('User granted permission');
-    } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+    } else if (settings.authorizationStatus ==
+        AuthorizationStatus.provisional) {
       log('User granted provisional permission');
     } else {
       log('User declined or has not accepted permission');
@@ -91,11 +95,12 @@ class MessagingConfig {
       }
     });
 
-    FirebaseMessaging.instance.getInitialMessage().then((RemoteMessage? message) {
+    FirebaseMessaging.instance
+        .getInitialMessage()
+        .then((RemoteMessage? message) {
       if (message != null) {
         log("getInitialMessage message: $message");
-        sl<INotificationsService>()
-            .handleNotification(navigatorKey.currentContext!, message.data);
+        sl<INotificationsService>().handleNotification(message.data);
       }
     });
 
@@ -150,8 +155,8 @@ class MessagingConfig {
     }
   }
 
-  static Future<void> showNotification(
-      RemoteNotification? notification, Map<String, dynamic> messageData) async {
+  static Future<void> showNotification(RemoteNotification? notification,
+      Map<String, dynamic> messageData) async {
     // Notifications Details for Android
     AndroidNotificationDetails? androidNotificationsDetails =
         const AndroidNotificationDetails(
@@ -164,7 +169,8 @@ class MessagingConfig {
     );
 
     // Notifications Details for iOS
-    DarwinNotificationDetails? iosNotificationsDetails = const DarwinNotificationDetails(
+    DarwinNotificationDetails? iosNotificationsDetails =
+        const DarwinNotificationDetails(
       presentAlert: true,
       presentBadge: true,
       presentSound: true,
@@ -190,7 +196,6 @@ class MessagingConfig {
 
   @pragma('vm:entry-point')
   static Future<void> messageHandler(RemoteMessage message) async {
-    await Firebase.initializeApp();
     if (message.notification != null) {
       final data = message.data;
       flutterLocalNotificationsPlugin.show(

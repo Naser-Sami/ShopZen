@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:go_router/go_router.dart';
-import '/features/_features.dart';
+
+import '/config/_config.dart' show router;
 import '/core/_core.dart';
+import '/features/_features.dart';
 
 class ChatController {
   static void handleNotificationChatData(Map<String, dynamic> data) {
@@ -43,24 +45,18 @@ class ChatController {
       final userAsString = data['user'] as String;
 
       // 🔥 Ensure 'user' is parsed correctly
-      final jsonUserString =
-          userAsString.replaceAll("''", '""'); // Replace single quotes with double quotes
+      final jsonUserString = userAsString.replaceAll(
+          "''", '""'); // Replace single quotes with double quotes
 
       final parsedUser = jsonDecode(jsonUserString) as Map<String, dynamic>;
 
       final user = UserModel.fromJson(parsedUser, userId);
 
       try {
-        // Get the current context safely
-        final context = navigatorKey.currentContext;
-        if (context != null) {
-          GoRouter.of(context).push(
-            "${ChatRoomScreen.routeName}/$userName",
-            extra: user,
-          );
-        } else {
-          log('Error: No valid context found');
-        }
+        router.go(
+          "${ChatRoomScreen.routeName}/$userName",
+          extra: user,
+        );
       } catch (e) {
         log('Error navigating to chat room: $e');
       }

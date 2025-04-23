@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 
 import '/features/_features.dart';
 import '/config/_config.dart';
+import 'onboarding_screen_text_widget.dart';
 
 class OnboardingScreen extends StatelessWidget {
   static const routeName = '/onboarding';
@@ -11,7 +13,6 @@ class OnboardingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final theme = Theme.of(context);
 
     void navToLogin() {
       // context.push(AccessLocationScreen.routeName);
@@ -33,19 +34,7 @@ class OnboardingScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: TSize.s48),
-            TextWidget(
-              'Welcome to ShopZen',
-              style: theme.textTheme.headlineLarge,
-            ),
-            const SizedBox(height: TSize.s08),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: TPadding.p36),
-              child: TextWidget(
-                'Your one-stop destination for hassle-free online shopping',
-                style: theme.textTheme.titleMedium,
-                textAlign: TextAlign.center,
-              ),
-            ),
+            const OnboardingScreenTextWidget(),
             const SizedBox(height: TSize.s64),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: TPadding.p20),

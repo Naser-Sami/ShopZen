@@ -1,9 +1,10 @@
 import 'dart:developer';
-import 'package:uuid/uuid.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
-import '/features/_features.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:uuid/uuid.dart';
+
 import '/core/_core.dart';
+import '/features/_features.dart';
 
 Future<void> createOrUpdateUserCollection(UserCredential credential) async {
   final fcmToken = await sl<INotificationsService>().getFCMToken();
@@ -12,7 +13,8 @@ Future<void> createOrUpdateUserCollection(UserCredential credential) async {
 
   if (userId.isEmpty) return;
 
-  final result = await sl<IFirestoreService<UserModel>>().getDocument('users/$userId');
+  final result =
+      await sl<IFirestoreService<UserModel>>().getDocument('users/$userId');
 
   result.handle(
     // if user exists, update the user's FCM token and access token
@@ -109,7 +111,8 @@ Future<void> createOrSendNotification({
     );
 
     // Create a new notification document
-    final createResult = await sl<IFirestoreService<NotificationsModel>>().addDocument(
+    final createResult =
+        await sl<IFirestoreService<NotificationsModel>>().addDocument(
       'notifications/$uid/notifications-list',
       notificationsModel.toMap(),
     );
@@ -135,7 +138,7 @@ Future<void> createOrSendNotification({
             fcmToken: fcmToken,
             title: title,
             body: body,
-            data: data!,
+            data: data ?? {},
           );
         } catch (e) {
           log('Error sending notification On Send Message: $e');

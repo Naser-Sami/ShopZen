@@ -4,8 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '/core/_core.dart';
 import '/config/_config.dart';
+import '/core/_core.dart';
 import '/features/_features.dart';
 
 class ChatRoomBody extends StatefulWidget {
@@ -18,7 +18,8 @@ class ChatRoomBody extends StatefulWidget {
   State<ChatRoomBody> createState() => _ChatRoomBodyState();
 }
 
-class _ChatRoomBodyState extends State<ChatRoomBody> with AutomaticKeepAliveClientMixin {
+class _ChatRoomBodyState extends State<ChatRoomBody>
+    with AutomaticKeepAliveClientMixin {
   final ScrollController _scrollController = ScrollController();
   final _chatService = sl<IChatRepository>();
   final _firebaseAuth = sl<FirebaseAuth>();
@@ -39,7 +40,8 @@ class _ChatRoomBodyState extends State<ChatRoomBody> with AutomaticKeepAliveClie
     });
   }
 
-  bool _isFirstBuild = true; // ✅ Track if the screen is opened for the first time
+  bool _isFirstBuild =
+      true; // ✅ Track if the screen is opened for the first time
 
   @override
   void dispose() {
@@ -52,7 +54,7 @@ class _ChatRoomBodyState extends State<ChatRoomBody> with AutomaticKeepAliveClie
   void _scrollToBottom({bool instant = false}) {
     if (_scrollController.hasClients) {
       _scrollController.jumpTo(
-        _scrollController.position.maxScrollExtent,
+        _scrollController.position.maxScrollExtent + 100,
       );
     }
   }
@@ -107,15 +109,19 @@ class _ChatRoomBodyState extends State<ChatRoomBody> with AutomaticKeepAliveClie
               final DateTime dateTime = message.timestamp.toDate();
 
               final bool isSender = _isSender(message);
-              final bool isLastFromSender = _isLastFromSender(messages, index, isSender);
-              final bool isFirstFromDate = _isFirstFromDate(messages, index, dateTime);
+              final bool isLastFromSender =
+                  _isLastFromSender(messages, index, isSender);
+              final bool isFirstFromDate =
+                  _isFirstFromDate(messages, index, dateTime);
 
               return Column(
                 key: ValueKey('chat-message-$index'),
-                crossAxisAlignment:
-                    isSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                crossAxisAlignment: isSender
+                    ? CrossAxisAlignment.end
+                    : CrossAxisAlignment.start,
                 children: [
-                  if (isFirstFromDate) _buildDateHeader(dateTime, colorScheme, textTheme),
+                  if (isFirstFromDate)
+                    _buildDateHeader(dateTime, colorScheme, textTheme),
                   isSender
                       ? Sender(message: message.message)
                       : Receiver(message: message.message),
@@ -142,11 +148,14 @@ class _ChatRoomBodyState extends State<ChatRoomBody> with AutomaticKeepAliveClie
   }
 
   /// **Check if the current message is the first message of a new date**
-  bool _isFirstFromDate(List<ChatMessage> messages, int index, DateTime dateTime) {
+  bool _isFirstFromDate(
+      List<ChatMessage> messages, int index, DateTime dateTime) {
     if (index == 0) return true; // The first message always gets a date header
 
-    final previousMessageTimestamp = messages[index - 1].timestamp as Timestamp?;
-    final DateTime previousDate = previousMessageTimestamp?.toDate() ?? DateTime.now();
+    final previousMessageTimestamp =
+        messages[index - 1].timestamp as Timestamp?;
+    final DateTime previousDate =
+        previousMessageTimestamp?.toDate() ?? DateTime.now();
 
     return previousDate.day != dateTime.day;
   }

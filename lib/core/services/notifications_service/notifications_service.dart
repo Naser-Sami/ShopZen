@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 abstract class INotificationsService {
   Future<String> getFCMToken();
   void isRefreshToken();
@@ -9,5 +7,5 @@ abstract class INotificationsService {
       required String title,
       required String body,
       required Map<String, String> data});
-  void handleNotification(BuildContext context, Map<String, dynamic> data);
+  void handleNotification(Map<String, dynamic> data);
 }

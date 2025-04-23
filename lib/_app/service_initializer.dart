@@ -1,24 +1,26 @@
-import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:url_strategy/url_strategy.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:url_strategy/url_strategy.dart';
 
-import '/firebase_options.dart';
+import '/core/_core.dart'
+    show DI, IHiveService, MessagingConfig, StripeService, sl;
 import '/features/_features.dart' show ProductEntity;
-import '/core/_core.dart' show DI, IHiveService, MessagingConfig, StripeService, sl;
+import '/firebase_options.dart';
 import '_app.dart' show registerAllHiveAdapters;
 
 abstract class IServiceInitializer {
   Future<void> init();
-  WidgetsBinding get widgetsBinding => WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding get widgetsBinding =>
+      WidgetsFlutterBinding.ensureInitialized();
   void initializeSplashScreen();
   void initializePathUrlStrategy();
   void initializeGoRouter();
@@ -70,8 +72,9 @@ class ServiceInitializer extends IServiceInitializer {
   @override
   Future<void> initializeHydratedBloc() async {
     HydratedBloc.storage = await HydratedStorage.build(
-      storageDirectory:
-          kIsWeb ? HydratedStorage.webStorageDirectory : await getTemporaryDirectory(),
+      storageDirectory: kIsWeb
+          ? HydratedStorage.webStorageDirectory
+          : await getTemporaryDirectory(),
     );
   }
 
